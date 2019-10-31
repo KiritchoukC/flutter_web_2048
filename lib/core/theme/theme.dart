@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CoolSchoolTheme {
+class CustomTheme {
   static final ThemeData _themeData = ThemeData(primarySwatch: Colors.blue)
       .copyWith(textTheme: Typography.blackMountainView);
 
