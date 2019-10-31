@@ -1,0 +1,35 @@
+{
+  "name": "flutter_clean_architecture_template",
+  "version": "1.1.1",
+  "description": "Starter template of a clean architecture flutter project",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KiritchoukC/flutter_clean_architecture_template.git"
+  },
+  "keywords": [
+    "flutter"
+  ],
+  "author": "KiritchoukC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KiritchoukC/flutter_clean_architecture_template/issues"
+  },
+  "homepage": "https://github.com/KiritchoukC/flutter_clean_architecture_template#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
