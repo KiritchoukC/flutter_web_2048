@@ -1,6 +1,6 @@
 {
   "name": "flutter_clean_architecture_template",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Starter template of a clean architecture flutter project",
   "main": "index.js",
   "directories": {
