@@ -1,7 +1,7 @@
 {
-  "name": "flutter_clean_architecture_template",
+  "name": "flutter_web_2048",
   "version": "1.2.0",
-  "description": "Starter template of a clean architecture flutter project",
+  "description": "2048 game made with flutter web framework",
   "main": "index.js",
   "directories": {
     "lib": "lib",
