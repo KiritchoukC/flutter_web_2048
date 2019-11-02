@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.4.0...v1.5.0) (2019-11-02)
+
+
+### Features
+
+* **initial board:** generating the iniitial board with only one '2' tile ([1f4b26b](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/1f4b26b))
+
 ## [1.4.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.3.0...v1.4.0) (2019-11-02)
 
 
