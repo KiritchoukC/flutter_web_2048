@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import './bloc.dart';
-import '../../../../core/enums/direction.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/usecases/update_board.dart';
 

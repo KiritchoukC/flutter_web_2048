@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 abstract class Failure extends Equatable {
   final List properties;
@@ -14,3 +15,9 @@ abstract class Failure extends Equatable {
 class ServerFailure extends Failure {}
 
 class NetworkFailure extends Failure {}
+
+class ApplicationFailure extends Failure{
+  final String message;
+
+  ApplicationFailure({@required this.message});
+}

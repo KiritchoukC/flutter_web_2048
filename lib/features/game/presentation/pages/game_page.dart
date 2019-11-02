@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_2048/core/enums/direction.dart';
-import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:swipedetector/swipedetector.dart';
 
+import '../../../../core/enums/direction.dart';
 import '../../../../core/layouts/default_layout.dart';
+import '../../domain/entities/board.dart';
+import '../../domain/entities/tile.dart';
 import '../bloc/bloc.dart';
 
 class GamePage extends StatelessWidget {
@@ -47,6 +48,17 @@ class TileBoard extends StatefulWidget {
 }
 
 class _TileBoardState extends State<TileBoard> {
+  Widget _buildBoard(Board board) {
+    return GridView.count(
+      primary: true,
+      physics: new NeverScrollableScrollPhysics(),
+      crossAxisCount: 4,
+      children: board.tiles.map((Tile tile) {
+        return TileWidget(tile: tile);
+      }).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(builder: (context, state) {
@@ -54,18 +66,11 @@ class _TileBoardState extends State<TileBoard> {
         BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
       }
 
-      return GridView.count(
-        primary: true,
-        physics: new NeverScrollableScrollPhysics(),
-        crossAxisCount: 4,
-        children: List.generate(
-          16,
-          (index) {
-            return TileWidget(tile: Tile(value: 0),);
-          },
-          growable: false,
-        ),
-      );
+      if (state is UpdateBoardEnd) {
+        return _buildBoard(state.board);
+      }
+
+      return _buildBoard(Board(List<Tile>()));
     });
   }
 }

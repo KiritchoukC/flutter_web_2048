@@ -4,7 +4,7 @@ class Tile{
   final int value;
   Color get color => ColorValue.colors[value];
 
-  Tile({@required this.value});
+  Tile(this.value);
 }
 
 class ColorValue{
