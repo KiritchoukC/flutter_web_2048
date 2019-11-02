@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
+class Tile{
+  final int value;
+  Color get color => ColorValue.colors[value];
+
+  Tile({@required this.value});
+}
+
 class ColorValue{
   static Map<int, Color> colors = {
+    0: Colors.grey.shade100,
     2: Colors.blue.shade100,
     4: Colors.blue.shade200,
     8: Colors.blue.shade300,
