@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:flutter_web_2048/core/usecases/usecase.dart';
-import 'package:flutter_web_2048/features/game/domain/usecases/generate_initial_board.dart';
-import 'package:meta/meta.dart';
 
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 
 import './bloc.dart';
-import '../../../../core/error/failures.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../domain/usecases/generate_initial_board.dart';
 import '../../domain/usecases/update_board.dart';
 
 const String serverFailureMessage = 'Server Failure';
@@ -36,18 +35,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       // Call the use case
       final output = await updateBoard(Params(direction: event.direction));
 
-      // What happens when use case fails
-      final onFailure = (failure) async* {
-        yield Error(_mapFailureToMessage(failure));
-      };
-
-      // What happens when use case succeed
-      final onSuccess = (board) async* {
-        yield UpdateBoardEnd(board);
-      };
-
-      // Fold the usecase response
-      yield* output.fold(onFailure, onSuccess);
+      yield UpdateBoardEnd(output);
     }
 
     if (event is LoadInitialBoard) {
@@ -57,30 +45,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       // call the use case
       final output = await generateInitialBoard(NoParams());
 
-      // What happens when use case fails
-      final onFailure = (failure) async* {
-        yield Error(_mapFailureToMessage(failure));
-      };
-
-      // What happens when use case succeed
-      final onSuccess = (board) async* {
-        yield UpdateBoardEnd(board);
-      };
-
-      // Fold the usecase response
-      yield* output.fold(onFailure, onSuccess);
+      yield UpdateBoardEnd(output);
     }
-  }
-}
-
-String _mapFailureToMessage(Failure failure) {
-  // Instead of a regular 'if (failure is ServerFailure)...'
-  switch (failure.runtimeType) {
-    case ServerFailure:
-      return serverFailureMessage;
-    case NetworkFailure:
-      return networkFailureMessage;
-    default:
-      return 'Unexpected Error';
   }
 }

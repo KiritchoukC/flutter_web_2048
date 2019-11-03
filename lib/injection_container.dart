@@ -1,10 +1,12 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:flutter_web_2048/features/game/domain/usecases/generate_initial_board.dart';
-import 'package:flutter_web_2048/features/game/presentation/bloc/game_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import 'core/network/network_info.dart';
+import 'features/game/data/repositories/local_board_repository.dart';
+import 'features/game/domain/repositories/board_repository.dart';
+import 'features/game/domain/usecases/generate_initial_board.dart';
 import 'features/game/domain/usecases/update_board.dart';
+import 'features/game/presentation/bloc/game_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -23,12 +25,13 @@ void init() {
 void initGameFeature() {
   // Bloc
   sl.registerFactory(
-    () => GameBloc(
-      updateBoard: sl(),
-      generateInitialBoard: sl()
-    ),
+    () => GameBloc(updateBoard: sl(), generateInitialBoard: sl()),
   );
 
-  sl.registerLazySingleton(()=> UpdateBoard());
-  sl.registerLazySingleton(()=> GenerateInitialBoard());
+  // Usecases
+  sl.registerLazySingleton(() => UpdateBoard(boardRepository: sl()));
+  sl.registerLazySingleton(() => GenerateInitialBoard(boardRepository: sl()));
+
+  // Repositories
+  sl.registerLazySingleton<BoardRepository>(() => LocalBoardRepository());
 }

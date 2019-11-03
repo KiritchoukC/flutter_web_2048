@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../core/enums/direction.dart';
 
 abstract class GameEvent extends Equatable {
   const GameEvent();

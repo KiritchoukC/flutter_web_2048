@@ -1,46 +1,40 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/usecases/usecase.dart';
+import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
+import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
+import 'package:flutter_web_2048/features/game/domain/repositories/board_repository.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/generate_initial_board.dart';
+import 'package:mockito/mockito.dart';
+
+class MockBoardRepository extends Mock implements BoardRepository{}
 
 void main() {
   GenerateInitialBoard usecase;
+  MockBoardRepository repository;
 
   setUp(() {
-    usecase = GenerateInitialBoard();
+    repository = MockBoardRepository();
+    usecase = GenerateInitialBoard(boardRepository: repository);
   });
 
   group('GenerateInitialBoard', () {
-    test('should return a board with 16 tiles', () async {
-      // ARRANGE
-
+    test('should call the repository', () async {
       // ACT
-      var actual = await usecase(NoParams());
+      await usecase(NoParams());
+      
       // ASSERT
-      actual.fold((_) {}, (board) {
-        expect(board.tiles.length, 16);
-      });
+      verify(repository.getInitialBoard()).called(1);
     });
-    test("should return a board with 15 '0' tiles", () async {
+    test('should return the repository output', () async {
       // ARRANGE
+      var repositoryOutput = Board(List<Tile>());
+      when(repository.getInitialBoard()).thenAnswer((_) async => repositoryOutput);
 
       // ACT
       var actual = await usecase(NoParams());
-      // ASSERT
-      actual.fold((_) {}, (board) {
-        var tiles0 = board.tiles.where((tile) => tile.value == 0);
-        expect(tiles0.length, 15);
-      });
-    });
-    test("should return a board with 1 '2' tile", () async {
-      // ARRANGE
 
-      // ACT
-      var actual = await usecase(NoParams());
       // ASSERT
-      actual.fold((_) {}, (board) {
-        var tiles0 = board.tiles.where((tile) => tile.value == 2);
-        expect(tiles0.length, 1);
-      });
+      expect(actual, repositoryOutput);
     });
   });
 }
