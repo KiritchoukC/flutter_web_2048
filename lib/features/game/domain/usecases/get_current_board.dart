@@ -4,13 +4,13 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/board.dart';
 import '../repositories/board_repository.dart';
 
-class GenerateInitialBoard implements UseCase<Board, NoParams> {
+class GetCurrentBoard implements UseCase<Board, NoParams> {
   final BoardRepository boardRepository;
 
-  GenerateInitialBoard({@required this.boardRepository})
+  GetCurrentBoard({@required this.boardRepository})
       : assert(boardRepository != null);
   @override
   Future<Board> call(NoParams params) async {
-    return await boardRepository.getInitialBoard();
+    return await boardRepository.getCurrentBoard();
   }
 }

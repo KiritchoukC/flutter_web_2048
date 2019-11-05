@@ -14,15 +14,19 @@ class UpdateBoard implements UseCase<Board, Params> {
 
   @override
   Future<Board> call(Params params) async {
-    return null;
+    return await boardRepository.updateBoard(params.board, params.direction);
   }
 }
 
 class Params extends Equatable {
   final Direction direction;
+  final Board board;
 
-  Params({@required this.direction});
+  Params({
+    @required this.direction,
+    @required this.board,
+  });
 
   @override
-  List<Object> get props => [direction];
+  List<Object> get props => [direction, board];
 }

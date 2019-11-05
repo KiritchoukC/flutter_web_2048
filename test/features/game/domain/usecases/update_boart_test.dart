@@ -23,7 +23,7 @@ void main() {
       var tiles = <Tile>[];
       var board = Board(tiles);
       // ACT
-      var actual = await usecase(Params(direction: Direction.right));
+      var actual = await usecase(Params(board: board, direction: Direction.right));
       // ASSERT
     });
   });
