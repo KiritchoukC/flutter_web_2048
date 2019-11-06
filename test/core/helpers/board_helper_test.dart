@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/core/helpers/board_helper.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
@@ -110,6 +111,110 @@ void main() {
       var actual = BoardHelper.getEmptyTileIndices(board);
       // ASSERT
       expect(actual.toList(), expected);
+    });
+  });
+
+  group('moveTileDown', () {
+    test('should return the same board if moving down is not possible', () {
+      // ARRANGE
+      var bottomIndices = <int>[12, 13, 14, 15];
+      var tiles = List<Tile>.generate(16, (index) {
+        return Tile(0);
+      });
+
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      var board = Board(tiles);
+
+      var tile = Tile(2);
+      for (var i = 0; i < 4; i++) {
+        final index = bottomIndices[i];
+        // ACT
+        var actual = BoardHelper.moveTileDown(board, tile, index);
+
+        // ASSERT
+        expect(actual, board);
+      }
+    });
+
+    test("should move the tile all the way down the board", () {
+      // ARRANGE
+      int startIndex = 1;
+      int endIndex = 13;
+
+      var tile = Tile(2);
+
+      var tiles = List<Tile>.generate(16, (index) {
+        return Tile(0);
+      });
+      tiles.removeAt(startIndex);
+      tiles.insert(startIndex, tile);
+
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      var board = Board(tiles);
+
+      // ACT
+      var actual = BoardHelper.moveTileDown(board, tile, startIndex);
+
+      // ASSERT
+      int actualEndIndex = actual.tiles.indexOf(tile);
+      expect(actualEndIndex, endIndex);
+    });
+  });
+
+  group('getDestinationIndex', (){
+    test('should return 12 if [startIndex] is in the first column', (){
+      // ARRANGE
+      int startIndex = 0;
+      int expected = 12;
+
+      var tile = Tile(2);
+
+      var tiles = List<Tile>.generate(16, (index) {
+        return Tile(0);
+      });
+      tiles.removeAt(startIndex);
+      tiles.insert(startIndex, tile);
+
+      // |2|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      var board = Board(tiles);
+
+      // ACT
+      var actual = BoardHelper.getDestinationIndex(Direction.down, board, startIndex);
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return 13 if [startIndex] is in the second column', (){
+      // ARRANGE
+      int startIndex = 1;
+      int expected = 13;
+
+      var tile = Tile(2);
+
+      var tiles = List<Tile>.generate(16, (index) {
+        return Tile(0);
+      });
+      tiles.removeAt(startIndex);
+      tiles.insert(startIndex, tile);
+
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      var board = Board(tiles);
+
+      // ACT
+      var actual = BoardHelper.getDestinationIndex(Direction.down, board, startIndex);
+      // ASSERT
+      expect(actual, expected);
     });
   });
 }

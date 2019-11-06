@@ -50,13 +50,13 @@ void main() {
       });
     });
 
-    group('resetBoard', (){
-      test('should reset board. A new one should be generated after', ()async {
+    group('resetBoard', () {
+      test('should reset board. A new one should be generated after', () async {
         // ACT
         var boardBeforeReset = await repository.getCurrentBoard();
         await repository.resetBoard();
         var boardAfterReset = await repository.getCurrentBoard();
-        
+
         // ASSERT
         expect(boardBeforeReset, isNot(equals(boardAfterReset)));
       });
@@ -88,6 +88,104 @@ void main() {
         // ASSERT
         var tiles2 = actual.tiles.where((tile) => tile.value == 2);
         expect(tiles2.length, 3);
+      });
+
+      test("should return the same amount of '0' tiles if move is not possible",
+          () async {
+        // ARRANGE
+        // impossible move since the tile are already at the bottom
+        var direction = Direction.down;
+
+        // Generate the first 14 tiles.
+        var tiles = List<Tile>.generate(14, (index) {
+          return Tile(0);
+        });
+        // Simulate a generated board by adding 2 tiles at the end
+        tiles.add(Tile(2));
+        tiles.add(Tile(2));
+
+        // |0|0|0|0|
+        // |0|0|0|0|
+        // |0|0|0|0|
+        // |0|0|2|2|
+        var board = Board(tiles);
+
+        // ACT
+        // Update the board by moving up
+        var actual = await repository.updateBoard(board, direction);
+
+        // ASSERT
+        expect(actual.tiles.where((tile) => tile.value == 0).length, 14);
+      });
+
+      test("should merge tiles when 2 '2' are on the same row and direction is left and should move set the merged tile on the left",
+          () async {
+        // ARRANGE
+        // impossible move since the tile are already at the bottom
+        var direction = Direction.left;
+
+        // Generate the first 14 tiles.
+        var tiles = List<Tile>.generate(14, (index) {
+          return Tile(0);
+        });
+        // Simulate a generated board by adding 2 tiles at the end
+        tiles.add(Tile(2));
+        tiles.add(Tile(2));
+
+        // |0|0|0|0|
+        // |0|0|0|0|
+        // |0|0|0|0|
+        // |0|0|2|2|
+        var board = Board(tiles);
+
+        // ACT
+        // Update the board by moving up
+        var actual = await repository.updateBoard(board, direction);
+
+        // ASSERT
+        // 0 tiles should still be 14 because a new tile will be generated
+        expect(actual.tiles.where((tile) => tile.value == 0).length, 14);
+        // merged tile
+        var mergedTile = actual.tiles.firstWhere((tile) => tile.value == 4);
+        // should be at the end of the board
+        expect(actual.tiles.indexOf(mergedTile), 15);
+        // new generated tile
+        expect(actual.tiles.where((tile) => tile.value == 2).length, 1);
+      });
+
+      test("should merge tiles when 2 '2' are on the same row and direction is right and should move set the merged tile on the right",
+          () async {
+        // ARRANGE
+        // impossible move since the tile are already at the bottom
+        var direction = Direction.right;
+
+        // Generate the first 14 tiles.
+        var tiles = List<Tile>.generate(14, (index) {
+          return Tile(0);
+        });
+        // Simulate a generated board by adding 2 tiles at the end
+        tiles.add(Tile(2));
+        tiles.add(Tile(2));
+
+        // |0|0|0|0|
+        // |0|0|0|0|
+        // |0|0|0|0|
+        // |0|0|2|2|
+        var board = Board(tiles);
+
+        // ACT
+        // Update the board by moving up
+        var actual = await repository.updateBoard(board, direction);
+
+        // ASSERT
+        // 0 tile should still be 14 because a new tile will be generated
+        expect(actual.tiles.where((tile) => tile.value == 0).length, 14);
+        // merged tile
+        var mergedTile = actual.tiles.firstWhere((tile) => tile.value == 4);
+        // should be at the start of the last row of the board
+        expect(actual.tiles.indexOf(mergedTile), 11);
+        // new generated tile
+        expect(actual.tiles.where((tile) => tile.value == 2).length, 1);
       });
     });
   });
