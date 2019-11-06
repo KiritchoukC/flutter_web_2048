@@ -167,19 +167,17 @@ void main() {
     });
   });
 
-  group('getDestinationIndex', (){
-    test('should return 12 if [startIndex] is in the first column', (){
+  group('getDestinationIndex', () {
+    test('should return bottom indices', () {
       // ARRANGE
-      int startIndex = 0;
-      int expected = 12;
+      var startIndices = <int>[0, 1, 2, 3];
+      var expected = <int>[12, 13, 14, 15];
 
       var tile = Tile(2);
 
       var tiles = List<Tile>.generate(16, (index) {
         return Tile(0);
       });
-      tiles.removeAt(startIndex);
-      tiles.insert(startIndex, tile);
 
       // |2|0|0|0|
       // |0|0|0|0|
@@ -187,34 +185,17 @@ void main() {
       // |0|0|0|0|
       var board = Board(tiles);
 
-      // ACT
-      var actual = BoardHelper.getDestinationIndex(Direction.down, board, startIndex);
-      // ASSERT
-      expect(actual, expected);
-    });
-    test('should return 13 if [startIndex] is in the second column', (){
-      // ARRANGE
-      int startIndex = 1;
-      int expected = 13;
+      for (var i = 0; i < 4; i++) {
+        int startIndex = startIndices[i];
+        board.tiles.removeAt(startIndex);
+        board.tiles.insert(startIndex, tile);
 
-      var tile = Tile(2);
-
-      var tiles = List<Tile>.generate(16, (index) {
-        return Tile(0);
-      });
-      tiles.removeAt(startIndex);
-      tiles.insert(startIndex, tile);
-
-      // |0|2|0|0|
-      // |0|0|0|0|
-      // |0|0|0|0|
-      // |0|0|0|0|
-      var board = Board(tiles);
-
-      // ACT
-      var actual = BoardHelper.getDestinationIndex(Direction.down, board, startIndex);
-      // ASSERT
-      expect(actual, expected);
+        // ACT
+        var actual =
+            BoardHelper.getDestinationIndex(Direction.down, board, startIndex);
+        // ASSERT
+        expect(actual, expected[i]);
+      }
     });
   });
 }
