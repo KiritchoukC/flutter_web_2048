@@ -22,19 +22,16 @@ class GamePage extends StatelessWidget {
       aspectRatio: 1,
       child: SwipeDetector(
         onSwipeDown: () {
-          BlocProvider.of<GameBloc>(context)
-              .add(Move(direction: Direction.down));
+          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.down));
         },
         onSwipeUp: () {
           BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.up));
         },
         onSwipeRight: () {
-          BlocProvider.of<GameBloc>(context)
-              .add(Move(direction: Direction.right));
+          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.right));
         },
         onSwipeLeft: () {
-          BlocProvider.of<GameBloc>(context)
-              .add(Move(direction: Direction.left));
+          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.left));
         },
         child: TileBoard(),
       ),
@@ -49,13 +46,17 @@ class TileBoard extends StatefulWidget {
 
 class _TileBoardState extends State<TileBoard> {
   Widget _buildBoard(Board board) {
-    return GridView.count(
-      primary: true,
-      physics: new NeverScrollableScrollPhysics(),
-      crossAxisCount: 4,
-      children: board.tiles.map((Tile tile) {
-        return TileWidget(tile: tile);
-      }).toList(),
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: board.tiles.length,
+      ),
+      itemBuilder: (context, index) {
+        int x, y = 0;
+        x = (index / board.tiles.length).floor();
+        y = (index % board.tiles.length);
+        return TileWidget(tile: board.tiles[x][y]);
+      },
+      itemCount: board.tiles.length ^ 2,
     );
   }
 
@@ -70,7 +71,7 @@ class _TileBoardState extends State<TileBoard> {
         return _buildBoard(state.board);
       }
 
-      return _buildBoard(Board(List<Tile>()));
+      return _buildBoard(Board(List<List<Tile>>()));
     });
   }
 }

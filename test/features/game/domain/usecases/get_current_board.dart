@@ -27,7 +27,7 @@ void main() {
     });
     test('should return the repository output', () async {
       // ARRANGE
-      var repositoryOutput = Board(List<Tile>());
+      var repositoryOutput = Board(List<List<Tile>>());
       when(repository.getCurrentBoard()).thenAnswer((_) async => repositoryOutput);
 
       // ACT

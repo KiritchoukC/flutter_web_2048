@@ -20,7 +20,7 @@ void main() {
   group('UpdateBoard', () {
     test('should generate a new tile every move', () async {
       // ARRANGE
-      var tiles = <Tile>[];
+      var tiles = List<List<Tile>>();
       var board = Board(tiles);
       // ACT
       var actual = await usecase(Params(board: board, direction: Direction.right));
