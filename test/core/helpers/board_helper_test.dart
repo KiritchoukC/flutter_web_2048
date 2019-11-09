@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/core/helpers/board_helper.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
@@ -76,6 +77,116 @@ void main() {
       var actual = BoardHelper.getEmptyTiles(board);
       // ASSERT
       expect(actual.toList(), expected);
+    });
+  });
+
+  group('getVector', () {
+    test('should return x:0 & y:-1 for up direction', () {
+      // ARRANGE
+      var expected = {'x': 0, 'y': -1};
+      var direction = Direction.up;
+
+      // ACT
+      var actual = BoardHelper.getVector(direction);
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return x:0 & y:1 for down direction', () {
+      // ARRANGE
+      var expected = {'x': 0, 'y': 1};
+      var direction = Direction.down;
+
+      // ACT
+      var actual = BoardHelper.getVector(direction);
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return x:-1 & y:0 for left direction', () {
+      // ARRANGE
+      var expected = {'x': -1, 'y': 0};
+      var direction = Direction.left;
+
+      // ACT
+      var actual = BoardHelper.getVector(direction);
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return x:1 & y:0 for right direction', () {
+      // ARRANGE
+      var expected = {'x': 1, 'y': 0};
+      var direction = Direction.right;
+
+      // ACT
+      var actual = BoardHelper.getVector(direction);
+      // ASSERT
+      expect(actual, expected);
+    });
+  });
+
+  group('getTraversals', () {
+    test('should return traversals from top left to bottom right when moving left', () {
+      // ARRANGE
+      var expected = {
+        'x': <int>[0, 1, 2, 3], // from left to right
+        'y': <int>[0, 1, 2, 3] // from top to bottom
+      };
+
+      var vector = {'x': -1, 'y': 0}; // moving left
+      int size = 4;
+
+      // ACT
+      var actual = BoardHelper.getTraversals(vector, size);
+
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return traversals from top right to bottom left when moving right', () {
+      // ARRANGE
+      var expected = {
+        'x': <int>[3, 2, 1, 0], // from right to left
+        'y': <int>[0, 1, 2, 3] // from top to bottom
+      };
+
+      var vector = {'x': 1, 'y': 0}; // moving right
+      int size = 4;
+
+      // ACT
+      var actual = BoardHelper.getTraversals(vector, size);
+
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return traversals from bottom left to top right when moving down', () {
+      // ARRANGE
+      var expected = {
+        'x': <int>[0, 1, 2, 3], // from right to left
+        'y': <int>[3, 2, 1, 0] // from top to bottom
+      };
+
+      var vector = {'x': 0, 'y': 1}; // moving down
+      int size = 4;
+
+      // ACT
+      var actual = BoardHelper.getTraversals(vector, size);
+
+      // ASSERT
+      expect(actual, expected);
+    });
+    test('should return traversals from top left to bottom right when moving up', () {
+      // ARRANGE
+      var expected = {
+        'x': <int>[0, 1, 2, 3], // from right to left
+        'y': <int>[0, 1, 2, 3] // from top to bottom
+      };
+
+      var vector = {'x': 0, 'y': -1}; // moving up
+      int size = 4;
+
+      // ACT
+      var actual = BoardHelper.getTraversals(vector, size);
+
+      // ASSERT
+      expect(actual, expected);
     });
   });
 }
