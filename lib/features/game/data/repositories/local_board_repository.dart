@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:flutter_web_2048/core/enums/direction.dart';
-import 'package:flutter_web_2048/core/helpers/board_helper.dart';
-import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
-import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
-
+import '../../../../core/enums/direction.dart';
+import '../../domain/entities/board.dart';
+import '../../domain/entities/tile.dart';
+import '../../domain/entities/traversal.dart';
+import '../../domain/entities/vector.dart';
 import '../../domain/repositories/board_repository.dart';
 
 class LocalBoardRepository implements BoardRepository {
@@ -25,38 +25,29 @@ class LocalBoardRepository implements BoardRepository {
   /// Update the [board] by moving the tiles in the given [direction]
   @override
   Future<Board> updateBoard(Board board, Direction direction) async {
-    // bool hasBoardBeenUpdated = false;
-    // for (var i = 0; i < board.tiles.length; i++) {
-    //   var tile = board.tiles[i];
-    //   // skip if this is an empty tile
-    //   if (tile.value == 0) {
-    //     continue;
-    //   }
+    int size = 4;
+    var vector = Vector.fromDirection(direction);
+    var traversal = Traversal.fromVector(vector, size);
+    bool moved = false;
 
-    //   switch (direction) {
-    //     case Direction.down:
-    //       BoardHelper.moveTileDown(board, tile, i);
-    //       break;
-    //     case Direction.up:
-    //       final nextTile = i - 4;
-    //       break;
-    //     case Direction.left:
-    //       final nextTile = i - 1;
-    //       break;
-    //     case Direction.right:
-    //       final nextTile = i + 1;
-    //       break;
-    //     default:
-    //   }
-    // }
+    // traverse the grid
+    for (var i = 0; i < size; i++) {
+      int x = traversal.x[i];
+      for (var j = 0; j < size; j++) {
+        int y = traversal.y[j];
 
-    // // If board has been updated then add a new tile
-    // if (hasBoardBeenUpdated) {
-    //   // Get a random index in the empty tiles
-    //   int randomEmptyTileIndex = getRandomEmptyTile(board);
-    //   // set the value of a empty tile
-    //   board.tiles[randomEmptyTileIndex] = Tile(2);
-    // }
+        // get the tile at the current position [x][y]
+        var currentTile = board.tiles[x][y];
+
+        // skip empty cell
+        if (currentTile == null) {
+          break;
+        }
+
+        // get the tile final destination
+        var destination = board.getTileDestination(currentTile, vector);
+      }
+    }
 
     return board;
   }
@@ -64,7 +55,7 @@ class LocalBoardRepository implements BoardRepository {
   /// Get the index of an empty tile
   Map<String, int> getRandomEmptyTile(Board board) {
     // get the empty tile indices
-    var emptyTiles = BoardHelper.getEmptyTiles(board);
+    var emptyTiles = board.getEmptyTiles();
     // return a random empty tile index
     return emptyTiles.toList()[_random.nextInt(emptyTiles.length)];
   }
@@ -77,47 +68,53 @@ class LocalBoardRepository implements BoardRepository {
   /// Initialize the board
   Board initializeBoard() {
     // get the random position for each tile
-    var randomFirstTiles = _getRandomFirtTiles().toList();
+    var randomFirstTiles = _getRandomFirstTiles().toList();
 
     // generate all the tiles with the first tile at the random position
     var tiles = _generateTiles(
       randomFirstTiles.toList()[0],
       randomFirstTiles.toList()[1],
     );
+
     // create and return the new board.
     return Board(tiles);
   }
 
   /// Get random positioned tiles
-  Iterable<Tile> _getRandomFirtTiles() sync* {
+  Iterable<Tile> _getRandomFirstTiles() sync* {
     // get the length of row and column with the square of max
     int square = 4;
+
     // generate the first tile
     var firstTile = Tile(
       2,
       x: _random.nextInt(square),
       y: _random.nextInt(square),
     );
+
+    // return the first generated tile
     yield firstTile;
+
     // generate the second index
     int half = square ~/ 2;
 
+    // get the second tile x position
     int secondTileX = 0;
-
     if (firstTile.x < half) {
       secondTileX = half + _random.nextInt(half);
     } else {
       secondTileX = _random.nextInt(half);
     }
 
+    // get the second tile y position
     int secondTileY = 0;
-
     if (firstTile.y < half) {
       secondTileY = half + _random.nextInt(half);
     } else {
       secondTileY = _random.nextInt(half);
     }
 
+    // generate and return the second random tile
     yield Tile(2, x: secondTileX, y: secondTileY);
   }
 
