@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.7.2...v1.8.0) (2019-11-09)
+
+
+### Features
+
+* **vector & traversals:** add BoardHelper functions to get vector and traversals ([a3c3cd8](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/a3c3cd8))
+
 ### [1.7.2](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.7.1...v1.7.2) (2019-11-07)
 
 ### [1.7.1](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.7.0...v1.7.1) (2019-11-06)
