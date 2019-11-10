@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../../../../core/enums/direction.dart';
 import '../../domain/entities/board.dart';
+import '../../domain/entities/coordinate.dart';
 import '../../domain/entities/tile.dart';
 import '../../domain/entities/traversal.dart';
 import '../../domain/entities/vector.dart';
@@ -28,7 +29,7 @@ class LocalBoardRepository implements BoardRepository {
     int size = 4;
     var vector = Vector.fromDirection(direction);
     var traversal = Traversal.fromVector(vector, size);
-    bool moved = false;
+    bool hasBoardMoved = false;
 
     // traverse the grid
     for (var i = 0; i < size; i++) {
@@ -41,21 +42,46 @@ class LocalBoardRepository implements BoardRepository {
 
         // skip empty cell
         if (currentTile == null) {
-          break;
+          continue;
         }
 
         // get the tile final destination
         var destination = board.getTileDestination(currentTile, vector);
+
+        // check if the board moved only if it has not been moved yet
+        hasBoardMoved = hasBoardMoved || destination.hasMoved;
+
+        // double the tile value if it's going to be merged
+        int movedTileValue = destination.hasMerged ? currentTile.value * 2 : currentTile.value;
+
+        // empty the current cell
+        board.tiles[x][y] = null;
+        
+        // move the tile in its new cell
+        board.tiles[destination.x][destination.y] =
+            Tile(movedTileValue, x: destination.x, y: destination.y);
       }
+    }
+
+    if (hasBoardMoved) {
+      var newTileCoordinate = getRandomEmptyTileCoordinate(board);
+      var newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
+      var newTile = Tile(
+        newTileValue,
+        x: newTileCoordinate.x,
+        y: newTileCoordinate.y,
+      );
+
+      board.tiles[newTileCoordinate.x][newTileCoordinate.y] = newTile;
     }
 
     return board;
   }
 
   /// Get the index of an empty tile
-  Map<String, int> getRandomEmptyTile(Board board) {
+  Coordinate getRandomEmptyTileCoordinate(Board board) {
     // get the empty tile indices
-    var emptyTiles = board.getEmptyTiles();
+    var emptyTiles = board.getEmptyTileCoordinates();
     // return a random empty tile index
     return emptyTiles.toList()[_random.nextInt(emptyTiles.length)];
   }

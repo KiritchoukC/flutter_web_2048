@@ -6,7 +6,7 @@ import 'package:flutter_web_2048/features/game/domain/repositories/board_reposit
 import 'package:flutter_web_2048/features/game/domain/usecases/update_board.dart';
 import 'package:mockito/mockito.dart';
 
-class MockBoardRepository extends Mock implements BoardRepository{}
+class MockBoardRepository extends Mock implements BoardRepository {}
 
 void main() {
   UpdateBoard usecase;
@@ -18,13 +18,36 @@ void main() {
   });
 
   group('UpdateBoard', () {
-    test('should generate a new tile every move', () async {
+    test('should use the repository', () async {
       // ARRANGE
       var tiles = List<List<Tile>>();
       var board = Board(tiles);
+      var direction = Direction.right;
+
+      when(repository.updateBoard(board, direction)).thenAnswer((_) async => Board(tiles));
+
       // ACT
-      var actual = await usecase(Params(board: board, direction: Direction.right));
+      await usecase(Params(board: board, direction: direction));
+
       // ASSERT
+      verify(repository.updateBoard(board, direction)).called(1);
+    });
+
+    test('should return the repository output', () async {
+      // ARRANGE
+      var tiles = List<List<Tile>>();
+      var board = Board(tiles);
+      var direction = Direction.right;
+
+      var repositoryOutput = Board(List<List<Tile>>());
+
+      when(repository.updateBoard(board, direction)).thenAnswer((_) async => repositoryOutput);
+
+      // ACT
+      var actual = await usecase(Params(board: board, direction: direction));
+
+      // ASSERT
+      expect(actual, repositoryOutput);
     });
   });
 }

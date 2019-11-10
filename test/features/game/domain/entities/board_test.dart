@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
+import 'package:flutter_web_2048/features/game/domain/entities/coordinate.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/vector.dart';
 
@@ -11,37 +11,44 @@ void main() {
       var tiles = List<List<Tile>>.generate(4, (y) => List(4));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTiles();
+      var actual = board.getEmptyTileCoordinates();
       // ASSERT
       expect(actual.length, 16);
     });
 
-    test("should return indices from 0 to 15 for a blank board", () {
+    test("should return all coordinates for a blank board", () {
       // ARRANGE
       var expected = [
-        {'x': 0, 'y': 0},
-        {'x': 1, 'y': 0},
-        {'x': 2, 'y': 0},
-        {'x': 3, 'y': 0},
-        {'x': 0, 'y': 1},
-        {'x': 1, 'y': 1},
-        {'x': 2, 'y': 1},
-        {'x': 3, 'y': 1},
-        {'x': 0, 'y': 2},
-        {'x': 1, 'y': 2},
-        {'x': 2, 'y': 2},
-        {'x': 3, 'y': 2},
-        {'x': 0, 'y': 3},
-        {'x': 1, 'y': 3},
-        {'x': 2, 'y': 3},
-        {'x': 3, 'y': 3}
+        Coordinate(0, 0),
+        Coordinate(1, 0),
+        Coordinate(2, 0),
+        Coordinate(3, 0),
+        Coordinate(0, 1),
+        Coordinate(1, 1),
+        Coordinate(2, 1),
+        Coordinate(3, 1),
+        Coordinate(0, 2),
+        Coordinate(1, 2),
+        Coordinate(2, 2),
+        Coordinate(3, 2),
+        Coordinate(0, 3),
+        Coordinate(1, 3),
+        Coordinate(2, 3),
+        Coordinate(3, 3)
       ];
+
       var tiles = List<List<Tile>>.generate(4, (y) => List(4));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTiles();
+      var actual = board.getEmptyTileCoordinates().toList();
       // ASSERT
-      expect(actual.toList(), expected);
+      expect(actual.length, 16);
+      for (var i = 0; i < 16; i++) {
+        var actualCoordinate = actual[i];
+        var expectedCoordinate = expected[i];
+        expect(actualCoordinate.x, expectedCoordinate.x);
+        expect(actualCoordinate.y, expectedCoordinate.y);
+      }
     });
 
     test("should have a length of 14 for an initial board", () {
@@ -51,7 +58,7 @@ void main() {
       tiles[3][3] = Tile(2, x: 3, y: 3);
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTiles();
+      var actual = board.getEmptyTileCoordinates();
       // ASSERT
       expect(actual.length, 14);
     });
@@ -62,7 +69,7 @@ void main() {
           List<List<Tile>>.generate(4, (y) => List<Tile>.generate(4, (x) => Tile(2, x: x, y: y)));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTiles();
+      var actual = board.getEmptyTileCoordinates();
       // ASSERT
       expect(actual.length, 0);
     });
@@ -74,7 +81,7 @@ void main() {
           List<List<Tile>>.generate(4, (y) => List<Tile>.generate(4, (x) => Tile(2, x: x, y: y)));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTiles();
+      var actual = board.getEmptyTileCoordinates();
       // ASSERT
       expect(actual.toList(), expected);
     });
@@ -102,7 +109,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should return same position if tile does not move (right)', () {
@@ -125,7 +132,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should return same position if tile does not move (up)', () {
@@ -148,7 +155,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should return same position if tile does not move (down)', () {
@@ -171,7 +178,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
     });
     group('move all the way', () {
@@ -195,7 +202,7 @@ void main() {
         // ASSERT
         expect(actual.x, 3);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should move all the way to the left', () {
@@ -218,7 +225,7 @@ void main() {
         // ASSERT
         expect(actual.x, 0);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should move all the way down', () {
@@ -241,7 +248,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, 3);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should move all the way up', () {
@@ -264,7 +271,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, 0);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
     });
     group('move with blocking tile', () {
@@ -302,7 +309,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, 1);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should move down until blocked by another tile with a different value', () {
@@ -339,7 +346,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, 2);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should move to the right until blocked by another tile with a different value', () {
@@ -376,7 +383,7 @@ void main() {
         // ASSERT
         expect(actual.x, 2);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
 
       test('should move to the left until blocked by another tile with a different value', () {
@@ -413,7 +420,7 @@ void main() {
         // ASSERT
         expect(actual.x, 1);
         expect(actual.y, y);
-        expect(actual.merged, false);
+        expect(actual.hasMerged, false);
       });
     });
     group('move with merge', () {
@@ -451,7 +458,7 @@ void main() {
         // ASSERT
         expect(actual.x, 0);
         expect(actual.y, y);
-        expect(actual.merged, true);
+        expect(actual.hasMerged, true);
       });
       test('should move to the right and merge with the blocking tile', () {
         // ARRANGE
@@ -487,7 +494,7 @@ void main() {
         // ASSERT
         expect(actual.x, 3);
         expect(actual.y, y);
-        expect(actual.merged, true);
+        expect(actual.hasMerged, true);
       });
       test('should move down and merge with the blocking tile', () {
         // ARRANGE
@@ -523,7 +530,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, 3);
-        expect(actual.merged, true);
+        expect(actual.hasMerged, true);
       });
       test('should move up and merge with the blocking tile', () {
         // ARRANGE
@@ -559,7 +566,7 @@ void main() {
         // ASSERT
         expect(actual.x, x);
         expect(actual.y, 0);
-        expect(actual.merged, true);
+        expect(actual.hasMerged, true);
       });
     });
   });

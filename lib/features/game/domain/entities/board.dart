@@ -1,3 +1,4 @@
+import 'coordinate.dart';
 import 'destination.dart';
 import 'tile.dart';
 import 'vector.dart';
@@ -9,12 +10,12 @@ class Board {
 
   Board(this.tiles);
 
-  /// Returns all the empty tiles in the [board]
-  Iterable<Map<String, int>> getEmptyTiles() sync* {
+  /// Returns all the empty tile positions in the [board]
+  Iterable<Coordinate> getEmptyTileCoordinates() sync* {
     for (var y = 0; y < this.tiles.length; y++) {
       for (var x = 0; x < this.tiles[y].length; x++) {
         if (this.tiles[x][y] == null) {
-          yield {'x': x, 'y': y};
+          yield Coordinate(x, y);
         }
       }
     }
@@ -24,7 +25,7 @@ class Board {
   /// it needs to be merged with another tile
   Destination getTileDestination(Tile tile, Vector vector) {
     // set the initial destination with the tile position
-    var destination = Destination(x: tile.x, y: tile.y, merged: false);
+    var destination = Destination(x: tile.x, y: tile.y, hasMerged: false, hasMoved: false);
 
     while (true) {
       int x = destination.x + vector.x;
@@ -44,7 +45,7 @@ class Board {
       // if next tile is empty set the new destination 
       // and continue with the next one
       if (nextTile == null) {
-        destination = Destination(y: y, x: x, merged: false);
+        destination = Destination(y: y, x: x, hasMerged: false, hasMoved: true);
         continue;
       }
 
@@ -54,7 +55,7 @@ class Board {
       }
 
       // if tiles have the same value, merge them and break
-      destination = Destination(y: y, x: x, merged: true);
+      destination = Destination(y: y, x: x, hasMerged: true, hasMoved: true);
       break;
     }
 
