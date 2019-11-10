@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.9.0...v1.10.0) (2019-11-10)
+
+
+### Features
+
+* **move tiles:** move tiles in the updateBoard function ([7ee1f35](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/7ee1f35))
+
 ## [1.9.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.8.1...v1.9.0) (2019-11-09)
 
 
