@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_2048/core/util/tile_color_converter.dart';
 import 'package:swipedetector/swipedetector.dart';
 
 import '../../../../core/enums/direction.dart';
@@ -54,9 +55,10 @@ class _TileBoardState extends State<TileBoard> {
         int x, y = 0;
         x = (index / board.tiles.length).floor();
         y = (index % board.tiles.length);
+        print('x: $x, y: $y');
         return TileWidget(tile: board.tiles[x][y]);
       },
-      itemCount: board.tiles.length ^ 2,
+      itemCount: board.tiles.length * board.tiles.length,
     );
   }
 
@@ -71,7 +73,7 @@ class _TileBoardState extends State<TileBoard> {
         return _buildBoard(state.board);
       }
 
-      return _buildBoard(Board(List<List<Tile>>()));
+      return Container();
     });
   }
 }
@@ -90,11 +92,11 @@ class TileWidget extends StatelessWidget {
     var children = <Widget>[];
     children.add(
       Container(
-        color: tile.color,
+        color: TileColorConverter.mapTileValueToColor(tile?.value),
       ),
     );
 
-    if (tile.value > 0) {
+    if (tile != null) {
       children.add(
         Text(
           tile.value.toString(),
