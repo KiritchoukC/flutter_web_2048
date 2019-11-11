@@ -4,14 +4,14 @@ import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 
 abstract class GameState extends Equatable {
   const GameState();
-}
 
-class InitialGame extends GameState {
   @override
   List<Object> get props => [];
 }
 
-class UpdateBoardStart extends GameState{
+class InitialGame extends GameState {}
+
+class UpdateBoardStart extends GameState {
   final Direction direction;
 
   UpdateBoardStart(this.direction);
@@ -20,7 +20,7 @@ class UpdateBoardStart extends GameState{
   List<Object> get props => [direction];
 }
 
-class UpdateBoardEnd extends GameState{
+class UpdateBoardEnd extends GameState {
   final Board board;
 
   UpdateBoardEnd(this.board);
@@ -29,7 +29,7 @@ class UpdateBoardEnd extends GameState{
   List<Object> get props => [board];
 }
 
-class Error extends GameState{
+class Error extends GameState {
   final String message;
 
   Error(this.message);

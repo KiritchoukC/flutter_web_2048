@@ -5,6 +5,9 @@ import '../../../../core/enums/direction.dart';
 
 abstract class GameEvent extends Equatable {
   const GameEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class Move extends GameEvent {
@@ -15,7 +18,4 @@ class Move extends GameEvent {
   List<Object> get props => [direction];
 }
 
-class LoadInitialBoard extends GameEvent {
-  @override
-  List<Object> get props => null;
-}
+class LoadInitialBoard extends GameEvent {}
