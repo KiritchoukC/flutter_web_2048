@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.2](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.10.1...v1.10.2) (2019-11-11)
+
+
+### Bug Fixes
+
+* **ui:** fix game page board presentation ([bacdbb9](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/bacdbb9))
+
 ### [1.10.1](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.10.0...v1.10.1) (2019-11-11)
 
 ## [1.10.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.9.0...v1.10.0) (2019-11-10)
