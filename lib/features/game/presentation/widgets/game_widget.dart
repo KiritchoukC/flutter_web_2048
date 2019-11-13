@@ -39,19 +39,15 @@ class _GameWidgetState extends State<GameWidget> {
         child: DirectionListener(
           child: BoardWidget(),
           onDown: () {
-            print('DOWN');
             _bloc.add(Move(direction: Direction.down));
           },
           onLeft: () {
-            print('LEFT');
             _bloc.add(Move(direction: Direction.left));
           },
           onRight: () {
-            print('RIGHT');
             _bloc.add(Move(direction: Direction.right));
           },
           onUp: () {
-            print('UP');
             _bloc.add(Move(direction: Direction.up));
           },
         ));

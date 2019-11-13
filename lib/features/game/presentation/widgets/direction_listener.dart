@@ -1,10 +1,11 @@
-
-
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swipedetector/swipedetector.dart';
+
+const String ArrowLeftKeyLabel = "ArrowLeft";
+const String ArrowUpKeyLabel = "ArrowUp";
+const String ArrowRightKeyLabel = "ArrowRight";
+const String ArrowDownKeyLabel = "ArrowDown";
 
 class DirectionListener extends StatefulWidget {
   final Function onLeft;
@@ -43,45 +44,39 @@ class _DirectionListenerState extends State<DirectionListener> {
 
   @override
   Widget build(BuildContext context) {
+    _focusNode.requestFocus();
     return RawKeyboardListener(
       focusNode: _focusNode,
       onKey: (RawKeyEvent event) {
         if (event is RawKeyDownEvent) {
-          if (event.logicalKey.keyId == KeyCode.DOWN) {
+          if (event.data.keyLabel == ArrowDownKeyLabel) {
             widget.onDown();
           }
-          if (event.logicalKey.keyId == KeyCode.UP) {
+          if (event.data.keyLabel == ArrowUpKeyLabel) {
             widget.onUp();
           }
-          if (event.logicalKey.keyId == KeyCode.RIGHT) {
+          if (event.data.keyLabel == ArrowRightKeyLabel) {
             widget.onRight();
           }
-          if (event.logicalKey.keyId == KeyCode.LEFT) {
+          if (event.data.keyLabel == ArrowLeftKeyLabel) {
             widget.onLeft();
           }
         }
       },
-      child: GestureDetector(
-        onTap: () {
-          print(_focusNode);
-          FocusScope.of(context).requestFocus(_focusNode);
-          print(_focusNode);
+      child: SwipeDetector(
+        onSwipeDown: () {
+          widget.onDown();
         },
-        child: SwipeDetector(
-          onSwipeDown: () {
-            widget.onDown();
-          },
-          onSwipeUp: () {
-            widget.onUp();
-          },
-          onSwipeRight: () {
-            widget.onRight();
-          },
-          onSwipeLeft: () {
-            widget.onLeft();
-          },
-          child: widget.child,
-        ),
+        onSwipeUp: () {
+          widget.onUp();
+        },
+        onSwipeRight: () {
+          widget.onRight();
+        },
+        onSwipeLeft: () {
+          widget.onLeft();
+        },
+        child: widget.child,
       ),
     );
   }
