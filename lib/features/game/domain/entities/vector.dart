@@ -1,4 +1,4 @@
-import 'package:flutter_web_2048/core/enums/direction.dart';
+import '../../../../core/enums/direction.dart';
 
 class Vector{
   final int x;

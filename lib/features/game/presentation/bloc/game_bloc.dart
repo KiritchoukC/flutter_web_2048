@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_web_2048/features/game/domain/usecases/get_current_board.dart';
 import 'package:meta/meta.dart';
 
 import './bloc.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../domain/usecases/get_current_board.dart';
 import '../../domain/usecases/update_board.dart';
 
 /// Handles the game event and send the game states

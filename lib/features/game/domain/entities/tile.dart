@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_2048/features/game/domain/entities/destination.dart';
+
+import 'destination.dart';
 
 class Tile {
   final int value;

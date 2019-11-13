@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_web_2048/features/game/domain/repositories/board_repository.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/enums/direction.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../entities/board.dart';
+import '../repositories/board_repository.dart';
 
 class UpdateBoard implements UseCase<Board, Params> {
   final BoardRepository boardRepository;

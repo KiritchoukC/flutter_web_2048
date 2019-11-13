@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_web_2048/core/enums/direction.dart';
-import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
+
+import '../../../../core/enums/direction.dart';
+import '../../domain/entities/board.dart';
 
 abstract class GameState extends Equatable {
   const GameState();
