@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.2](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.13.1...v1.13.2) (2019-11-13)
+
+
+### Bug Fixes
+
+* **imports:** fix imports path ([0acce10](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/0acce10))
+
 ### [1.13.1](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.13.0...v1.13.1) (2019-11-13)
 
 ## [1.13.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.12.0...v1.13.0) (2019-11-13)
