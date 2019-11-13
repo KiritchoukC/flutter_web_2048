@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
+import '../theme/custom_colors.dart';
+
 class TileColorConverter{
   static Color mapTileValueToColor(int value) => value == null ? _colors[0] : _colors[value];
   
   static Map<int, Color> _colors = {
-    0: Colors.grey.shade100,
-    2: Colors.blue.shade100,
-    4: Colors.blue.shade200,
-    8: Colors.blue.shade300,
-    16: Colors.blue.shade400,
-    32: Colors.blue.shade500,
-    64: Colors.blue.shade600,
-    128: Colors.blue.shade700,
-    256: Colors.blue.shade800,
-    512: Colors.blue.shade900,
-    1024: Colors.red.shade100,
+    0: Colors.grey.shade900,
+    2: CustomColors.accentColor.shade50,
+    4: CustomColors.accentColor.shade100,
+    8: CustomColors.accentColor.shade200,
+    16: CustomColors.accentColor.shade300,
+    32: CustomColors.accentColor.shade400,
+    64: CustomColors.accentColor.shade500,
+    128: CustomColors.accentColor.shade600,
+    256: CustomColors.accentColor.shade700,
+    512: CustomColors.accentColor.shade800,
+    1024: CustomColors.accentColor.shade900,
     2048: Colors.red.shade200,
     4096: Colors.red.shade300,
     8192: Colors.red.shade400,

@@ -12,7 +12,8 @@
     "cz-conventional-changelog": "^3.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "flutter test",
+    "update-codecov":"flutter test --coverage; codecov -f ./coverage/lcov.info -t $(cat ./codecov_token)"
   },
   "repository": {
     "type": "git",

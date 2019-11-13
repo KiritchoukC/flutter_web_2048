@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_web_2048/core/util/tile_color_converter.dart';
 import 'package:swipedetector/swipedetector.dart';
@@ -14,27 +17,83 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '2048',
-      body: _buildBody(context),
+      body: GameBody(),
     );
   }
+}
 
-  AspectRatio _buildBody(BuildContext context) {
+class GameBody extends StatefulWidget {
+  @override
+  _GameBodyState createState() => _GameBodyState();
+}
+
+class _GameBodyState extends State<GameBody> {
+  GameBloc _bloc;
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    _focusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _bloc?.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _bloc = BlocProvider.of<GameBloc>(context);
+    FocusScope.of(context).requestFocus(_focusNode);
     return AspectRatio(
       aspectRatio: 1,
-      child: SwipeDetector(
-        onSwipeDown: () {
-          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.down));
+      child: RawKeyboardListener(
+        focusNode: _focusNode,
+        onKey: (RawKeyEvent event) {
+          if (event is RawKeyDownEvent) {
+            if (event.logicalKey.keyId == KeyCode.DOWN) {
+              print('key DOWN');
+              _bloc.add(Move(direction: Direction.down));
+            }
+            if (event.logicalKey.keyId == KeyCode.UP) {
+              print('key UP');
+              _bloc.add(Move(direction: Direction.up));
+            }
+            if (event.logicalKey.keyId == KeyCode.RIGHT) {
+              print('key RIGHT');
+              _bloc.add(Move(direction: Direction.right));
+            }
+            if (event.logicalKey.keyId == KeyCode.LEFT) {
+              print('key LEFT');
+              _bloc.add(Move(direction: Direction.left));
+            }
+          }
         },
-        onSwipeUp: () {
-          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.up));
-        },
-        onSwipeRight: () {
-          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.right));
-        },
-        onSwipeLeft: () {
-          BlocProvider.of<GameBloc>(context).add(Move(direction: Direction.left));
-        },
-        child: TileBoard(),
+        child: GestureDetector(
+          onTap: () {
+            print(_focusNode);
+            FocusScope.of(context).requestFocus(_focusNode);
+            print(_focusNode);
+          },
+          child: SwipeDetector(
+            onSwipeDown: () {
+              _bloc.add(Move(direction: Direction.down));
+            },
+            onSwipeUp: () {
+              _bloc.add(Move(direction: Direction.up));
+            },
+            onSwipeRight: () {
+              _bloc.add(Move(direction: Direction.right));
+            },
+            onSwipeLeft: () {
+              _bloc.add(Move(direction: Direction.left));
+            },
+            child: TileBoard(),
+          ),
+        ),
       ),
     );
   }
@@ -55,7 +114,6 @@ class _TileBoardState extends State<TileBoard> {
         int x, y = 0;
         x = (index / board.tiles.length).floor();
         y = (index % board.tiles.length);
-        print('x: $x, y: $y');
         return TileWidget(tile: board.tiles[x][y]);
       },
       itemCount: board.tiles.length * board.tiles.length,
@@ -103,7 +161,7 @@ class TileWidget extends StatelessWidget {
           style: TextStyle(
             fontSize: 36,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.grey.shade900,
           ),
         ),
       );
