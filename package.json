@@ -1,6 +1,6 @@
 {
   "name": "flutter_web_2048",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "description": "2048 game made with flutter web framework",
   "main": "index.js",
   "directories": {
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "flutter test",
-    "update-codecov":"flutter test --coverage; codecov -f ./coverage/lcov.info -t $(cat ./codecov_token)"
+    "update-codecov": "flutter test --coverage; codecov -f ./coverage/lcov.info -t $(cat ./codecov_token)"
   },
   "repository": {
     "type": "git",
