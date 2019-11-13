@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.10.9...v1.11.0) (2019-11-13)
+
+
+### Features
+
+* **disable multiple merge:** avoid multiple tile to merge in one move on the same row/column ([34cb682](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/34cb682))
+
 ### [1.10.9](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.10.8...v1.10.9) (2019-11-13)
 
 
