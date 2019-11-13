@@ -89,3 +89,6 @@ yarn-debug.log*
 yarn-error.log*
 
 codecov_token
+
+# Firebase related
+.firebase
