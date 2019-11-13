@@ -25,6 +25,7 @@ class _BoardWidgetState extends State<BoardWidget> {
         return TileWidget(tile: board.tiles[x][y]);
       },
       itemCount: board.tiles.length * board.tiles.length,
+      physics: NeverScrollableScrollPhysics(),
     );
   }
 
