@@ -89,10 +89,14 @@ class LocalBoardRepository implements BoardRepository {
       board.tiles[newTileCoordinate.x][newTileCoordinate.y] = newTile;
     }
 
-    // reset merged tiles
+    int points = 0;
     for (var i = 0; i < mergedTiles.length; i++) {
+      // reset merged tiles
       mergedTiles[i].merged = false;
+      // update score
+      points += mergedTiles[i].value;
     }
+    board.score += points;
 
     return board;
   }

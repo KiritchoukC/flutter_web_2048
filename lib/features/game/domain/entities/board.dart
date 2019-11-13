@@ -5,6 +5,7 @@ import 'vector.dart';
 
 class Board {
   List<List<Tile>> tiles;
+  int score = 0;
 
   List<Tile> get flatTiles => tiles.expand((i) => i).toList();
 

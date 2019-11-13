@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,16 +29,18 @@ class _BoardWidgetState extends State<BoardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(builder: (context, state) {
-      if (state is InitialGame) {
-        BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
-      }
+    return BlocBuilder<GameBloc, GameState>(
+      builder: (context, state) {
+        if (state is InitialGame) {
+          BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
+        }
 
-      if (state is UpdateBoardEnd) {
-        return _buildBoard(state.board);
-      }
+        if (state is UpdateBoardEnd) {
+          return _buildBoard(state.board);
+        }
 
-      return Container();
-    });
+        return Container();
+      },
+    );
   }
 }

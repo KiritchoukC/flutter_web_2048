@@ -25,12 +25,15 @@ class TileWidget extends StatelessWidget {
 
     if (tile != null) {
       children.add(
-        Text(
-          tile.value.toString(),
-          style: TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade900,
+        Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Text(
+            tile.value.toString(),
+            style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade900,
+            ),
           ),
         ),
       );
