@@ -54,6 +54,11 @@ class Board {
         break;
       }
 
+      // break if next tile has already been merged
+      if (nextTile.merged) {
+        break;
+      }
+
       // if tiles have the same value, merge them and break
       destination = Destination(y: y, x: x, hasMerged: true, hasMoved: true);
       break;

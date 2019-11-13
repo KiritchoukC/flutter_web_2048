@@ -26,9 +26,10 @@ class LocalBoardRepository implements BoardRepository {
   /// Update the [board] by moving the tiles in the given [direction]
   @override
   Future<Board> updateBoard(Board board, Direction direction) async {
-    int size = 4;
-    var vector = Vector.fromDirection(direction);
-    var traversal = Traversal.fromVector(vector, size);
+    final int size = 4;
+    final vector = Vector.fromDirection(direction);
+    final traversal = Traversal.fromVector(vector, size);
+    final mergedTiles = <Tile>[];
     bool hasBoardMoved = false;
 
     // traverse the grid
@@ -47,7 +48,7 @@ class LocalBoardRepository implements BoardRepository {
 
         // get the tile final destination
         var destination = board.getTileDestination(currentTile, vector);
-        
+
         // skip if tile does not move
         if (!destination.hasMoved) {
           continue;
@@ -61,10 +62,18 @@ class LocalBoardRepository implements BoardRepository {
 
         // empty the current cell
         board.tiles[x][y] = null;
-        
+
+        // create the new tile
+        final newTile =
+            Tile(movedTileValue, x: destination.x, y: destination.y, merged: destination.hasMerged);
+
+        // add tile to merged tile list if it has merged
+        if (newTile.merged) {
+          mergedTiles.add(newTile);
+        }
+
         // move the tile in its new cell
-        board.tiles[destination.x][destination.y] =
-            Tile(movedTileValue, x: destination.x, y: destination.y);
+        board.tiles[destination.x][destination.y] = newTile;
       }
     }
 
@@ -78,6 +87,11 @@ class LocalBoardRepository implements BoardRepository {
       );
 
       board.tiles[newTileCoordinate.x][newTileCoordinate.y] = newTile;
+    }
+
+    // reset merged tiles
+    for (var i = 0; i < mergedTiles.length; i++) {
+      mergedTiles[i].merged = false;
     }
 
     return board;

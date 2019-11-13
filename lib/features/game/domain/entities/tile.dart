@@ -4,10 +4,12 @@ class Tile {
   final int value;
   final int x;
   final int y;
+  bool merged;
 
   Tile(
     this.value, {
     @required this.x,
     @required this.y,
+    this.merged = false
   });
 }
