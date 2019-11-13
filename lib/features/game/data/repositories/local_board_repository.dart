@@ -29,8 +29,12 @@ class LocalBoardRepository implements BoardRepository {
     final int size = 4;
     final vector = Vector.fromDirection(direction);
     final traversal = Traversal.fromVector(vector, size);
-    final mergedTiles = <Tile>[];
     bool hasBoardMoved = false;
+
+    // reset merged tiles
+    board.flatTiles
+        .where((tile) => tile != null && tile.merged)
+        .forEach((tile) => tile.merged = false);
 
     // traverse the grid
     for (var i = 0; i < size; i++) {
@@ -57,20 +61,11 @@ class LocalBoardRepository implements BoardRepository {
         // check if the board moved only if it has not been moved yet
         hasBoardMoved = hasBoardMoved || destination.hasMoved;
 
-        // double the tile value if it's going to be merged
-        int movedTileValue = destination.hasMerged ? currentTile.value * 2 : currentTile.value;
-
         // empty the current cell
         board.tiles[x][y] = null;
 
-        // create the new tile
-        final newTile =
-            Tile(movedTileValue, x: destination.x, y: destination.y, merged: destination.hasMerged);
-
-        // add tile to merged tile list if it has merged
-        if (newTile.merged) {
-          mergedTiles.add(newTile);
-        }
+        // get the new tile
+        final newTile = Tile.fromDirection(currentTile.value, x, y, destination);
 
         // move the tile in its new cell
         board.tiles[destination.x][destination.y] = newTile;
@@ -84,19 +79,23 @@ class LocalBoardRepository implements BoardRepository {
         newTileValue,
         x: newTileCoordinate.x,
         y: newTileCoordinate.y,
+        toXCell: newTileCoordinate.x,
+        toYCell: newTileCoordinate.y,
       );
 
       board.tiles[newTileCoordinate.x][newTileCoordinate.y] = newTile;
     }
 
-    int points = 0;
-    for (var i = 0; i < mergedTiles.length; i++) {
-      // reset merged tiles
-      mergedTiles[i].merged = false;
-      // update score
-      points += mergedTiles[i].value;
+    // get the merged tiles
+    final mergedTiles = board.flatTiles.where((tile) => tile != null && tile.merged);
+    // update score if there is merging
+    if (mergedTiles.length > 0) {
+      final points = mergedTiles.length == 1
+          ? mergedTiles.first.value
+          : mergedTiles.map((tile) => tile.value).reduce((total, value) => total + value);
+
+      board.score += points;
     }
-    board.score += points;
 
     return board;
   }
@@ -134,11 +133,16 @@ class LocalBoardRepository implements BoardRepository {
     // get the length of row and column with the square of max
     int square = 4;
 
+    int firstTileX = _random.nextInt(square);
+    int firstTileY = _random.nextInt(square);
+
     // generate the first tile
     var firstTile = Tile(
       2,
-      x: _random.nextInt(square),
-      y: _random.nextInt(square),
+      x: firstTileX,
+      y: firstTileY,
+      toXCell: firstTileX,
+      toYCell: firstTileY,
     );
 
     // return the first generated tile
@@ -164,7 +168,13 @@ class LocalBoardRepository implements BoardRepository {
     }
 
     // generate and return the second random tile
-    yield Tile(2, x: secondTileX, y: secondTileY);
+    yield Tile(
+      2,
+      x: secondTileX,
+      y: secondTileY,
+      toXCell: secondTileX,
+      toYCell: secondTileY,
+    );
   }
 
   /// Generate the board tiles with the first tile positionned at the given index

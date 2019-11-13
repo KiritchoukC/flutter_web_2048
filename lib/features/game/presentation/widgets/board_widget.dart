@@ -12,18 +12,21 @@ class BoardWidget extends StatefulWidget {
 
 class _BoardWidgetState extends State<BoardWidget> {
   Widget _buildBoard(Board board) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: board.tiles.length,
+    return Container(
+      color: Colors.grey.shade900,
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: board.tiles.length,
+        ),
+        itemBuilder: (context, index) {
+          int x, y = 0;
+          x = (index / board.tiles.length).floor();
+          y = (index % board.tiles.length);
+          return TileWidget(tile: board.tiles[x][y]);
+        },
+        itemCount: board.tiles.length * board.tiles.length,
+        physics: NeverScrollableScrollPhysics(),
       ),
-      itemBuilder: (context, index) {
-        int x, y = 0;
-        x = (index / board.tiles.length).floor();
-        y = (index % board.tiles.length);
-        return TileWidget(tile: board.tiles[x][y]);
-      },
-      itemCount: board.tiles.length * board.tiles.length,
-      physics: NeverScrollableScrollPhysics(),
     );
   }
 

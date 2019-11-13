@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/util/tile_color_converter.dart';
@@ -12,36 +10,94 @@ class TileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTile(tile);
+    return tile == null ? EmptyTile() : ValueTile(tile: tile);
   }
+}
 
-  Widget _buildTile(Tile tile) {
-    var children = <Widget>[];
-    children.add(
-      Container(
-        color: TileColorConverter.mapTileValueToColor(tile?.value),
-      ),
+class EmptyTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: AlignmentDirectional.topEnd,
+      children: <Widget>[
+        Container(
+          color: TileColorConverter.mapTileValueToColor(null),
+        )
+      ],
+    );
+  }
+}
+
+class ValueTile extends StatefulWidget {
+  final Tile tile;
+
+  const ValueTile({Key key, this.tile}) : super(key: key);
+
+  @override
+  _ValueTileState createState() => _ValueTileState();
+}
+
+class _ValueTileState extends State<ValueTile> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
     );
 
-    if (tile != null) {
-      children.add(
-        Padding(
-          padding: const EdgeInsets.only(right: 5.0),
-          child: Text(
-            tile.value.toString(),
-            style: TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade900,
-            ),
-          ),
-        ),
-      );
-    }
+    _opacity = Tween<double>(begin:0, end: 1)
+        .animate(_controller);
 
+    _controller.forward();
+
+    print('${widget.tile.value}: ${widget.tile.merged}');
+  }
+
+  @override
+  void dispose() { 
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: Stack(
+        alignment: AlignmentDirectional.topEnd,
+        children: <Widget>[
+          Container(
+            color: TileColorConverter.mapTileValueToColor(widget.tile.value),
+          ),
+          TilePoint(point: widget.tile.value),
+        ],
+      ),
+    );
+  }
+}
+
+class TilePoint extends StatelessWidget {
+  final int point;
+
+  const TilePoint({Key key, this.point}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Stack(alignment: AlignmentDirectional.topEnd, children: children),
+      padding: const EdgeInsets.only(right: 5.0),
+      child: Text(
+        point.toString(),
+        style: TextStyle(
+          fontSize: 36,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey.shade900,
+        ),
+      ),
     );
   }
 }

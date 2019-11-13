@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +35,6 @@ class _GameWidgetState extends State<GameWidget> {
     return AspectRatio(
         aspectRatio: 1,
         child: DirectionListener(
-          child: BoardWidget(),
           onDown: () {
             _bloc.add(Move(direction: Direction.down));
           },
@@ -50,6 +47,7 @@ class _GameWidgetState extends State<GameWidget> {
           onUp: () {
             _bloc.add(Move(direction: Direction.up));
           },
+          child: BoardWidget(),
         ));
   }
 }

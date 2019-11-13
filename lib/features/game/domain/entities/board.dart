@@ -26,7 +26,13 @@ class Board {
   /// it needs to be merged with another tile
   Destination getTileDestination(Tile tile, Vector vector) {
     // set the initial destination with the tile position
-    var destination = Destination(x: tile.x, y: tile.y, hasMerged: false, hasMoved: false);
+    var destination = Destination(
+      x: tile.x,
+      y: tile.y,
+      hasMerged: false,
+      hasMoved: false,
+      mergedWith: null,
+    );
 
     while (true) {
       int x = destination.x + vector.x;
@@ -43,10 +49,16 @@ class Board {
 
       var nextTile = this.tiles[x][y];
 
-      // if next tile is empty set the new destination 
+      // if next tile is empty set the new destination
       // and continue with the next one
       if (nextTile == null) {
-        destination = Destination(y: y, x: x, hasMerged: false, hasMoved: true);
+        destination = Destination(
+          y: y,
+          x: x,
+          hasMerged: false,
+          hasMoved: true,
+          mergedWith: null,
+        );
         continue;
       }
 
@@ -61,7 +73,13 @@ class Board {
       }
 
       // if tiles have the same value, merge them and break
-      destination = Destination(y: y, x: x, hasMerged: true, hasMoved: true);
+      destination = Destination(
+        y: y,
+        x: x,
+        hasMerged: true,
+        hasMoved: true,
+        mergedWith: nextTile,
+      );
       break;
     }
 
