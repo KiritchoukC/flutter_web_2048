@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.9](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.10.8...v1.10.9) (2019-11-13)
+
+
+### Bug Fixes
+
+* **fix scroll:** disable scroll to listen to up and down swipe ([6cec751](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/6cec751))
+
 ### [1.10.8](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.10.7...v1.10.8) (2019-11-13)
 
 
