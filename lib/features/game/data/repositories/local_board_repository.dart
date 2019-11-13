@@ -47,6 +47,11 @@ class LocalBoardRepository implements BoardRepository {
 
         // get the tile final destination
         var destination = board.getTileDestination(currentTile, vector);
+        
+        // skip if tile does not move
+        if (!destination.hasMoved) {
+          continue;
+        }
 
         // check if the board moved only if it has not been moved yet
         hasBoardMoved = hasBoardMoved || destination.hasMoved;
