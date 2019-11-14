@@ -1,4 +1,4 @@
-name: Deploy_to_Firebase
+name: CD
 
 on: 
   push:
@@ -6,7 +6,33 @@ on:
       - release
 
 jobs:
-  deploy:
+  test:
+    
+    runs-on: [ubuntu-latest]
+    
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@master
+        
+      - name: Build flutter for web
+        uses: steebchen/flutter@v1.0.0
+        with:
+          args: test
+   
+  build-web:
+    
+    runs-on: [ubuntu-latest]
+    
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@master
+        
+      - name: Build flutter for web
+        uses: steebchen/flutter@v1.0.0
+        with:
+          args: build web
+          
+  deploy-web:
 
     runs-on: ubuntu-latest
 
