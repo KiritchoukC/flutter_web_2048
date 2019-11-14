@@ -65,7 +65,7 @@ class LocalBoardRepository implements BoardRepository {
         board.tiles[x][y] = null;
 
         // get the new tile
-        final newTile = Tile.fromDirection(currentTile.value, x, y, destination);
+        final newTile = Tile.fromDestination(currentTile.value, x, y, destination);
 
         // move the tile in its new cell
         board.tiles[destination.x][destination.y] = newTile;
@@ -79,8 +79,6 @@ class LocalBoardRepository implements BoardRepository {
         newTileValue,
         x: newTileCoordinate.x,
         y: newTileCoordinate.y,
-        toXCell: newTileCoordinate.x,
-        toYCell: newTileCoordinate.y,
       );
 
       board.tiles[newTileCoordinate.x][newTileCoordinate.y] = newTile;
@@ -141,8 +139,6 @@ class LocalBoardRepository implements BoardRepository {
       2,
       x: firstTileX,
       y: firstTileY,
-      toXCell: firstTileX,
-      toYCell: firstTileY,
     );
 
     // return the first generated tile
@@ -172,8 +168,6 @@ class LocalBoardRepository implements BoardRepository {
       2,
       x: secondTileX,
       y: secondTileY,
-      toXCell: secondTileX,
-      toYCell: secondTileY,
     );
   }
 
