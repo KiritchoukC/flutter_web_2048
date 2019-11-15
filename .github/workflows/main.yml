@@ -39,6 +39,8 @@ jobs:
         with:
           flutter-version: '1.12.1'
           channel: 'dev'
+      - run: flutter upgrade
+      - run: flutter config --enable-web
       - run: flutter build web
           
   deploy-web:
