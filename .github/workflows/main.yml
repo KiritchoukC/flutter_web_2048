@@ -15,9 +15,11 @@ jobs:
         uses: actions/checkout@master
         
       - name: Launch flutter tests
-        uses: kiritchoukc/flutter-web-action@v1.0.0
+        uses: subosito/flutter-action@v1
         with:
-          args: test --coverage
+          flutter-version: '1.12.1-pre.8'
+          channel: 'master'
+      - run: flutter test --coverage
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1.0.0
         with:
@@ -33,9 +35,11 @@ jobs:
         uses: actions/checkout@master
         
       - name: Build flutter for web
-        uses: steebchen/flutter@v1.0.0
+        uses: subosito/flutter-action@v1
         with:
-          args: build web
+          flutter-version: '1.12.1-pre.8'
+          channel: 'master'
+      - run: flutter build web
           
   deploy-web:
     needs: build-web
