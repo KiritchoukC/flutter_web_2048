@@ -18,7 +18,7 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.12.1'
-          channel: 'master'
+          channel: 'dev'
       - run: flutter test --coverage
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1.0.0
@@ -38,7 +38,7 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.12.1'
-          channel: 'master'
+          channel: 'dev'
       - run: flutter build web
           
   deploy-web:
