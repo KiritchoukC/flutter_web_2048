@@ -54,8 +54,6 @@ class _ValueTileState extends State<ValueTile> with SingleTickerProviderStateMix
         .animate(_controller);
 
     _controller.forward();
-
-    print('${widget.tile.value}: ${widget.tile.merged}');
   }
 
   @override

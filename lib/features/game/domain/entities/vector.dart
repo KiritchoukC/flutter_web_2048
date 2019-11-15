@@ -8,10 +8,10 @@ class Vector{
 
   factory Vector.fromDirection(Direction direction){
     switch (direction) {
-      case Direction.up: return Vector(-1, 0);
-      case Direction.right: return Vector(0, 1);
-      case Direction.down: return Vector(1, 0);
-      case Direction.left: return Vector(0, -1);
+      case Direction.up: return Vector(0, -1);
+      case Direction.right: return Vector(1, 0);
+      case Direction.down: return Vector(0, 1);
+      case Direction.left: return Vector(-1, 0);
       default:return Vector(0, 0);
     }
   }

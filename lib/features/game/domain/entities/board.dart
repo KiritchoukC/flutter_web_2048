@@ -1,21 +1,21 @@
+import 'package:piecemeal/piecemeal.dart' as pm;
+
 import 'coordinate.dart';
 import 'destination.dart';
 import 'tile.dart';
 import 'vector.dart';
 
 class Board {
-  List<List<Tile>> tiles;
+  pm.Array2D<Tile> tiles;
   int score = 0;
-
-  List<Tile> get flatTiles => tiles.expand((i) => i).toList();
 
   Board(this.tiles);
 
   /// Returns all the empty tile positions in the [board]
   Iterable<Coordinate> getEmptyTileCoordinates() sync* {
-    for (var y = 0; y < this.tiles.length; y++) {
-      for (var x = 0; x < this.tiles[y].length; x++) {
-        if (this.tiles[x][y] == null) {
+    for (var x = 0; x < this.tiles.width; x++) {
+      for (var y = 0; y < this.tiles.height; y++) {
+        if (this.tiles.get(x, y) == null) {
           yield Coordinate(x, y);
         }
       }
@@ -47,7 +47,7 @@ class Board {
         break;
       }
 
-      var nextTile = this.tiles[x][y];
+      var nextTile = this.tiles.get(x, y);
 
       // if next tile is empty set the new destination
       // and continue with the next one

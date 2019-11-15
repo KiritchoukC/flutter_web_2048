@@ -6,6 +6,7 @@ import 'package:flutter_web_2048/features/game/domain/usecases/get_current_board
 import 'package:flutter_web_2048/features/game/domain/usecases/update_board.dart';
 import 'package:flutter_web_2048/features/game/presentation/bloc/bloc.dart';
 import 'package:mockito/mockito.dart';
+import 'package:piecemeal/piecemeal.dart' as pm;
 
 class MockGetCurrentBoard extends Mock implements GetCurrentBoard {}
 
@@ -46,7 +47,7 @@ void main() {
   group('LoadInitialBoard', () {
     test('should call [GetCurentBoard] usecase', () async {
       // ARRANGE
-      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Board(List<List<Tile>>()));
+      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
 
       // ACT
       bloc.add(LoadInitialBoard());
@@ -58,7 +59,7 @@ void main() {
 
     test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd]', () {
       // ARRANGE
-      final usecaseOutput = Board(List<List<Tile>>());
+      final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
       when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
 
       // ASSERT LATER
@@ -80,7 +81,7 @@ void main() {
   group('Move', () {
     test('should call [UpdateBoard] usecase', () async {
       // ARRANGE
-      when(mockUpdateBoard.call(any)).thenAnswer((_) async => Board(List<List<Tile>>()));
+      when(mockUpdateBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
 
       // ACT
       bloc.add(Move(direction: Direction.down));
@@ -93,7 +94,7 @@ void main() {
     test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd]', () {
       // ARRANGE
       final direction = Direction.down;
-      final usecaseOutput = Board(List<List<Tile>>());
+      final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
       when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
       when(mockUpdateBoard.call(any)).thenAnswer((_) async => usecaseOutput);
 
