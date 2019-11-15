@@ -14,13 +14,13 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@master
         
-      - name: Build flutter for web
+      - name: Launch flutter tests
         uses: steebchen/flutter@v1.0.0
         with:
           args: test
    
   build-web:
-    
+    needs: test
     runs-on: [ubuntu-latest]
     
     steps:
@@ -33,7 +33,7 @@ jobs:
           args: build web
           
   deploy-web:
-
+    needs: build-web
     runs-on: ubuntu-latest
 
     steps:
