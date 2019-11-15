@@ -17,7 +17,7 @@ jobs:
       - name: Launch flutter tests
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.1-pre.8'
+          flutter-version: '1.12.1'
           channel: 'master'
       - run: flutter test --coverage
       - name: Upload coverage to codecov
@@ -37,7 +37,7 @@ jobs:
       - name: Build flutter for web
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.1-pre.8'
+          flutter-version: '1.12.1'
           channel: 'master'
       - run: flutter build web
           
