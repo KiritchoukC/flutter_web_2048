@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@master
         
       - name: Launch flutter tests
-        uses: steebchen/flutter@v1.0.0
+        uses: kiritchoukc/flutter-web-action@v1.0.0
         with:
           args: test --coverage
       - name: Upload coverage to codecov
