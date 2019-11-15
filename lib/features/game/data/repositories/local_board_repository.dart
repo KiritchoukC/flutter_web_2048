@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:piecemeal/piecemeal.dart' as pm;
+
 import '../../../../core/enums/direction.dart';
 import '../../domain/entities/board.dart';
 import '../../domain/entities/coordinate.dart';
@@ -32,7 +34,7 @@ class LocalBoardRepository implements BoardRepository {
     bool hasBoardMoved = false;
 
     // reset merged tiles
-    board.flatTiles
+    board.tiles
         .where((tile) => tile != null && tile.merged)
         .forEach((tile) => tile.merged = false);
 
@@ -43,7 +45,7 @@ class LocalBoardRepository implements BoardRepository {
         int y = traversal.y[j];
 
         // get the tile at the current position [x][y]
-        var currentTile = board.tiles[x][y];
+        var currentTile = board.tiles.get(x, y);
 
         // skip empty cell
         if (currentTile == null) {
@@ -62,13 +64,13 @@ class LocalBoardRepository implements BoardRepository {
         hasBoardMoved = hasBoardMoved || destination.hasMoved;
 
         // empty the current cell
-        board.tiles[x][y] = null;
+        board.tiles.set(currentTile.x, currentTile.y, null);
 
         // get the new tile
         final newTile = Tile.fromDestination(currentTile.value, x, y, destination);
 
         // move the tile in its new cell
-        board.tiles[destination.x][destination.y] = newTile;
+        board.tiles.set(destination.x, destination.y, newTile);
       }
     }
 
@@ -81,11 +83,11 @@ class LocalBoardRepository implements BoardRepository {
         y: newTileCoordinate.y,
       );
 
-      board.tiles[newTileCoordinate.x][newTileCoordinate.y] = newTile;
+      board.tiles.set(newTileCoordinate.x, newTileCoordinate.y, newTile);
     }
 
     // get the merged tiles
-    final mergedTiles = board.flatTiles.where((tile) => tile != null && tile.merged);
+    final mergedTiles = board.tiles.where((tile) => tile != null && tile.merged);
     // update score if there is merging
     if (mergedTiles.length > 0) {
       final points = mergedTiles.length == 1
@@ -171,28 +173,20 @@ class LocalBoardRepository implements BoardRepository {
     );
   }
 
-  /// Generate the board tiles with the first tile positionned at the given index
-  List<List<Tile>> _generateTiles(Tile firstRandomTile, Tile secondRandomTile) {
-    return List<List<Tile>>.generate(
-      4,
-      (x) {
-        return List<Tile>.generate(
-          4,
-          (y) {
-            if (firstRandomTile.x == x && firstRandomTile.y == y) {
-              return firstRandomTile;
-            }
+  /// Generate the board tiles with the given random tiles
+  pm.Array2D<Tile> _generateTiles(Tile firstRandomTile, Tile secondRandomTile) {
+    return pm.Array2D<Tile>.generated(4, 4, (x, y) {
+      // generate the first random tile
+      if (firstRandomTile.x == x && firstRandomTile.y == y) {
+        return firstRandomTile;
+      }
 
-            if (secondRandomTile.x == x && secondRandomTile.y == y) {
-              return secondRandomTile;
-            }
+      // generate the second random tile
+      if (secondRandomTile.x == x && secondRandomTile.y == y) {
+        return secondRandomTile;
+      }
 
-            return null;
-          },
-          growable: false,
-        );
-      },
-      growable: false,
-    );
+      return null;
+    });
   }
 }

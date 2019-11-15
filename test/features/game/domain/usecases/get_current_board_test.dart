@@ -5,6 +5,7 @@ import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:flutter_web_2048/features/game/domain/repositories/board_repository.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/get_current_board.dart';
 import 'package:mockito/mockito.dart';
+import 'package:piecemeal/piecemeal.dart';
 
 class MockBoardRepository extends Mock implements BoardRepository{}
 
@@ -27,7 +28,7 @@ void main() {
     });
     test('should return the repository output', () async {
       // ARRANGE
-      var repositoryOutput = Board(List<List<Tile>>());
+      var repositoryOutput = Board(Array2D<Tile>(4, 4));
       when(repository.getCurrentBoard()).thenAnswer((_) async => repositoryOutput);
 
       // ACT

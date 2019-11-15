@@ -16,15 +16,15 @@ class _BoardWidgetState extends State<BoardWidget> {
       color: Colors.grey.shade900,
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: board.tiles.length,
+          crossAxisCount: board.tiles.width,
         ),
         itemBuilder: (context, index) {
           int x, y = 0;
-          x = (index / board.tiles.length).floor();
-          y = (index % board.tiles.length);
-          return TileWidget(tile: board.tiles[x][y]);
+          x = (index % board.tiles.width);
+          y = (index / board.tiles.height).floor();
+          return TileWidget(tile: board.tiles.get(x, y));
         },
-        itemCount: board.tiles.length * board.tiles.length,
+        itemCount: board.tiles.width * board.tiles.height,
         physics: NeverScrollableScrollPhysics(),
       ),
     );

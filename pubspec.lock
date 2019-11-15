@@ -186,6 +186,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  piecemeal:
+    dependency: "direct main"
+    description:
+      name: piecemeal
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.2"
   provider:
     dependency: transitive
     description:

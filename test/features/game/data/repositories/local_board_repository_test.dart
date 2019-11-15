@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:piecemeal/piecemeal.dart' as pm;
+
 import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/features/game/data/repositories/local_board_repository.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
@@ -19,7 +21,7 @@ void main() {
         // ACT
         var actual = await repository.getCurrentBoard();
         // ASSERT
-        expect(actual.flatTiles.length, 16);
+        expect(actual.tiles.length, 16);
       });
       test("should return a board with 14 empty tiles", () async {
         // ARRANGE
@@ -27,14 +29,14 @@ void main() {
         // ACT
         var actual = await repository.getCurrentBoard();
         // ASSERT
-        var emptyTiles = actual.flatTiles.where((tile) => tile == null);
+        var emptyTiles = actual.tiles.where((tile) => tile == null);
         expect(emptyTiles.length, 14);
       });
       test("should return a board with 2 '2' tiles", () async {
         // ACT
         var actual = await repository.getCurrentBoard();
         // ASSERT
-        var tiles2 = actual.flatTiles.where((tile) => tile?.value == 2);
+        var tiles2 = actual.tiles.where((tile) => tile?.value == 2);
         expect(tiles2.length, 2);
       });
 
@@ -65,7 +67,7 @@ void main() {
         // ARRANGE
         var direction = Direction.down;
 
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
         var board = Board(tiles);
 
         int x = 1;
@@ -73,7 +75,7 @@ void main() {
 
         // free tile should be able to move down
         var freeTile = Tile(2, x: x, y: y);
-        board.tiles[x][y] = freeTile;
+        board.tiles.set(x, y, freeTile);
 
         // starting board
         // |0|2|0|0|
@@ -86,7 +88,7 @@ void main() {
 
         // ASSERT
         expect(
-            actual.flatTiles
+            actual.tiles
                 .where((tile) => tile != null && (tile.value == 2 || tile.value == 4))
                 .length,
             2);
@@ -96,7 +98,7 @@ void main() {
         // ARRANGE
         var direction = Direction.down;
 
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
         var board = Board(tiles);
 
         int x = 1;
@@ -104,7 +106,7 @@ void main() {
 
         // blocked tile should not be able to move down
         var blockedTile = Tile(2, x: x, y: y);
-        board.tiles[x][y] = blockedTile;
+        board.tiles.set(x, y, blockedTile);
 
         // starting board
         // |0|0|0|0|
@@ -116,7 +118,7 @@ void main() {
         var actual = await repository.updateBoard(board, direction);
 
         // ASSERT
-        expect(actual.flatTiles.where((tile) => tile == null).length, 15);
+        expect(actual.tiles.where((tile) => tile == null).length, 15);
       });
 
       group('merge', () {
@@ -126,7 +128,7 @@ void main() {
           // ARRANGE
           var direction = Direction.left;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int leftX = 0;
@@ -135,9 +137,9 @@ void main() {
           int y = 3;
 
           var leftTile = Tile(2, x: leftX, y: y);
-          board.tiles[leftX][y] = leftTile;
+          board.tiles.set(leftX, y, leftTile);
           var rightTile = Tile(2, x: rightX, y: y);
-          board.tiles[rightX][y] = rightTile;
+          board.tiles.set(rightX, y, rightTile);
 
           // starting board
           // |0|0|0|0|
@@ -155,7 +157,7 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var mergedTile = actual.tiles[leftX][y];
+          var mergedTile = actual.tiles.get(leftX, y);
           expect(mergedTile.value, 4);
         });
 
@@ -165,7 +167,7 @@ void main() {
           // ARRANGE
           var direction = Direction.right;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int leftX = 0;
@@ -174,9 +176,9 @@ void main() {
           int y = 3;
 
           var leftTile = Tile(2, x: leftX, y: y);
-          board.tiles[leftX][y] = leftTile;
+          board.tiles.set(leftX, y, leftTile);
           var rightTile = Tile(2, x: rightX, y: y);
-          board.tiles[rightX][y] = rightTile;
+          board.tiles.set(rightX, y, rightTile);
 
           // starting board
           // |0|0|0|0|
@@ -194,7 +196,7 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var mergedTile = actual.tiles[rightX][y];
+          var mergedTile = actual.tiles.get(rightX, y);
           expect(mergedTile.value, 4);
         });
 
@@ -204,7 +206,7 @@ void main() {
           // ARRANGE
           var direction = Direction.down;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int topY = 0;
@@ -213,9 +215,9 @@ void main() {
           int x = 0;
 
           var topTile = Tile(2, x: x, y: topY);
-          board.tiles[x][topY] = topTile;
+          board.tiles.set(x, topY, topTile);
           var downTile = Tile(2, x: x, y: bottomY);
-          board.tiles[x][bottomY] = downTile;
+          board.tiles.set(x, bottomY, downTile);
 
           // starting board
           // |2|0|0|0|
@@ -233,7 +235,7 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var mergedTile = actual.tiles[x][bottomY];
+          var mergedTile = actual.tiles.get(x, bottomY);
           expect(mergedTile.value, 4);
         });
 
@@ -243,7 +245,7 @@ void main() {
           // ARRANGE
           var direction = Direction.up;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int topY = 0;
@@ -252,9 +254,9 @@ void main() {
           int x = 0;
 
           var topTile = Tile(2, x: x, y: topY);
-          board.tiles[x][topY] = topTile;
+          board.tiles.set(x, topY, topTile);
           var downTile = Tile(2, x: x, y: bottomY);
-          board.tiles[x][bottomY] = downTile;
+          board.tiles.set(x, bottomY, downTile);
 
           // starting board
           // |2|0|0|0|
@@ -272,7 +274,7 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var mergedTile = actual.tiles[x][topY];
+          var mergedTile = actual.tiles.get(x, topY);
           expect(mergedTile.value, 4);
         });
       });
@@ -282,7 +284,7 @@ void main() {
           // ARRANGE
           var direction = Direction.up;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int topY = 0;
@@ -291,9 +293,9 @@ void main() {
           int x = 0;
 
           var topTile = Tile(4, x: x, y: topY);
-          board.tiles[x][topY] = topTile;
+          board.tiles.set(x, topY, topTile);
           var downTile = Tile(2, x: x, y: bottomY);
-          board.tiles[x][bottomY] = downTile;
+          board.tiles.set(x, bottomY, downTile);
 
           // starting board
           // |4|0|0|0|
@@ -311,8 +313,8 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var stillTile = actual.tiles[0][0];
-          var movedTile = actual.tiles[0][1];
+          var stillTile = actual.tiles.get(0, 0);
+          var movedTile = actual.tiles.get(0, 1);
           expect(stillTile.value, 4);
           expect(movedTile.value, 2);
         });
@@ -320,7 +322,7 @@ void main() {
           // ARRANGE
           var direction = Direction.down;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int topY = 0;
@@ -329,9 +331,9 @@ void main() {
           int x = 0;
 
           var topTile = Tile(4, x: x, y: topY);
-          board.tiles[x][topY] = topTile;
+          board.tiles.set(x, topY, topTile);
           var downTile = Tile(2, x: x, y: bottomY);
-          board.tiles[x][bottomY] = downTile;
+          board.tiles.set(x, bottomY, downTile);
 
           // starting board
           // |4|0|0|0|
@@ -349,8 +351,8 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var stillTile = actual.tiles[0][3];
-          var movedTile = actual.tiles[0][2];
+          var stillTile = actual.tiles.get(0, 3);
+          var movedTile = actual.tiles.get(0, 2);
           expect(stillTile.value, 2);
           expect(movedTile.value, 4);
         });
@@ -358,7 +360,7 @@ void main() {
           // ARRANGE
           var direction = Direction.right;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int leftX = 0;
@@ -367,9 +369,9 @@ void main() {
           int y = 0;
 
           var leftTile = Tile(4, x: leftX, y: y);
-          board.tiles[leftX][y] = leftTile;
+          board.tiles.set(leftX, y, leftTile);
           var rightTile = Tile(2, x: rightX, y: y);
-          board.tiles[rightX][y] = rightTile;
+          board.tiles.set(rightX, y, rightTile);
 
           // starting board
           // |4|0|0|2|
@@ -387,8 +389,8 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var stillTile = actual.tiles[3][0];
-          var movedTile = actual.tiles[2][0];
+          var stillTile = actual.tiles.get(3, 0);
+          var movedTile = actual.tiles.get(2, 0);
           expect(stillTile.value, 2);
           expect(movedTile.value, 4);
         });
@@ -396,7 +398,7 @@ void main() {
           // ARRANGE
           var direction = Direction.left;
 
-          var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+          var tiles = pm.Array2D<Tile>.generated(4, 4, (){});
           var board = Board(tiles);
 
           int leftX = 0;
@@ -405,9 +407,9 @@ void main() {
           int y = 0;
 
           var leftTile = Tile(4, x: leftX, y: y);
-          board.tiles[leftX][y] = leftTile;
+          board.tiles.set(leftX, y, leftTile);
           var rightTile = Tile(2, x: rightX, y: y);
-          board.tiles[rightX][y] = rightTile;
+          board.tiles.set(rightX, y, rightTile);
 
           // starting board
           // |4|0|0|2|
@@ -425,8 +427,8 @@ void main() {
           var actual = await repository.updateBoard(board, direction);
 
           // ASSERT
-          var stillTile = actual.tiles[0][0];
-          var movedTile = actual.tiles[1][0];
+          var stillTile = actual.tiles.get(0, 0);
+          var movedTile = actual.tiles.get(1, 0);
           expect(stillTile.value, 4);
           expect(movedTile.value, 2);
         });

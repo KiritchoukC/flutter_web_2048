@@ -5,6 +5,7 @@ import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:flutter_web_2048/features/game/domain/repositories/board_repository.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/update_board.dart';
 import 'package:mockito/mockito.dart';
+import 'package:piecemeal/piecemeal.dart' as pm;
 
 class MockBoardRepository extends Mock implements BoardRepository {}
 
@@ -20,7 +21,7 @@ void main() {
   group('UpdateBoard', () {
     test('should use the repository', () async {
       // ARRANGE
-      var tiles = List<List<Tile>>();
+      var tiles = pm.Array2D<Tile>(4, 4);
       var board = Board(tiles);
       var direction = Direction.right;
 
@@ -35,11 +36,11 @@ void main() {
 
     test('should return the repository output', () async {
       // ARRANGE
-      var tiles = List<List<Tile>>();
+      var tiles = pm.Array2D<Tile>(4, 4);
       var board = Board(tiles);
       var direction = Direction.right;
 
-      var repositoryOutput = Board(List<List<Tile>>());
+      var repositoryOutput = Board(pm.Array2D<Tile>(4, 4));
 
       when(repository.updateBoard(board, direction)).thenAnswer((_) async => repositoryOutput);
 

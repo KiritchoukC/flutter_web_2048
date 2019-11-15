@@ -1,4 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:piecemeal/piecemeal.dart' as pm;
+
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/coordinate.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
@@ -8,7 +10,7 @@ void main() {
   group('getEmptyTiles', () {
     test("should have a length of 16 for a blank board", () {
       // ARRANGE
-      var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
       var board = Board(tiles);
       // ACT
       var actual = board.getEmptyTileCoordinates();
@@ -20,24 +22,24 @@ void main() {
       // ARRANGE
       var expected = [
         Coordinate(0, 0),
-        Coordinate(1, 0),
-        Coordinate(2, 0),
-        Coordinate(3, 0),
         Coordinate(0, 1),
-        Coordinate(1, 1),
-        Coordinate(2, 1),
-        Coordinate(3, 1),
         Coordinate(0, 2),
-        Coordinate(1, 2),
-        Coordinate(2, 2),
-        Coordinate(3, 2),
         Coordinate(0, 3),
+        Coordinate(1, 0),
+        Coordinate(1, 1),
+        Coordinate(1, 2),
         Coordinate(1, 3),
+        Coordinate(2, 0),
+        Coordinate(2, 1),
+        Coordinate(2, 2),
         Coordinate(2, 3),
+        Coordinate(3, 0),
+        Coordinate(3, 1),
+        Coordinate(3, 2),
         Coordinate(3, 3)
       ];
 
-      var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
       var board = Board(tiles);
       // ACT
       var actual = board.getEmptyTileCoordinates().toList();
@@ -53,9 +55,9 @@ void main() {
 
     test("should have a length of 14 for an initial board", () {
       // ARRANGE
-      var tiles = List<List<Tile>>.generate(4, (y) => List(4));
-      tiles[2][3] = Tile(2, x: 2, y: 3);
-      tiles[3][3] = Tile(2, x: 3, y: 3);
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      tiles.set(2, 3, Tile(2, x: 2, y: 3));
+      tiles.set(3, 3, Tile(2, x: 3, y: 3));
       var board = Board(tiles);
       // ACT
       var actual = board.getEmptyTileCoordinates();
@@ -65,8 +67,7 @@ void main() {
 
     test("should have a length of 0 for a full board", () {
       // ARRANGE
-      var tiles =
-          List<List<Tile>>.generate(4, (y) => List<Tile>.generate(4, (x) => Tile(2, x: x, y: y)));
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
       var board = Board(tiles);
       // ACT
       var actual = board.getEmptyTileCoordinates();
@@ -77,8 +78,7 @@ void main() {
     test("should return 0 index for a full board", () {
       // ARRANGE
       var expected = List<Map<String, int>>();
-      var tiles =
-          List<List<Tile>>.generate(4, (y) => List<Tile>.generate(4, (x) => Tile(2, x: x, y: y)));
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
       var board = Board(tiles);
       // ACT
       var actual = board.getEmptyTileCoordinates();
@@ -93,7 +93,7 @@ void main() {
         // ARRANGE
         var vector = Vector(-1, 0);
 
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         int x = 0;
@@ -102,7 +102,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -116,7 +116,7 @@ void main() {
         // ARRANGE
         var vector = Vector(1, 0);
 
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         int x = 3;
@@ -125,7 +125,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -139,7 +139,7 @@ void main() {
         // ARRANGE
         var vector = Vector(0, -1);
 
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         int x = 0;
@@ -148,7 +148,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -162,7 +162,7 @@ void main() {
         // ARRANGE
         var vector = Vector(0, 1);
 
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         int x = 0;
@@ -171,7 +171,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -184,7 +184,7 @@ void main() {
     group('move all the way', () {
       test('should move all the way to the right', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(1, 0);
@@ -195,7 +195,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -207,7 +207,7 @@ void main() {
 
       test('should move all the way to the left', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(-1, 0);
@@ -218,7 +218,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -230,7 +230,7 @@ void main() {
 
       test('should move all the way down', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(0, 1);
@@ -241,7 +241,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -253,7 +253,7 @@ void main() {
 
       test('should move all the way up', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(0, -1);
@@ -264,7 +264,7 @@ void main() {
         var tile = Tile(2, x: x, y: y);
 
         // put the tile in the board
-        board.tiles[x][y] = tile;
+        board.tiles.set(x, y, tile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -277,7 +277,7 @@ void main() {
     group('move with blocking tile', () {
       test('should move up until blocked by another tile with a different value', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(0, -1);
@@ -301,8 +301,8 @@ void main() {
         // |0|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[0][0] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(0, 0, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -314,7 +314,7 @@ void main() {
 
       test('should move down until blocked by another tile with a different value', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(0, 1);
@@ -338,8 +338,8 @@ void main() {
         // |4|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[0][3] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(0, 3, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -351,7 +351,7 @@ void main() {
 
       test('should move to the right until blocked by another tile with a different value', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(1, 0);
@@ -375,8 +375,8 @@ void main() {
         // |0|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[3][0] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(3, 0, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -388,7 +388,7 @@ void main() {
 
       test('should move to the left until blocked by another tile with a different value', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(-1, 0);
@@ -412,8 +412,8 @@ void main() {
         // |0|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[0][0] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(0, 0, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -426,7 +426,7 @@ void main() {
     group('move with merge', () {
       test('should move to the left and merge with the blocking tile', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(-1, 0);
@@ -450,8 +450,8 @@ void main() {
         // |0|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[0][0] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(0, 0, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -462,7 +462,7 @@ void main() {
       });
       test('should move to the right and merge with the blocking tile', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(1, 0);
@@ -486,8 +486,8 @@ void main() {
         // |0|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[3][0] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(3, 0, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -498,7 +498,7 @@ void main() {
       });
       test('should move down and merge with the blocking tile', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(0, 1);
@@ -522,8 +522,8 @@ void main() {
         // |4|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[0][3] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(0, 3, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
@@ -534,7 +534,7 @@ void main() {
       });
       test('should move up and merge with the blocking tile', () {
         // ARRANGE
-        var tiles = List<List<Tile>>.generate(4, (y) => List(4));
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
 
         var vector = Vector(0, -1);
@@ -558,8 +558,8 @@ void main() {
         // |0|0|0|0|
 
         // put the tiles in the board
-        board.tiles[x][y] = tile;
-        board.tiles[0][0] = blockingTile;
+        board.tiles.set(x, y, tile);
+        board.tiles.set(0, 0, blockingTile);
 
         // ACT
         var actual = board.getTileDestination(tile, vector);
