@@ -67,7 +67,7 @@ class LocalBoardRepository implements BoardRepository {
         board.tiles.set(currentTile.x, currentTile.y, null);
 
         // get the new tile
-        final newTile = Tile.fromDestination(currentTile.value, x, y, destination);
+        final newTile = Tile.fromDestination(currentTile.value, destination);
 
         // move the tile in its new cell
         board.tiles.set(destination.x, destination.y, newTile);

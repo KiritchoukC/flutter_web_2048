@@ -568,6 +568,47 @@ void main() {
         expect(actual.y, 0);
         expect(actual.hasMerged, true);
       });
+      test('should move up and merge with the blocking tile but not with the previously merged tile', () {
+        // ARRANGE
+        var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+        var board = Board(tiles);
+
+        var vector = Vector(0, -1);
+
+        int x = 0;
+        int y = 3;
+
+        var tile = Tile(2, x: x, y: y);
+        var blockingTile = Tile(2, x: 0, y: 1);
+        var previouslyMergedTile = Tile(4, x: 0, y: 0, merged: true);
+
+        // Starting board
+        // |4|0|0|0|
+        // |2|0|0|0|
+        // |0|0|0|0|
+        // |2|0|0|0|
+
+        // Ending board
+        // |4|0|0|0|
+        // |4|0|0|0|
+        // |0|0|0|0|
+        // |0|0|0|0|
+
+        // put the tiles in the board
+        board.tiles.set(x, y, tile);
+        board.tiles.set(blockingTile.x, blockingTile.y, blockingTile);
+        board.tiles.set(previouslyMergedTile.x, previouslyMergedTile.y, previouslyMergedTile);
+
+        // ACT
+        var actual = board.getTileDestination(tile, vector);
+        // ASSERT
+        // it should not have move to another column
+        expect(actual.x, x);
+        // it should have taken the blocking tile cell
+        expect(actual.y, blockingTile.y);
+        // it should have its [hasMerged] property to true
+        expect(actual.hasMerged, true);
+      });
     });
   });
 }

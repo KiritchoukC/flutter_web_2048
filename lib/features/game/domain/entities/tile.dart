@@ -13,7 +13,7 @@ class Tile {
       @required this.y,
       this.merged = false});
 
-  factory Tile.fromDestination(int value, int x, int y, Destination destination) {
+  factory Tile.fromDestination(int value, Destination destination) {
     if (destination.hasMerged) {
       return Tile(
         value * 2,

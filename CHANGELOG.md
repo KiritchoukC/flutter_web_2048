@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.13.5...v1.14.0) (2019-11-16)
+
+
+### Features
+
+* **workflow:** add codecov upload ([a02b2fe](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/a02b2fe))
+
 ### [1.13.5](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.13.4...v1.13.5) (2019-11-15)
 
 
