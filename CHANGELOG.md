@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.14.1](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.14.0...v1.14.1) (2019-11-16)
+
+
+### Bug Fixes
+
+* **workflow:** add uses for build ([729b7c1](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/729b7c1))
+* **workflow:** all in one ([004cc73](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/004cc73))
+* **workflow:** enable web for flutter ([3f56e14](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/3f56e14))
+* **workflow:** set flutter SDK channel to DEV ([1c4f691](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/1c4f691))
+* **workflow:** use flutter SDK 1.12.1 ([c749851](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/c749851))
+* **workflow:** use flutter SDK 1.12.1-pre.8 ([3e6ae6b](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/3e6ae6b))
+* **workflow:** use flutter-web-action ([2194e65](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/2194e65))
+
 ## [1.14.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.13.5...v1.14.0) (2019-11-16)
 
 
