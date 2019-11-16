@@ -6,7 +6,7 @@ on:
       - release
 
 jobs:
-  test:
+  web:
     
     runs-on: [ubuntu-latest]
     
@@ -15,35 +15,25 @@ jobs:
         uses: actions/checkout@master
         
       - name: Launch flutter tests
-        uses: steebchen/flutter@v1.0.0
+        uses: subosito/flutter-action@v1
         with:
-          args: test --coverage
+          flutter-version: '1.12.2'
+          channel: 'dev'
+      - run: flutter test --coverage
+        
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1.0.0
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           file: ./coverage/lcov.info
-   
-  build-web:
-    needs: test
-    runs-on: [ubuntu-latest]
-    
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@master
-        
-      - name: Build flutter for web
-        uses: steebchen/flutter@v1.0.0
-        with:
-          args: build web
           
-  deploy-web:
-    needs: build-web
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@master
+      - name: Build for web
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.12.2'
+          channel: 'dev'
+      - run: flutter config --enable-web
+      - run: flutter build web
         
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
