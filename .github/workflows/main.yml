@@ -28,6 +28,10 @@ jobs:
           file: ./coverage/lcov.info
           
       - name: Build for web
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.12.2'
+          channel: 'dev'
       - run: flutter config --enable-web
       - run: flutter build web
         
