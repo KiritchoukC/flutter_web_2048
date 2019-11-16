@@ -37,5 +37,9 @@ void main() {
       // ASSERT
       expect(actual, repositoryOutput);
     });
+    test('should throw when initialized with null argument', () async {
+      // ACT & ASSERT
+      expect(() => GetCurrentBoard(boardRepository: null), throwsA(isA<AssertionError>()));
+    });
   });
 }

@@ -48,5 +48,15 @@ void main() {
       expect(actual.x, expected.x);
       expect(actual.y, expected.y);
     });
+    test('should return (0,0) for no direction', () {
+      // ARRANGE
+      var expected = Vector(0, 0);
+
+      // ACT
+      var actual = Vector.fromDirection(null);
+      // ASSERT
+      expect(actual.x, expected.x);
+      expect(actual.y, expected.y);
+    });
   });
 }

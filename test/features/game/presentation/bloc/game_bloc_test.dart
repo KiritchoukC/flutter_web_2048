@@ -31,6 +31,28 @@ void main() {
     bloc?.close();
   });
 
+  test('should throw when initialized with null argument', () async {
+    // ACT & ASSERT
+    expect(
+        () => GameBloc(
+              getCurrentBoard: null,
+              updateBoard: null,
+            ),
+        throwsA(isA<AssertionError>()));
+    expect(
+        () => GameBloc(
+              getCurrentBoard: mockGetCurrentBoard,
+              updateBoard: null,
+            ),
+        throwsA(isA<AssertionError>()));
+    expect(
+        () => GameBloc(
+              getCurrentBoard: null,
+              updateBoard: mockUpdateBoard,
+            ),
+        throwsA(isA<AssertionError>()));
+  });
+
   test('Initial state should be [InitialGame]', () {
     // ASSERT
     expect(bloc.initialState, equals(InitialGame()));

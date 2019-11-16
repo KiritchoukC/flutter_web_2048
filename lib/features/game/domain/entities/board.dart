@@ -31,7 +31,6 @@ class Board {
       y: tile.y,
       hasMerged: false,
       hasMoved: false,
-      mergedWith: null,
     );
 
     while (true) {
@@ -57,7 +56,6 @@ class Board {
           x: x,
           hasMerged: false,
           hasMoved: true,
-          mergedWith: null,
         );
         continue;
       }
@@ -78,7 +76,6 @@ class Board {
         x: x,
         hasMerged: true,
         hasMoved: true,
-        mergedWith: nextTile,
       );
       break;
     }

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
@@ -49,6 +50,44 @@ void main() {
 
       // ASSERT
       expect(actual, repositoryOutput);
+    });
+
+    test('should throw when initialized with null argument', () async {
+      // ACT & ASSERT
+      expect(() => UpdateBoard(boardRepository: null), throwsA(isA<AssertionError>()));
+    });
+
+    group('Params', () {
+      test('should extend Equatable', () {
+        // ARRANGE
+        var tiles = pm.Array2D<Tile>(4, 4);
+        var board = Board(tiles);
+        var direction = Direction.right;
+        // ACT
+        var params = Params(
+          direction: direction,
+          board: board,
+        );
+        // ASSERT
+        expect(params, isA<Equatable>());
+      });
+      test('should have a props list with direction and board', () {
+        // ARRANGE
+        var tiles = pm.Array2D<Tile>(4, 4);
+        var board = Board(tiles);
+        var direction = Direction.right;
+
+        var expected = <Object>[direction, board];
+
+        // ACT
+        var params = Params(
+          direction: direction,
+          board: board,
+        );
+        
+        // ASSERT
+        expect(params.props, expected);
+      });
     });
   });
 }
