@@ -568,7 +568,9 @@ void main() {
         expect(actual.y, 0);
         expect(actual.hasMerged, true);
       });
-      test('should move up and merge with the blocking tile but not with the previously merged tile', () {
+      test(
+          'should move up and merge with the blocking tile but not with the previously merged tile',
+          () {
         // ARRANGE
         var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
@@ -609,6 +611,95 @@ void main() {
         // it should have its [hasMerged] property to true
         expect(actual.hasMerged, true);
       });
+    });
+  });
+
+  group('updateScore', () {
+    test('without merge should 0', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      int actual = board.updateScore();
+      // ASSERT
+      expect(actual, 0);
+    });
+
+    test('with 1 merged tile should this tile value', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      var mergedTile = Tile(2, x: 0, y: 0, merged: true);
+      board.tiles.set(mergedTile.x, mergedTile.y, mergedTile);
+
+      // ACT
+      int actual = board.updateScore();
+      // ASSERT
+      expect(actual, 2);
+    });
+
+    test('with multiple merged tiles should the sum of tiles value', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      board.tiles.set(0, 0, Tile(2, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 1, Tile(4, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 2, Tile(8, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 3, Tile(16, x: 0, y: 0, merged: true));
+      board.tiles.set(1, 0, Tile(32, x: 0, y: 0, merged: true));
+
+      int expected = 62;
+
+      // ACT
+      int actual = board.updateScore();
+      // ASSERT
+      expect(actual, expected);
+    });
+  });
+
+  group('resetMergedTiles', () {
+    test('should set all the merged tiles to false', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      board.tiles.set(0, 0, Tile(2, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 1, Tile(4, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 2, Tile(8, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 3, Tile(16, x: 0, y: 0, merged: true));
+      board.tiles.set(1, 0, Tile(32, x: 0, y: 0, merged: true));
+
+      // ACT
+      board.resetMergedTiles();
+      // ASSERT
+      expect(board.mergedTiles.length, 0);
+    });
+  });
+
+  group('addRandomTile', () {
+    test('should add a tile to the board', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      board.addRandomTile();
+      // ASSERT
+      expect(board.tiles.where((tile) => tile != null).length, 1);
+    });
+    test('should retunr the added tile', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      var actual = board.addRandomTile();
+      // ASSERT
+      var addedTile = board.tiles.firstWhere((tile) => tile != null);
+      expect(actual, addedTile);
     });
   });
 }
