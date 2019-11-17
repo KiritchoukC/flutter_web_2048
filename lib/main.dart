@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'core/router/route_paths.dart';
@@ -8,8 +9,15 @@ import 'injection_container.dart' as di;
 
 void main() {
   di.init();
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  initBlocLogging();
   runApp(MyApp());
+}
+
+void initBlocLogging() {
+  // only in debug mode
+  if (!kReleaseMode) {
+    BlocSupervisor.delegate = SimpleBlocDelegate();
+  }
 }
 
 class MyApp extends StatelessWidget {
