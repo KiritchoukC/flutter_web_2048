@@ -133,11 +133,7 @@ class Board {
     }
 
     var coordinate = newTileCoordinate.getOrElse(() => null);
-
-    // return fail if there is no coordinate
-    if (coordinate == null) {
-      return Left(false);
-    }
+    
     // get the new tile value with 10% chance of being 4 instead of 2
     var newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
     // generate the new tile
