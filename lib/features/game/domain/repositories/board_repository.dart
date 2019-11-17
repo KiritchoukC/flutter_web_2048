@@ -3,6 +3,6 @@ import '../entities/board.dart';
 
 abstract class BoardRepository{
   Future<Board> getCurrentBoard();
-  Future resetBoard();
+  Future<void> resetBoard();
   Future<Board> updateBoard(Board board, Direction direction);
 }

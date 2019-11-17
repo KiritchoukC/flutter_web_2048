@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import './bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../domain/usecases/get_current_board.dart';
+import '../../domain/usecases/reset_board.dart';
 import '../../domain/usecases/update_board.dart';
 
 /// Handles the game event and send the game states
@@ -14,12 +15,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final UpdateBoard updateBoard;
   // get current board usecase
   final GetCurrentBoard getCurrentBoard;
+  // reset board usecase
+  final ResetBoard resetBoard;
 
   GameBloc({
     @required this.updateBoard,
-    @required this.getCurrentBoard,
+    @required this.getCurrentBoard, 
+    @required this.resetBoard,
   })  : assert(updateBoard != null),
-        assert(getCurrentBoard != null);
+        assert(getCurrentBoard != null),
+        assert(resetBoard != null);
 
   @override
   GameState get initialState => InitialGame();
@@ -31,7 +36,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   ) async* {
     if (event is Move) {
       // send the start state
-      yield UpdateBoardStart(event.direction);
+      yield UpdateBoardStart();
 
       // get the current board
       final currentBoard = await getCurrentBoard(NoParams());
@@ -53,13 +58,24 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
 
     if (event is LoadInitialBoard) {
-      // send the start state without move
-      yield UpdateBoardStart(null);
+      // send the start state
+      yield UpdateBoardStart();
 
       // call the use case to get the current board
       final output = await getCurrentBoard(NoParams());
 
       // send the end state with the initial board
+      yield UpdateBoardEnd(output);
+    }
+
+    if (event is NewGame) {
+      // send the start state
+      yield UpdateBoardStart();
+
+      // call the use case to get the current board
+      final output = await resetBoard(NoParams());
+
+      // send the end state with the new board
       yield UpdateBoardEnd(output);
     }
   }

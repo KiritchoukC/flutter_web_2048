@@ -5,6 +5,7 @@ import 'core/network/network_info.dart';
 import 'features/game/data/repositories/local_board_repository.dart';
 import 'features/game/domain/repositories/board_repository.dart';
 import 'features/game/domain/usecases/get_current_board.dart';
+import 'features/game/domain/usecases/reset_board.dart';
 import 'features/game/domain/usecases/update_board.dart';
 import 'features/game/presentation/bloc/game_bloc.dart';
 
@@ -25,12 +26,13 @@ void init() {
 void initGameFeature() {
   // Bloc
   sl.registerFactory(
-    () => GameBloc(updateBoard: sl(), getCurrentBoard: sl()),
+    () => GameBloc(updateBoard: sl(), getCurrentBoard: sl(), resetBoard: sl()),
   );
 
   // Usecases
   sl.registerLazySingleton(() => UpdateBoard(boardRepository: sl()));
   sl.registerLazySingleton(() => GetCurrentBoard(boardRepository: sl()));
+  sl.registerLazySingleton(() => ResetBoard(boardRepository: sl()));
 
   // Repositories
   sl.registerLazySingleton<BoardRepository>(() => LocalBoardRepository());

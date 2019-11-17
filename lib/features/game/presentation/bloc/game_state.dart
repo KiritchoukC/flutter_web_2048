@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/enums/direction.dart';
 import '../../domain/entities/board.dart';
 
 abstract class GameState extends Equatable {
@@ -12,14 +11,7 @@ abstract class GameState extends Equatable {
 
 class InitialGame extends GameState {}
 
-class UpdateBoardStart extends GameState {
-  final Direction direction;
-
-  UpdateBoardStart(this.direction);
-
-  @override
-  List<Object> get props => [direction];
-}
+class UpdateBoardStart extends GameState {}
 
 class UpdateBoardEnd extends GameState {
   final Board board;
@@ -38,7 +30,6 @@ class GameOver extends GameState {
   @override
   List<Object> get props => [board];
 }
-
 
 class Error extends GameState {
   final String message;

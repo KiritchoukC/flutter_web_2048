@@ -1,10 +1,5 @@
-import 'dart:math';
-
-import 'package:piecemeal/piecemeal.dart' as pm;
-
 import '../../../../core/enums/direction.dart';
 import '../../domain/entities/board.dart';
-import '../../domain/entities/coordinate.dart';
 import '../../domain/entities/tile.dart';
 import '../../domain/entities/traversal.dart';
 import '../../domain/entities/vector.dart';
@@ -83,7 +78,7 @@ class LocalBoardRepository implements BoardRepository {
   }
 
   @override
-  Future resetBoard() async {
+  Future<void> resetBoard() async {
     _currentBoard = null;
   }
 }

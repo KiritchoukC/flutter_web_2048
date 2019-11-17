@@ -3,6 +3,7 @@ import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/get_current_board.dart';
+import 'package:flutter_web_2048/features/game/domain/usecases/reset_board.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/update_board.dart';
 import 'package:flutter_web_2048/features/game/presentation/bloc/bloc.dart';
 import 'package:mockito/mockito.dart';
@@ -12,18 +13,23 @@ class MockGetCurrentBoard extends Mock implements GetCurrentBoard {}
 
 class MockUpdateBoard extends Mock implements UpdateBoard {}
 
+class MockResetBoard extends Mock implements ResetBoard {}
+
 void main() {
   GameBloc bloc;
   MockGetCurrentBoard mockGetCurrentBoard;
   MockUpdateBoard mockUpdateBoard;
+  MockResetBoard mockResetBoard;
 
   setUp(() {
     mockGetCurrentBoard = MockGetCurrentBoard();
     mockUpdateBoard = MockUpdateBoard();
+    mockResetBoard = MockResetBoard();
 
     bloc = GameBloc(
       getCurrentBoard: mockGetCurrentBoard,
       updateBoard: mockUpdateBoard,
+      resetBoard: mockResetBoard,
     );
   });
 
@@ -37,18 +43,28 @@ void main() {
         () => GameBloc(
               getCurrentBoard: null,
               updateBoard: null,
+              resetBoard: null,
             ),
         throwsA(isA<AssertionError>()));
     expect(
         () => GameBloc(
               getCurrentBoard: mockGetCurrentBoard,
               updateBoard: null,
+              resetBoard: null,
             ),
         throwsA(isA<AssertionError>()));
     expect(
         () => GameBloc(
               getCurrentBoard: null,
               updateBoard: mockUpdateBoard,
+              resetBoard: null,
+            ),
+        throwsA(isA<AssertionError>()));
+    expect(
+        () => GameBloc(
+              getCurrentBoard: null,
+              updateBoard: null,
+              resetBoard: mockResetBoard,
             ),
         throwsA(isA<AssertionError>()));
   });
@@ -87,7 +103,7 @@ void main() {
       // ASSERT LATER
       final expected = [
         InitialGame(),
-        UpdateBoardStart(null),
+        UpdateBoardStart(),
         UpdateBoardEnd(usecaseOutput),
       ];
 
@@ -123,7 +139,7 @@ void main() {
       // ASSERT LATER
       final expected = [
         InitialGame(),
-        UpdateBoardStart(direction),
+        UpdateBoardStart(),
         UpdateBoardEnd(usecaseOutput),
       ];
 
@@ -156,7 +172,7 @@ void main() {
       // ASSERT LATER
       final expected = [
         InitialGame(),
-        UpdateBoardStart(direction),
+        UpdateBoardStart(),
         GameOver(usecaseOutput),
       ];
 
@@ -166,6 +182,40 @@ void main() {
       );
 
       bloc.add(Move(direction: direction));
+    });
+  });
+
+  group('NewGame', () {
+    test('should call [ResetBoard] usecase', () async {
+      // ARRANGE
+      when(mockResetBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
+
+      // ACT
+      bloc.add(NewGame());
+      await untilCalled(mockResetBoard.call(any));
+
+      // ASSERT
+      verify(mockResetBoard.call(any));
+    });
+
+    test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd]', () {
+      // ARRANGE
+      final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
+      when(mockResetBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+
+      // ASSERT LATER
+      final expected = [
+        InitialGame(),
+        UpdateBoardStart(),
+        UpdateBoardEnd(usecaseOutput),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(NewGame());
     });
   });
 }
