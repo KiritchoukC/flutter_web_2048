@@ -12,15 +12,14 @@ import '../../domain/repositories/board_repository.dart';
 
 class LocalBoardRepository implements BoardRepository {
   Board _currentBoard;
-  final Random _random;
 
-  LocalBoardRepository() : _random = Random();
+  LocalBoardRepository();
 
   /// Get the starting board with a single random '2' tile in it.
   @override
   Future<Board> getCurrentBoard() async {
     // Initialize the current board if it does not exist yet.
-    _currentBoard = _currentBoard ?? initializeBoard();
+    _currentBoard = _currentBoard ?? Board.initialize();
 
     return _currentBoard;
   }
@@ -34,9 +33,7 @@ class LocalBoardRepository implements BoardRepository {
     bool hasBoardMoved = false;
 
     // reset merged tiles
-    board.tiles
-        .where((tile) => tile != null && tile.merged)
-        .forEach((tile) => tile.merged = false);
+    board.resetMergedTiles();
 
     // traverse the grid
     for (var i = 0; i < size; i++) {
@@ -75,118 +72,18 @@ class LocalBoardRepository implements BoardRepository {
     }
 
     if (hasBoardMoved) {
-      var newTileCoordinate = getRandomEmptyTileCoordinate(board);
-      var newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
-      var newTile = Tile(
-        newTileValue,
-        x: newTileCoordinate.x,
-        y: newTileCoordinate.y,
-      );
-
-      board.tiles.set(newTileCoordinate.x, newTileCoordinate.y, newTile);
+      // if the board has moved, add a new tile randomly
+      board.addRandomTile();
     }
 
-    // get the merged tiles
-    final mergedTiles = board.tiles.where((tile) => tile != null && tile.merged);
-    // update score if there is merging
-    if (mergedTiles.length > 0) {
-      final points = mergedTiles.length == 1
-          ? mergedTiles.first.value
-          : mergedTiles.map((tile) => tile.value).reduce((total, value) => total + value);
-
-      board.score += points;
-    }
+    // update the board score
+    board.updateScore();
 
     return board;
-  }
-
-  /// Get the index of an empty tile
-  Coordinate getRandomEmptyTileCoordinate(Board board) {
-    // get the empty tile indices
-    var emptyTiles = board.getEmptyTileCoordinates();
-    // return a random empty tile index
-    return emptyTiles.toList()[_random.nextInt(emptyTiles.length)];
   }
 
   @override
   Future resetBoard() async {
     _currentBoard = null;
-  }
-
-  /// Initialize the board
-  Board initializeBoard() {
-    // get the random position for each tile
-    var randomFirstTiles = _getRandomFirstTiles().toList();
-
-    // generate all the tiles with the first tile at the random position
-    var tiles = _generateTiles(
-      randomFirstTiles.toList()[0],
-      randomFirstTiles.toList()[1],
-    );
-
-    // create and return the new board.
-    return Board(tiles);
-  }
-
-  /// Get random positioned tiles
-  Iterable<Tile> _getRandomFirstTiles() sync* {
-    // get the length of row and column with the square of max
-    int square = 4;
-
-    int firstTileX = _random.nextInt(square);
-    int firstTileY = _random.nextInt(square);
-
-    // generate the first tile
-    var firstTile = Tile(
-      2,
-      x: firstTileX,
-      y: firstTileY,
-    );
-
-    // return the first generated tile
-    yield firstTile;
-
-    // generate the second index
-    int half = square ~/ 2;
-
-    // get the second tile x position
-    int secondTileX = 0;
-    if (firstTile.x < half) {
-      secondTileX = half + _random.nextInt(half);
-    } else {
-      secondTileX = _random.nextInt(half);
-    }
-
-    // get the second tile y position
-    int secondTileY = 0;
-    if (firstTile.y < half) {
-      secondTileY = half + _random.nextInt(half);
-    } else {
-      secondTileY = _random.nextInt(half);
-    }
-
-    // generate and return the second random tile
-    yield Tile(
-      2,
-      x: secondTileX,
-      y: secondTileY,
-    );
-  }
-
-  /// Generate the board tiles with the given random tiles
-  pm.Array2D<Tile> _generateTiles(Tile firstRandomTile, Tile secondRandomTile) {
-    return pm.Array2D<Tile>.generated(4, 4, (x, y) {
-      // generate the first random tile
-      if (firstRandomTile.x == x && firstRandomTile.y == y) {
-        return firstRandomTile;
-      }
-
-      // generate the second random tile
-      if (secondRandomTile.x == x && secondRandomTile.y == y) {
-        return secondRandomTile;
-      }
-
-      return null;
-    });
   }
 }

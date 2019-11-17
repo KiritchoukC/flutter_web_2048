@@ -16,6 +16,10 @@ class BoardScoreWidget extends StatelessWidget {
             score = state.board.score;
           }
 
+          if (state is GameOver) {
+            score = state.board.score;
+          }
+
           return Text(
             score.toString(),
             semanticsLabel: 'The game score',

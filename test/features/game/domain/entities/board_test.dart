@@ -13,7 +13,7 @@ void main() {
       var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTileCoordinates();
+      var actual = board.getEmptyCellsCoordinate();
       // ASSERT
       expect(actual.length, 16);
     });
@@ -42,7 +42,7 @@ void main() {
       var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTileCoordinates().toList();
+      var actual = board.getEmptyCellsCoordinate().toList();
       // ASSERT
       expect(actual.length, 16);
       for (var i = 0; i < 16; i++) {
@@ -60,7 +60,7 @@ void main() {
       tiles.set(3, 3, Tile(2, x: 3, y: 3));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTileCoordinates();
+      var actual = board.getEmptyCellsCoordinate();
       // ASSERT
       expect(actual.length, 14);
     });
@@ -70,7 +70,7 @@ void main() {
       var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTileCoordinates();
+      var actual = board.getEmptyCellsCoordinate();
       // ASSERT
       expect(actual.length, 0);
     });
@@ -81,7 +81,7 @@ void main() {
       var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
       var board = Board(tiles);
       // ACT
-      var actual = board.getEmptyTileCoordinates();
+      var actual = board.getEmptyCellsCoordinate();
       // ASSERT
       expect(actual.toList(), expected);
     });
@@ -568,7 +568,9 @@ void main() {
         expect(actual.y, 0);
         expect(actual.hasMerged, true);
       });
-      test('should move up and merge with the blocking tile but not with the previously merged tile', () {
+      test(
+          'should move up and merge with the blocking tile but not with the previously merged tile',
+          () {
         // ARRANGE
         var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
         var board = Board(tiles);
@@ -609,6 +611,204 @@ void main() {
         // it should have its [hasMerged] property to true
         expect(actual.hasMerged, true);
       });
+    });
+  });
+
+  group('updateScore', () {
+    test('without merge should 0', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      int actual = board.updateScore();
+      // ASSERT
+      expect(actual, 0);
+    });
+
+    test('with 1 merged tile should this tile value', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      var mergedTile = Tile(2, x: 0, y: 0, merged: true);
+      board.tiles.set(mergedTile.x, mergedTile.y, mergedTile);
+
+      // ACT
+      int actual = board.updateScore();
+      // ASSERT
+      expect(actual, 2);
+    });
+
+    test('with multiple merged tiles should the sum of tiles value', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      board.tiles.set(0, 0, Tile(2, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 1, Tile(4, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 2, Tile(8, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 3, Tile(16, x: 0, y: 0, merged: true));
+      board.tiles.set(1, 0, Tile(32, x: 0, y: 0, merged: true));
+
+      int expected = 62;
+
+      // ACT
+      int actual = board.updateScore();
+      // ASSERT
+      expect(actual, expected);
+    });
+  });
+
+  group('resetMergedTiles', () {
+    test('should set all the merged tiles to false', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      board.tiles.set(0, 0, Tile(2, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 1, Tile(4, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 2, Tile(8, x: 0, y: 0, merged: true));
+      board.tiles.set(0, 3, Tile(16, x: 0, y: 0, merged: true));
+      board.tiles.set(1, 0, Tile(32, x: 0, y: 0, merged: true));
+
+      // ACT
+      board.resetMergedTiles();
+      // ASSERT
+      expect(board.mergedTiles.length, 0);
+    });
+  });
+
+  group('addRandomTile', () {
+    test('should add a tile to the board', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      board.addRandomTile();
+      // ASSERT
+      expect(board.tiles.where((tile) => tile != null).length, 1);
+    });
+    test('should return [Right] for success', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      var actual = board.addRandomTile();
+      // ASSERT
+      expect(actual.isRight(), true);
+    });
+    test('should return [Left] for failure', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      var board = Board(tiles);
+
+      // ACT
+      var actual = board.addRandomTile();
+      // ASSERT
+      expect(actual.isLeft(), true);
+    });
+  });
+
+  group('getRandomEmptyTileCoordinate', () {
+    test('should return an empty cell coordinate', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      var actual = board.getRandomEmptyTileCoordinate();
+      // ASSERT
+      var coordinate = actual.getOrElse(() => null);
+      var cell = board.tiles.get(coordinate.x, coordinate.y);
+      expect(cell, null);
+    });
+    test('should return the empty cell coordinate', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      var board = Board(tiles);
+
+      int emptyTileX = 2;
+      int emptyTileY = 2;
+
+      // remove a tile
+      board.tiles.set(emptyTileX, emptyTileY, null);
+
+      // ACT
+      var actual = board.getRandomEmptyTileCoordinate();
+      // ASSERT
+      var coordinate = actual.getOrElse(() => null);
+      expect(coordinate.x, emptyTileX);
+      expect(coordinate.y, emptyTileY);
+    });
+    test('should return left if no empty cell', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      var board = Board(tiles);
+
+      // ACT
+      var actual = board.getRandomEmptyTileCoordinate();
+      // ASSERT
+      expect(actual.isLeft(), true);
+    });
+  });
+
+  group('isBlocked', () {
+    test('should return false if there is an empty cell', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      var board = Board(tiles);
+
+      // set empty cell
+      board.tiles.set(0, 0, null);
+
+      // ACT
+      bool actual = board.isBlocked();
+
+      // ASSERT
+      expect(actual, false);
+    });
+
+    test('should return false if there is an available merge', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      var board = Board(tiles);
+
+      // ACT
+      bool actual = board.isBlocked();
+
+      // ASSERT
+      expect(actual, false);
+    });
+
+    test('should return true if there is no empty cells and no merge available', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+
+      // put '4' tiles in between
+      tiles.set(1, 0, Tile(4, x: 1, y: 0));
+      tiles.set(3, 0, Tile(4, x: 3, y: 0));
+      tiles.set(0, 1, Tile(4, x: 0, y: 1));
+      tiles.set(2, 1, Tile(4, x: 2, y: 1));
+      tiles.set(1, 2, Tile(4, x: 1, y: 2));
+      tiles.set(3, 2, Tile(4, x: 3, y: 2));
+      tiles.set(0, 3, Tile(4, x: 0, y: 3));
+      tiles.set(2, 3, Tile(4, x: 2, y: 3));
+
+      var board = Board(tiles);
+
+      // |2|4|2|4|
+      // |4|2|4|2|
+      // |2|4|2|4|
+      // |4|2|4|2|
+
+      // ACT
+      bool actual = board.isBlocked();
+
+      // ASSERT
+      expect(actual, true);
     });
   });
 }

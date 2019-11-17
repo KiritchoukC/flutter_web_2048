@@ -45,7 +45,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       );
 
       // send the end state with the updated board
-      yield UpdateBoardEnd(output);
+      if (output.over) {
+        yield GameOver(output);
+      } else {
+        yield UpdateBoardEnd(output);
+      }
     }
 
     if (event is LoadInitialBoard) {
