@@ -134,5 +134,38 @@ void main() {
 
       bloc.add(Move(direction: direction));
     });
+
+    test('should emit [InitialGame, UpdateBoardStart, GameOver] when the game is over', () {
+      // ARRANGE
+      final direction = Direction.down;
+      // generate board in a game over state
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      tiles.set(1, 0, Tile(4, x: 1, y: 0));
+      tiles.set(3, 0, Tile(4, x: 3, y: 0));
+      tiles.set(0, 1, Tile(4, x: 0, y: 1));
+      tiles.set(2, 1, Tile(4, x: 2, y: 1));
+      tiles.set(1, 2, Tile(4, x: 1, y: 2));
+      tiles.set(3, 2, Tile(4, x: 3, y: 2));
+      tiles.set(0, 3, Tile(4, x: 0, y: 3));
+      tiles.set(2, 3, Tile(4, x: 2, y: 3));
+      final usecaseOutput = Board(tiles);
+
+      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockUpdateBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+
+      // ASSERT LATER
+      final expected = [
+        InitialGame(),
+        UpdateBoardStart(direction),
+        GameOver(usecaseOutput),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(Move(direction: direction));
+    });
   });
 }

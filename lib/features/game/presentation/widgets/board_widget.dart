@@ -5,13 +5,60 @@ import '../../domain/entities/board.dart';
 import '../bloc/bloc.dart';
 import 'tile_widget.dart';
 
-class BoardWidget extends StatefulWidget {
+class BoardWidget extends StatelessWidget {
   @override
-  _BoardWidgetState createState() => _BoardWidgetState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameBloc, GameState>(
+      builder: (context, state) {
+        if (state is InitialGame) {
+          BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
+        }
+
+        if (state is UpdateBoardEnd) {
+          return GameBoardWidget(board: state.board);
+        }
+
+        if (state is GameOver) {
+          return GameBoardWidget(board: state.board, isOver: true);
+        }
+
+        return Container();
+      },
+    );
+  }
 }
 
-class _BoardWidgetState extends State<BoardWidget> {
-  Widget _buildBoard(Board board) {
+class GameBoardWidget extends StatelessWidget {
+  final Board board;
+  final bool isOver;
+  final List<Widget> _children = <Widget>[];
+
+  GameBoardWidget({
+    Key key,
+    @required this.board,
+    this.isOver = false,
+  }) : super(key: key) {
+    // add the grid
+    _children.add(GridWidget(board: board));
+    if (isOver) {
+      // if game over add the overlay
+      _children.add(GameOverOverlay());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Stack(children: _children);
+}
+
+class GridWidget extends StatelessWidget {
+  final Board board;
+
+  const GridWidget({
+    Key key,
+    @required this.board,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
     return Container(
       color: Colors.grey.shade900,
       child: GridView.builder(
@@ -29,21 +76,45 @@ class _BoardWidgetState extends State<BoardWidget> {
       ),
     );
   }
+}
+
+class GameOverOverlay extends StatefulWidget {
+  @override
+  _GameOverOverlayState createState() => _GameOverOverlayState();
+}
+
+class _GameOverOverlayState extends State<GameOverOverlay> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_controller);
+
+    _controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(
-      builder: (context, state) {
-        if (state is InitialGame) {
-          BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
-        }
-
-        if (state is UpdateBoardEnd) {
-          return _buildBoard(state.board);
-        }
-
-        return Container();
-      },
+    return FadeTransition(
+      opacity: _animation,
+      child: Container(
+        color: Color.fromARGB(50, 0, 0, 0),
+        alignment: Alignment.center,
+        child: Text(
+          'GAME OVER',
+          style: TextStyle(color: Colors.white, fontSize: 40.0),
+        ),
+      ),
     );
   }
 }

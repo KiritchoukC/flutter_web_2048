@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:dartz/dartz.dart';
 import 'package:piecemeal/piecemeal.dart' as pm;
 
+import '../../../../core/enums/direction.dart';
 import 'coordinate.dart';
 import 'destination.dart';
 import 'tile.dart';
@@ -11,6 +13,9 @@ class Board {
   pm.Array2D<Tile> tiles;
   int score = 0;
   final Random _random;
+
+  // game is over if there is no empty cells left and no more moves available
+  bool get over => getEmptyCellsCoordinate().length == 0 && isBlocked();
 
   List<Tile> get mergedTiles => tiles.where((tile) => tile != null && tile.merged).toList();
 
@@ -31,7 +36,7 @@ class Board {
   }
 
   /// Returns all the empty tile positions in the [board]
-  Iterable<Coordinate> getEmptyTileCoordinates() sync* {
+  Iterable<Coordinate> getEmptyCellsCoordinate() sync* {
     for (var x = 0; x < this.tiles.width; x++) {
       for (var y = 0; y < this.tiles.height; y++) {
         if (this.tiles.get(x, y) == null) {
@@ -117,31 +122,53 @@ class Board {
     return this.score;
   }
 
-  Tile addRandomTile() {
+  // Returns either bool on failre or Tile on success
+  Either<bool, Tile> addRandomTile() {
     // get the coordinate of an empty random cell
     var newTileCoordinate = this.getRandomEmptyTileCoordinate();
+
+    // return false on failure
+    if (newTileCoordinate.isLeft()) {
+      return Left(false);
+    }
+
+    var coordinate = newTileCoordinate.getOrElse(() => null);
+
+    // return fail if there is no coordinate
+    if (coordinate == null) {
+      return Left(false);
+    }
     // get the new tile value with 10% chance of being 4 instead of 2
     var newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
     // generate the new tile
     var newTile = Tile(
       newTileValue,
-      x: newTileCoordinate.x,
-      y: newTileCoordinate.y,
+      x: coordinate.x,
+      y: coordinate.y,
     );
 
     // set the new tile in the current board
-    this.tiles.set(newTileCoordinate.x, newTileCoordinate.y, newTile);
+    this.tiles.set(coordinate.x, coordinate.y, newTile);
 
-    // return the added tile
-    return newTile;
+    // return success
+    return Right(newTile);
   }
 
-  /// Get the index of an empty tile
-  Coordinate getRandomEmptyTileCoordinate() {
-    // get the empty tile indices
-    var emptyTiles = this.getEmptyTileCoordinates();
+  /// Returns either bool on fail or Coordinate on success
+  Either<bool, Coordinate> getRandomEmptyTileCoordinate() {
+    // get the empty cells coordinate
+    var emptyCells = this.getEmptyCellsCoordinate();
+
+    // return fail if no empty cell left
+    if (emptyCells.length == 0) {
+      return Left(false);
+    }
+
     // return a random empty tile index
-    return emptyTiles.toList()[_random.nextInt(emptyTiles.length)];
+    var randomEmptyCell = emptyCells.toList()[_random.nextInt(emptyCells.length)];
+
+    // return the random empty cell
+    return Right(randomEmptyCell);
   }
 
   /// Get random positioned tiles
@@ -207,7 +234,60 @@ class Board {
     });
   }
 
+  // set false on all the tiles [merged] property
   void resetMergedTiles() {
     this.tiles.where((tile) => tile != null && tile.merged).forEach((tile) => tile.merged = false);
+  }
+
+  // check if the board is blocked and no more moves are possible
+  bool isBlocked() {
+    for (var x = 0; x < this.tiles.width; x++) {
+      for (var y = 0; y < this.tiles.height; y++) {
+        final currentCell = this.tiles.get(x, y);
+
+        // if there is an empty cell return false
+        if (currentCell == null) {
+          return false;
+        }
+
+        // check each direction for an available merge
+        for (var i = 0; i < Direction.values.length; i++) {
+          final currentDirection = Direction.values[i];
+          final vector = Vector.fromDirection(currentDirection);
+
+          // get the [x] position of the next cell
+          int nextX = currentCell.x + vector.x;
+
+          // skip if out of board
+          if (nextX < 0 || nextX > 3) {
+            continue;
+          }
+
+          // get the [y] position of the next cell
+          int nextY = currentCell.y + vector.y;
+
+          // skip if out of board
+          if (nextY < 0 || nextY > 3) {
+            continue;
+          }
+
+          // get next cell
+          final nextCell = this.tiles.get(nextX, nextY);
+
+          // if the next cell is empty then a move is available
+          if (nextCell == null) {
+            return false;
+          }
+
+          // if current and next value are the same then a merge is available
+          if (currentCell.value == nextCell.value) {
+            return false;
+          }
+        }
+      }
+    }
+
+    // return true if no moves have been found
+    return true;
   }
 }

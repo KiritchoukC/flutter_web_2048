@@ -30,6 +30,16 @@ class UpdateBoardEnd extends GameState {
   List<Object> get props => [board];
 }
 
+class GameOver extends GameState {
+  final Board board;
+
+  GameOver(this.board);
+
+  @override
+  List<Object> get props => [board];
+}
+
+
 class Error extends GameState {
   final String message;
 
