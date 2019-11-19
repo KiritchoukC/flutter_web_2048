@@ -90,6 +90,7 @@ class TilePoint extends StatelessWidget {
       padding: const EdgeInsets.only(right: 5.0),
       child: Text(
         point.toString(),
+        semanticsLabel: 'A tile of value $point',
         style: TextStyle(
           fontSize: 36,
           fontWeight: FontWeight.bold,

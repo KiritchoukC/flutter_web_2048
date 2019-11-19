@@ -112,6 +112,7 @@ class _GameOverOverlayState extends State<GameOverOverlay> with SingleTickerProv
         alignment: Alignment.center,
         child: Text(
           'GAME OVER',
+          semanticsLabel: 'The game is over',
           style: TextStyle(color: Colors.white, fontSize: 40.0),
         ),
       ),
