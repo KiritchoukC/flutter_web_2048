@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.16.0...v1.17.0) (2019-11-19)
+
+
+### Features
+
+* **presentation:** add semanticslabel to all the text widget ([ea2e737](https://github.com/KiritchoukC/flutter_clean_architecture_template/commit/ea2e737)), closes [#18](https://github.com/KiritchoukC/flutter_clean_architecture_template/issues/18)
+
 ## [1.16.0](https://github.com/KiritchoukC/flutter_clean_architecture_template/compare/v1.15.1...v1.16.0) (2019-11-17)
 
 
