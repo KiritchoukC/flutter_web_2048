@@ -6,25 +6,30 @@ import 'package:meta/meta.dart';
 import './bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../domain/usecases/get_current_board.dart';
+import '../../domain/usecases/get_highscore.dart';
 import '../../domain/usecases/reset_board.dart';
-import '../../domain/usecases/update_board.dart';
+import '../../domain/usecases/update_board.dart' as update_board;
 
 /// Handles the game event and send the game states
 class GameBloc extends Bloc<GameEvent, GameState> {
   // update board usecase
-  final UpdateBoard updateBoard;
+  final update_board.UpdateBoard updateBoard;
   // get current board usecase
   final GetCurrentBoard getCurrentBoard;
   // reset board usecase
   final ResetBoard resetBoard;
+  // get highscore usecase
+  final GetHighscore getHighscore;
 
-  GameBloc({
-    @required this.updateBoard,
-    @required this.getCurrentBoard, 
-    @required this.resetBoard,
-  })  : assert(updateBoard != null),
+  GameBloc(
+      {@required this.updateBoard,
+      @required this.getCurrentBoard,
+      @required this.resetBoard,
+      @required this.getHighscore})
+      : assert(updateBoard != null),
         assert(getCurrentBoard != null),
-        assert(resetBoard != null);
+        assert(resetBoard != null),
+        assert(getHighscore != null);
 
   @override
   GameState get initialState => InitialGame();
@@ -43,16 +48,22 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
       // call the use case to update the current [board] with the given [direction]
       final output = await updateBoard(
-        Params(
+        update_board.Params(
           board: currentBoard,
           direction: event.direction,
         ),
       );
 
-      // send the end state with the updated board
       if (output.over) {
+        // send the game over state with the boad and highscore
         yield GameOver(output);
+
+        // get the new highscore
+        final highscore = await getHighscore(NoParams());
+        // send highscore loaded event
+        yield HighscoreLoaded(highscore);
       } else {
+        // send the end state with the updated board
         yield UpdateBoardEnd(output);
       }
     }
@@ -77,6 +88,18 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
       // send the end state with the new board
       yield UpdateBoardEnd(output);
+
+      // send the updated highscore
+      final highscore = await getHighscore(NoParams());
+      yield HighscoreLoaded(highscore);
+    }
+
+    if (event is LoadHighscore) {
+      // get the previous highscore
+      final output = await getHighscore(NoParams());
+
+      // send the event with the previous highscore
+      yield HighscoreLoaded(output);
     }
   }
 }

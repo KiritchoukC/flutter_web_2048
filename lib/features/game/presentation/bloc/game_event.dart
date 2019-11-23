@@ -21,3 +21,5 @@ class Move extends GameEvent {
 class LoadInitialBoard extends GameEvent {}
 
 class NewGame extends GameEvent {}
+
+class LoadHighscore extends GameEvent {}
