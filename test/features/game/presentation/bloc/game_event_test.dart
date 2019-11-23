@@ -54,4 +54,20 @@ void main() {
       expect(newGame.props, expected);
     });
   });
+  group('LoadHighscore', () {
+    test('should extend GameEvent', () {
+      // ACT
+      var event = LoadHighscore();
+      // ASSERT
+      expect(event, isA<GameEvent>());
+    });
+    test('should have an empty props list', () {
+      // ARRANGE
+      var expected = <Object>[];
+      // ACT
+      var event = LoadHighscore();
+      // ASSERT
+      expect(event.props, expected);
+    });
+  });
 }

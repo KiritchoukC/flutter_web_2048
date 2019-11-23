@@ -3,6 +3,7 @@ import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/get_current_board.dart';
+import 'package:flutter_web_2048/features/game/domain/usecases/get_highscore.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/reset_board.dart';
 import 'package:flutter_web_2048/features/game/domain/usecases/update_board.dart';
 import 'package:flutter_web_2048/features/game/presentation/bloc/bloc.dart';
@@ -15,21 +16,26 @@ class MockUpdateBoard extends Mock implements UpdateBoard {}
 
 class MockResetBoard extends Mock implements ResetBoard {}
 
+class MockGetHighscore extends Mock implements GetHighscore {}
+
 void main() {
   GameBloc bloc;
   MockGetCurrentBoard mockGetCurrentBoard;
   MockUpdateBoard mockUpdateBoard;
   MockResetBoard mockResetBoard;
+  MockGetHighscore mockGetHighscore;
 
   setUp(() {
     mockGetCurrentBoard = MockGetCurrentBoard();
     mockUpdateBoard = MockUpdateBoard();
     mockResetBoard = MockResetBoard();
+    mockGetHighscore = MockGetHighscore();
 
     bloc = GameBloc(
       getCurrentBoard: mockGetCurrentBoard,
       updateBoard: mockUpdateBoard,
       resetBoard: mockResetBoard,
+      getHighscore: mockGetHighscore,
     );
   });
 
@@ -44,28 +50,22 @@ void main() {
               getCurrentBoard: null,
               updateBoard: null,
               resetBoard: null,
+              getHighscore: null,
             ),
         throwsA(isA<AssertionError>()));
     expect(
         () => GameBloc(
-              getCurrentBoard: mockGetCurrentBoard,
-              updateBoard: null,
-              resetBoard: null,
-            ),
+            getCurrentBoard: mockGetCurrentBoard,
+            updateBoard: null,
+            resetBoard: null,
+            getHighscore: null),
         throwsA(isA<AssertionError>()));
     expect(
         () => GameBloc(
-              getCurrentBoard: null,
-              updateBoard: mockUpdateBoard,
-              resetBoard: null,
-            ),
-        throwsA(isA<AssertionError>()));
-    expect(
-        () => GameBloc(
-              getCurrentBoard: null,
-              updateBoard: null,
-              resetBoard: mockResetBoard,
-            ),
+            getCurrentBoard: null,
+            updateBoard: mockUpdateBoard,
+            resetBoard: null,
+            getHighscore: null),
         throwsA(isA<AssertionError>()));
   });
 
@@ -75,10 +75,13 @@ void main() {
   });
 
   test('close should not emit new states', () {
+    // ASSERT Later
     expectLater(
       bloc,
       emitsInOrder([InitialGame(), emitsDone]),
     );
+
+    // ACT
     bloc.close();
   });
 
@@ -151,7 +154,9 @@ void main() {
       bloc.add(Move(direction: direction));
     });
 
-    test('should emit [InitialGame, UpdateBoardStart, GameOver] when the game is over', () {
+    test(
+        'should emit [InitialGame, UpdateBoardStart, GameOver, HighscoreLoaded] when the game is over',
+        () {
       // ARRANGE
       final direction = Direction.down;
       // generate board in a game over state
@@ -168,12 +173,15 @@ void main() {
 
       when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
       when(mockUpdateBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      final highscore = 9000;
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => highscore);
 
       // ASSERT LATER
       final expected = [
         InitialGame(),
         UpdateBoardStart(),
         GameOver(usecaseOutput),
+        HighscoreLoaded(highscore)
       ];
 
       expectLater(
@@ -198,16 +206,19 @@ void main() {
       verify(mockResetBoard.call(any));
     });
 
-    test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd]', () {
+    test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd, HighscoreLoaded]', () {
       // ARRANGE
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
       when(mockResetBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      final highscore = 9000;
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => highscore);
 
       // ASSERT LATER
       final expected = [
         InitialGame(),
         UpdateBoardStart(),
         UpdateBoardEnd(usecaseOutput),
+        HighscoreLoaded(highscore),
       ];
 
       expectLater(
@@ -216,6 +227,39 @@ void main() {
       );
 
       bloc.add(NewGame());
+    });
+  });
+
+  group('LoadHighscore', () {
+    test('should call [GetHighscore] usecase', () async {
+      // ARRANGE
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => 9000);
+
+      // ACT
+      bloc.add(LoadHighscore());
+      await untilCalled(mockGetHighscore.call(any));
+
+      // ASSERT
+      verify(mockGetHighscore.call(any));
+    });
+
+    test('should emit [InitialGame, HighscoreLoaded]', () {
+      // ARRANGE
+      final usecaseOutput = 9000;
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => usecaseOutput);
+
+      // ASSERT LATER
+      final expected = [
+        InitialGame(),
+        HighscoreLoaded(usecaseOutput),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(LoadHighscore());
     });
   });
 }

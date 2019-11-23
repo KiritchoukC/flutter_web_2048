@@ -1,16 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:piecemeal/piecemeal.dart' as pm;
 
 import 'package:flutter_web_2048/core/enums/direction.dart';
+import 'package:flutter_web_2048/features/game/data/datasources/board_datasource.dart';
 import 'package:flutter_web_2048/features/game/data/repositories/local_board_repository.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 
+class MockBoardDataSource extends Mock implements BoardDataSource {}
+
 void main() {
   LocalBoardRepository repository;
+  MockBoardDataSource mockDatasource;
 
   setUp(() {
-    repository = LocalBoardRepository();
+    mockDatasource = MockBoardDataSource();
+    repository = LocalBoardRepository(datasource: mockDatasource);
+  });
+
+  test('should throw when initialized with null argument', () async {
+    // ACT & ASSERT
+    expect(() => LocalBoardRepository(datasource: null), throwsA(isA<AssertionError>()));
   });
 
   group('getCurrentBoard', () {
@@ -117,6 +128,70 @@ void main() {
       // ASSERT
       expect(actual.tiles.where((tile) => tile == null).length, 15);
     });
+
+    test(
+        'should call datasource to save highscore when game is over and the score is higher than the previous one',
+        () async {
+      // ARRANGE
+      var previousScore = 10;
+      var newScore = 9000;
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+
+      // put '4' tiles in between
+      tiles.set(1, 0, Tile(4, x: 1, y: 0));
+      tiles.set(3, 0, Tile(4, x: 3, y: 0));
+      tiles.set(0, 1, Tile(4, x: 0, y: 1));
+      tiles.set(2, 1, Tile(4, x: 2, y: 1));
+      tiles.set(1, 2, Tile(4, x: 1, y: 2));
+      tiles.set(3, 2, Tile(4, x: 3, y: 2));
+      tiles.set(0, 3, Tile(4, x: 0, y: 3));
+      tiles.set(2, 3, Tile(4, x: 2, y: 3));
+
+      var board = Board(tiles);
+      board.score = newScore;
+
+      // arrange mock
+      when(mockDatasource.getHighscore()).thenAnswer((_) async => previousScore);
+      when(mockDatasource.setHighscore(newScore));
+
+      // ACT
+      await repository.updateBoard(board, Direction.down);
+
+      // ASSERT
+      verify(mockDatasource.setHighscore(newScore)).called(1);
+    });
+
+    // test(
+    //     'should not call datasource to save highscore when game is over and the score is lower than the previous one',
+    //     () async {
+    //   // ARRANGE
+    //   var previousScore = 9000;
+    //   var newScore = 10;
+    //   var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+
+    //   // put '4' tiles in between
+    //   tiles.set(1, 0, Tile(4, x: 1, y: 0));
+    //   tiles.set(3, 0, Tile(4, x: 3, y: 0));
+    //   tiles.set(0, 1, Tile(4, x: 0, y: 1));
+    //   tiles.set(2, 1, Tile(4, x: 2, y: 1));
+    //   tiles.set(1, 2, Tile(4, x: 1, y: 2));
+    //   tiles.set(3, 2, Tile(4, x: 3, y: 2));
+    //   tiles.set(0, 3, Tile(4, x: 0, y: 3));
+    //   tiles.set(2, 3, Tile(4, x: 2, y: 3));
+
+    //   var board = Board(tiles);
+    //   board.score = newScore;
+
+    //   // arrange mock
+    //   when(mockDatasource.getHighscore()).thenAnswer((_) => Future.value(previousScore));
+    //   when(mockDatasource.setHighscore(newScore));
+
+    //   // ACT
+    //   await repository.updateBoard(board, Direction.down);
+
+    //   // ASSERT
+    //   verifyNever(mockDatasource.setHighscore(newScore));
+    // });
 
     group('merge', () {
       test("when 2 '2' are on the same row, direction is left and the merged tile move to the left",
@@ -427,5 +502,27 @@ void main() {
         expect(movedTile.value, 2);
       });
     });
+  });
+
+  group('getHighscore', () {
+    test('should call datasource', () async {
+      // ACT
+      await repository.getHighscore();
+      // ASSERT
+      verify(mockDatasource.getHighscore()).called(1);
+    });
+
+    // test('should return datasource output', () async {
+    //   // ARRANGE
+    //   int highscore = 70000;
+    //   // when(mockDatasource.getHighscore()).thenAnswer((_) async => highscore);
+    //   when(mockDatasource.getHighscore()).thenReturn(Future.value(highscore));
+
+    //   // ACT
+    //   int actual = await repository.getHighscore();
+
+    //   // ASSERT
+    //   expect(actual, highscore);
+    // });
   });
 }

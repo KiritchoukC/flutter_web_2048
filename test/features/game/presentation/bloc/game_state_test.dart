@@ -25,6 +25,25 @@ void main() {
       expect(gameOver.props, expected);
     });
   });
+  group('HighscoreLoaded', () {
+    test('should extend GameState', () {
+      // ARRANGE
+      int highscore = 9000;
+      // ACT
+      var state = HighscoreLoaded(highscore);
+      // ASSERT
+      expect(state, isA<GameState>());
+    });
+    test('should have props list with the board and highscore', () {
+      // ARRANGE
+      int highscore = 9000;
+      var expected = <Object>[highscore];
+      // ACT
+      var state = HighscoreLoaded(highscore);
+      // ASSERT
+      expect(state.props, expected);
+    });
+  });
   group('Error', () {
     test('should extend GameState', () {
       // ARRANGE

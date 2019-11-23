@@ -1,14 +1,19 @@
+import 'package:meta/meta.dart';
+
 import '../../../../core/enums/direction.dart';
 import '../../domain/entities/board.dart';
 import '../../domain/entities/tile.dart';
 import '../../domain/entities/traversal.dart';
 import '../../domain/entities/vector.dart';
 import '../../domain/repositories/board_repository.dart';
+import '../datasources/board_datasource.dart';
 
 class LocalBoardRepository implements BoardRepository {
+  final BoardDataSource datasource;
+
   Board _currentBoard;
 
-  LocalBoardRepository();
+  LocalBoardRepository({@required this.datasource}) : assert(datasource != null);
 
   /// Get the starting board with a single random '2' tile in it.
   @override
@@ -74,11 +79,39 @@ class LocalBoardRepository implements BoardRepository {
     // update the board score
     board.updateScore();
 
+    // persist high score if game is over
+    if (board.over) {
+      await _updateHighscore(board.score);
+    }
+
     return board;
   }
 
   @override
   Future<void> resetBoard() async {
     _currentBoard = null;
+  }
+
+  /// get persisted high score
+  Future<int> getHighscore() async {
+    // get high score from data source
+    return datasource.getHighscore();
+  }
+
+  Future<void> _updateHighscore(int highscore) async {
+    // get the current highscore
+    final currentHighscore = await getHighscore();
+
+    print({
+      'currentHighscore': currentHighscore,
+      'newHighscore': highscore,
+      'update': currentHighscore < highscore,
+    });
+
+    if (currentHighscore < highscore) {
+      print('called');
+      // if the new highscore is greater than the current one then save it
+      await datasource.setHighscore(highscore);
+    }
   }
 }

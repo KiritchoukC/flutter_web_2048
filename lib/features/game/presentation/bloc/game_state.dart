@@ -39,3 +39,12 @@ class Error extends GameState {
   @override
   List<Object> get props => [message];
 }
+
+class HighscoreLoaded extends GameState {
+  final int highscore;
+
+  HighscoreLoaded(this.highscore);
+
+  @override
+  List<Object> get props => [highscore];
+}

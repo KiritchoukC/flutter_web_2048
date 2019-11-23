@@ -28,53 +28,21 @@ class EmptyTile extends StatelessWidget {
   }
 }
 
-class ValueTile extends StatefulWidget {
+class ValueTile extends StatelessWidget {
   final Tile tile;
 
   const ValueTile({Key key, this.tile}) : super(key: key);
 
   @override
-  _ValueTileState createState() => _ValueTileState();
-}
-
-class _ValueTileState extends State<ValueTile> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _opacity;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-    );
-
-    _opacity = Tween<double>(begin:0, end: 1)
-        .animate(_controller);
-
-    _controller.forward();
-  }
-
-  @override
-  void dispose() { 
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: Stack(
-        alignment: AlignmentDirectional.topEnd,
-        children: <Widget>[
-          Container(
-            color: TileColorConverter.mapTileValueToColor(widget.tile.value),
-          ),
-          TilePoint(point: widget.tile.value),
-        ],
-      ),
+    return Stack(
+      alignment: AlignmentDirectional.topEnd,
+      children: <Widget>[
+        Container(
+          color: TileColorConverter.mapTileValueToColor(tile.value),
+        ),
+        TilePoint(point: tile.value),
+      ],
     );
   }
 }
@@ -90,6 +58,7 @@ class TilePoint extends StatelessWidget {
       padding: const EdgeInsets.only(right: 5.0),
       child: Text(
         point.toString(),
+        semanticsLabel: 'A tile of value $point',
         style: TextStyle(
           fontSize: 36,
           fontWeight: FontWeight.bold,

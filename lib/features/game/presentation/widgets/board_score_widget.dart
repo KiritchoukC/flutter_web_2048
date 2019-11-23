@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_2048/core/util/horizontal_spacing.dart';
 
 import '../bloc/bloc.dart';
 
@@ -8,24 +9,85 @@ class BoardScoreWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
-      child: BlocBuilder<GameBloc, GameState>(
-        builder: (context, state) {
-          int score = 0;
-
-          if (state is UpdateBoardEnd) {
-            score = state.board.score;
-          }
-
-          if (state is GameOver) {
-            score = state.board.score;
-          }
-
-          return Text(
-            score.toString(),
-            semanticsLabel: 'The game score',
-          );
-        },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ScoreWidget(),
+          HorizontalSpacing.large(),
+          HighscoreWidget(),
+        ],
       ),
+    );
+  }
+}
+
+class ScoreWidget extends StatelessWidget {
+  const ScoreWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameBloc, GameState>(
+      condition: (previousState, state) {
+        if (previousState is GameOver) {
+          return false;
+        }
+
+        if (state is UpdateBoardEnd || state is GameOver) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        int score = 0;
+
+        if (state is UpdateBoardEnd) {
+          score = state.board.score;
+        }
+
+        if (state is GameOver) {
+          score = state.board.score;
+        }
+
+        return Text(
+          score.toString(),
+          semanticsLabel: 'The game score',
+        );
+      },
+    );
+  }
+}
+
+class HighscoreWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameBloc, GameState>(
+      condition: (previousState, state) {
+        if (state is HighscoreLoaded || state is InitialGame) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        int _highscore = 0;
+        if (state is InitialGame) {
+          BlocProvider.of<GameBloc>(context).add(LoadHighscore());
+        }
+
+        if (state is HighscoreLoaded) {
+          _highscore = state.highscore;
+        }
+
+        return Opacity(
+          opacity: 0.5,
+          child: Text(
+            _highscore.toString(),
+            semanticsLabel: 'The previous highscore',
+            style: TextStyle(fontSize: 20.0),
+          ),
+        );
+      },
     );
   }
 }

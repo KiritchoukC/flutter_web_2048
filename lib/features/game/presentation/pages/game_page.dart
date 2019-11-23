@@ -17,7 +17,7 @@ class GamePage extends StatelessWidget {
           onPressed: () {
             BlocProvider.of<GameBloc>(context).add(NewGame());
           },
-          child: Text('New Game'),
+          child: Text('New Game', semanticsLabel: 'Start a new game'),
         )
       ],
     );

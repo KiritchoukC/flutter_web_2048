@@ -9,6 +9,12 @@ class BoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
+      condition: (previousState, state) {
+        if (state is HighscoreLoaded) {
+          return false;
+        }
+        return true;
+      },
       builder: (context, state) {
         if (state is InitialGame) {
           BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
@@ -112,6 +118,7 @@ class _GameOverOverlayState extends State<GameOverOverlay> with SingleTickerProv
         alignment: Alignment.center,
         child: Text(
           'GAME OVER',
+          semanticsLabel: 'The game is over',
           style: TextStyle(color: Colors.white, fontSize: 40.0),
         ),
       ),

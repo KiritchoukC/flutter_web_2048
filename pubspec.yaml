@@ -19,10 +19,12 @@ dependencies:
   get_it: ^3.0.3
   dartz: ^0.8.7
   connectivity: ^0.4.4
-  shared_preferences: ^0.5.3+4
   data_connection_checker: ^0.3.4
   swipedetector: ^1.2.0
   piecemeal: any
+  hive: ^1.1.1
+  hive_flutter: ^0.2.1
+  path_provider: ^1.4.4
 
 dev_dependencies:
   flutter_test:
