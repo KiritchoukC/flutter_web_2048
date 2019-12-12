@@ -41,3 +41,18 @@ jobs:
           args: deploy --only hosting
         env: 
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      
+      - name: Build apk
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.12.2'
+          channel: 'dev'
+      - run: flutter build apk
+
+      - name: Firebase apk distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.1.1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          file: ./build/outputs/apk/release/app-release.apk
+
