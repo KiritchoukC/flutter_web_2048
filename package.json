@@ -1,6 +1,6 @@
 {
   "name": "flutter_web_2048",
-  "version": "1.18.0",
+  "version": "1.19.2",
   "description": "2048 game made with flutter web framework",
   "main": "index.js",
   "directories": {
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KiritchoukC/flutter_clean_architecture_template.git"
+    "url": "git+https://github.com/KiritchoukC/flutter_web_2048.git"
   },
   "keywords": [
     "flutter"
@@ -25,9 +25,9 @@
   "author": "KiritchoukC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KiritchoukC/flutter_clean_architecture_template/issues"
+    "url": "https://github.com/KiritchoukC/flutter_web_2048/issues"
   },
-  "homepage": "https://github.com/KiritchoukC/flutter_clean_architecture_template#readme",
+  "homepage": "https://github.com/KiritchoukC/flutter_web_2048#readme",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
