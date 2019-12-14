@@ -1,7 +1,7 @@
 name: flutter_web_2048
 description: 2048 game made with flutter web framework
 
-version: 1.18.0
+version: 1.19.6
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
