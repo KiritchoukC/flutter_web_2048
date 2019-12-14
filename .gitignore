@@ -92,3 +92,6 @@ codecov_token
 
 # Firebase related
 .firebase
+android/key.properties
+android/key.jks
+android/app/key.jks

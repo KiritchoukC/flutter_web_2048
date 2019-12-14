@@ -7,13 +7,14 @@ import '../bloc/bloc.dart';
 class BoardScoreWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
+    return Container(
+      width: 200,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ScoreWidget(),
-          HorizontalSpacing.large(),
+          HorizontalSpacing.small(),
           HighscoreWidget(),
         ],
       ),
@@ -82,7 +83,7 @@ class HighscoreWidget extends StatelessWidget {
         return Opacity(
           opacity: 0.5,
           child: Text(
-            _highscore.toString(),
+            '(${_highscore.toString()})',
             semanticsLabel: 'The previous highscore',
             style: TextStyle(fontSize: 20.0),
           ),
