@@ -75,7 +75,8 @@ class GridWidget extends StatelessWidget {
           int x, y = 0;
           x = (index % board.tiles.width);
           y = (index / board.tiles.height).floor();
-          return TileWidget(tile: board.tiles.get(x, y));
+          var tile = board.tiles.get(x, y);
+          return TileWidget(tile: tile);
         },
         itemCount: board.tiles.width * board.tiles.height,
         physics: NeverScrollableScrollPhysics(),
