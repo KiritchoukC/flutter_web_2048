@@ -77,12 +77,12 @@ class _DirectionListenerState extends State<DirectionListener> {
           widget.onLeft();
         },
         swipeConfiguration: SwipeConfiguration(
-          verticalSwipeMinVelocity: 10.0,
-          verticalSwipeMinDisplacement: 10.0,
+          verticalSwipeMinVelocity: 5.0,
+          verticalSwipeMinDisplacement: 5.0,
           verticalSwipeMaxWidthThreshold: 1000.0,
           horizontalSwipeMaxHeightThreshold: 1000.0,
-          horizontalSwipeMinDisplacement: 10.0,
-          horizontalSwipeMinVelocity: 10.0,
+          horizontalSwipeMinDisplacement: 5.0,
+          horizontalSwipeMinVelocity: 5.0,
         ),
         child: widget.child,
       ),
