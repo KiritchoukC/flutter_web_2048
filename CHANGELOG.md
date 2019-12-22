@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.20.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.19.12...v1.20.0) (2019-12-22)
+
+
+### Features
+
+* **pwa:** add manifest and favicon ([4b0f014](https://github.com/KiritchoukC/flutter_web_2048/commit/4b0f014)), closes [#31](https://github.com/KiritchoukC/flutter_web_2048/issues/31)
+
 ### [1.19.12](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.19.11...v1.19.12) (2019-12-20)
 
 ### [1.19.11](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.19.10...v1.19.11) (2019-12-20)
