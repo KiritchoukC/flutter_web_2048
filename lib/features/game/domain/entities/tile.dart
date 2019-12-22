@@ -7,11 +7,15 @@ class Tile {
   final int x;
   final int y;
   bool merged;
+  bool isNew;
 
-  Tile(this.value,
-      {@required this.x,
-      @required this.y,
-      this.merged = false});
+  Tile(
+    this.value, {
+    @required this.x,
+    @required this.y,
+    this.merged = false,
+    this.isNew = false,
+  });
 
   factory Tile.fromDestination(int value, Destination destination) {
     if (destination.hasMerged) {

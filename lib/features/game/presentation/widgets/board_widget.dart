@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/board.dart';
 import '../bloc/bloc.dart';
-import 'tile_widget.dart';
+import 'tiles/tile_widget.dart';
 
 class BoardWidget extends StatelessWidget {
   @override

@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-import '../../../../core/util/tile_color_converter.dart';
-import '../../domain/entities/tile.dart';
+import '../../../../../core/util/tile_color_converter.dart';
+import '../../../domain/entities/tile.dart';
 import 'tile_score_widget.dart';
 
 class TileWidget extends StatelessWidget {
@@ -11,7 +13,50 @@ class TileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return tile == null ? EmptyTile() : ValueTile(value: tile.value);
+    if (tile == null) {
+      return EmptyTile();
+    }
+
+    if (tile.isNew) {
+      return AnimatedValueTile(value: tile.value);
+    }
+
+    return ValueTile(value: tile.value);
+  }
+}
+
+class AnimatedValueTile extends StatefulWidget {
+  final int value;
+
+  AnimatedValueTile({Key key, this.value}) : super(key: key);
+
+  @override
+  _AnimatedValueTileState createState() => _AnimatedValueTileState();
+}
+
+class _AnimatedValueTileState extends State<AnimatedValueTile> with SingleTickerProviderStateMixin {
+  Animation<double> _opacity;
+  AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _opacity = Tween<double>(begin: 0, end: 1).animate(controller);
+
+    controller.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: ValueTile(value: widget.value),
+    );
   }
 }
 

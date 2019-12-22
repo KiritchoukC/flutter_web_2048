@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: '2048 flutter game',
+      title: '2048',
       theme: CustomTheme.themeData,
       initialRoute: RoutePaths.Game,
       onGenerateRoute: Router.generateRoute,
