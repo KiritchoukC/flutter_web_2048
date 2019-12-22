@@ -35,6 +35,9 @@ class LocalBoardRepository implements BoardRepository {
     // reset merged tiles
     board.resetMergedTiles();
 
+    // reset new tiles
+    board.resetNewTiles();
+
     // traverse the grid
     for (var i = 0; i < size; i++) {
       int x = traversal.x[i];

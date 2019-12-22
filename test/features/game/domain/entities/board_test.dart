@@ -5,6 +5,7 @@ import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/coordinate.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/tile.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/vector.dart';
+import 'package:flutter_web_2048/core/extensions/either_extensions.dart';
 
 void main() {
   group('getEmptyTiles', () {
@@ -679,6 +680,25 @@ void main() {
     });
   });
 
+  group('resetNewTiles', () {
+    test('should set all the new tiles to false', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      board.tiles.set(0, 0, Tile(2, x: 0, y: 0, isNew: true));
+      board.tiles.set(0, 1, Tile(4, x: 0, y: 0, isNew: true));
+      board.tiles.set(0, 2, Tile(8, x: 0, y: 0, isNew: true));
+      board.tiles.set(0, 3, Tile(16, x: 0, y: 0, isNew: true));
+      board.tiles.set(1, 0, Tile(32, x: 0, y: 0, isNew: true));
+
+      // ACT
+      board.resetNewTiles();
+      // ASSERT
+      expect(board.tiles.where((x) => x != null && x.isNew).length, 0);
+    });
+  });
+
   group('addRandomTile', () {
     test('should add a tile to the board', () {
       // ARRANGE
@@ -709,6 +729,17 @@ void main() {
       var actual = board.addRandomTile();
       // ASSERT
       expect(actual.isLeft(), true);
+    });
+    test('should return tile with isNew property set to true', () {
+      // ARRANGE
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var board = Board(tiles);
+
+      // ACT
+      var actual = board.addRandomTile();
+
+      // ASSERT
+      expect(actual.getRight().isNew, true);
     });
   });
 

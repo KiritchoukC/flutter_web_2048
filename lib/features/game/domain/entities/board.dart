@@ -133,7 +133,7 @@ class Board {
     }
 
     var coordinate = newTileCoordinate.getOrElse(() => null);
-    
+
     // get the new tile value with 10% chance of being 4 instead of 2
     var newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
     // generate the new tile
@@ -141,6 +141,7 @@ class Board {
       newTileValue,
       x: coordinate.x,
       y: coordinate.y,
+      isNew: true,
     );
 
     // set the new tile in the current board
@@ -233,6 +234,11 @@ class Board {
   // set false on all the tiles [merged] property
   void resetMergedTiles() {
     this.tiles.where((tile) => tile != null && tile.merged).forEach((tile) => tile.merged = false);
+  }
+
+  // set false on all the tiles [isNew] property
+  void resetNewTiles() {
+    this.tiles.where((tile) => tile != null && tile.isNew).forEach((tile) => tile.isNew = false);
   }
 
   // check if the board is blocked and no more moves are possible
