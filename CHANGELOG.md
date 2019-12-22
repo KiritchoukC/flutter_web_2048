@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.22.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.21.0...v1.22.0) (2019-12-22)
+
+
+### Features
+
+* **animation:** animate new random tile ([89b1b52](https://github.com/KiritchoukC/flutter_web_2048/commit/89b1b52)), closes [#19](https://github.com/KiritchoukC/flutter_web_2048/issues/19)
+
 ## [1.21.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.20.0...v1.21.0) (2019-12-22)
 
 
