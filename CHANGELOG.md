@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.23.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.22.0...v1.23.0) (2019-12-23)
+
+
+### Features
+
+* **animation:** animate merging tiles ([20a59de](https://github.com/KiritchoukC/flutter_web_2048/commit/20a59de)), closes [#36](https://github.com/KiritchoukC/flutter_web_2048/issues/36)
+
 ## [1.22.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.21.0...v1.22.0) (2019-12-22)
 
 
