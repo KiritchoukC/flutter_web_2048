@@ -9,6 +9,7 @@ import 'features/game/data/repositories/local_board_repository.dart';
 import 'features/game/domain/repositories/board_repository.dart';
 import 'features/game/domain/usecases/get_current_board.dart';
 import 'features/game/domain/usecases/get_highscore.dart';
+import 'features/game/domain/usecases/get_previous_board.dart';
 import 'features/game/domain/usecases/reset_board.dart';
 import 'features/game/domain/usecases/update_board.dart';
 import 'features/game/presentation/bloc/game_bloc.dart';
@@ -36,6 +37,7 @@ void initGameFeature() {
       getCurrentBoard: sl(),
       resetBoard: sl(),
       getHighscore: sl(),
+      getPreviousBoard: sl(),
     ),
   );
 
@@ -44,6 +46,7 @@ void initGameFeature() {
   sl.registerLazySingleton(() => GetCurrentBoard(boardRepository: sl()));
   sl.registerLazySingleton(() => ResetBoard(boardRepository: sl()));
   sl.registerLazySingleton(() => GetHighscore(boardRepository: sl()));
+  sl.registerLazySingleton(() => GetPreviousBoard(boardRepository: sl()));
 
   // Repositories
   sl.registerLazySingleton<BoardRepository>(() => LocalBoardRepository(datasource: sl()));

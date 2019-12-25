@@ -23,3 +23,5 @@ class LoadInitialBoard extends GameEvent {}
 class NewGame extends GameEvent {}
 
 class LoadHighscore extends GameEvent {}
+
+class Undo extends GameEvent {}

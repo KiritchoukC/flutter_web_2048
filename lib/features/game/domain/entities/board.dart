@@ -13,13 +13,28 @@ class Board {
   pm.Array2D<Tile> tiles;
   int score = 0;
   final Random _random;
-
   // game is over if there is no empty cells left and no more moves available
   bool get over => getEmptyCellsCoordinate().length == 0 && isBlocked();
-
   List<Tile> get mergedTiles => tiles.where((tile) => tile != null && tile.merged).toList();
 
-  Board(this.tiles) : _random = Random();
+  Board(this.tiles, {int score}) : _random = Random();
+
+  Board.clone(Board board) : _random = board?._random {
+    ArgumentError.checkNotNull(board);
+
+    if (board != null) {
+      this.score = board.score;
+      this.tiles = pm.Array2D<Tile>(4, 4);
+      for (var x = 0; x < board.tiles.width; x++) {
+        for (var y = 0; y < board.tiles.height; y++) {
+          var tile = board.tiles.get(x, y);
+          if (tile != null) {
+            this.tiles.set(x, y, Tile.clone(tile));
+          }
+        }
+      }
+    }
+  }
 
   factory Board.initialize() {
     // get the random position for each tile

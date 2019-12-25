@@ -70,4 +70,20 @@ void main() {
       expect(event.props, expected);
     });
   });
+  group('Undo', () {
+    test('should extend GameEvent', () {
+      // ACT
+      var event = Undo();
+      // ASSERT
+      expect(event, isA<GameEvent>());
+    });
+    test('should have an empty props list', () {
+      // ARRANGE
+      var expected = <Object>[];
+      // ACT
+      var event = Undo();
+      // ASSERT
+      expect(event.props, expected);
+    });
+  });
 }

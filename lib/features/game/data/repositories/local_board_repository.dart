@@ -12,6 +12,7 @@ class LocalBoardRepository implements BoardRepository {
   final BoardDataSource datasource;
 
   Board _currentBoard;
+  Board _previousBoard;
 
   LocalBoardRepository({@required this.datasource}) : assert(datasource != null);
 
@@ -21,22 +22,39 @@ class LocalBoardRepository implements BoardRepository {
     // Initialize the current board if it does not exist yet.
     _currentBoard = _currentBoard ?? Board.initialize();
 
+    // Initialize previous board if it's not set yet
+    if (_previousBoard == null) {
+      _previousBoard = Board.clone(_currentBoard);
+    }
+
     return _currentBoard;
+  }
+
+  @override
+  Future<Board> getPreviousBoard() async {
+    // set the current board to the previous one
+    _currentBoard = Board.clone(_previousBoard);
+    return _previousBoard;
   }
 
   /// Update the [board] by moving the tiles in the given [direction]
   @override
   Future<Board> updateBoard(Board board, Direction direction) async {
+    // refresh previous board
+    _previousBoard = Board.clone(board);
+
+    var _boardToUpdate = Board.clone(board);
+
     final int size = 4;
     final vector = Vector.fromDirection(direction);
     final traversal = Traversal.fromVector(vector, size);
     bool hasBoardMoved = false;
 
     // reset merged tiles
-    board.resetMergedTiles();
+    _boardToUpdate.resetMergedTiles();
 
     // reset new tiles
-    board.resetNewTiles();
+    _boardToUpdate.resetNewTiles();
 
     // traverse the grid
     for (var i = 0; i < size; i++) {
@@ -45,7 +63,7 @@ class LocalBoardRepository implements BoardRepository {
         int y = traversal.y[j];
 
         // get the tile at the current position [x][y]
-        var currentTile = board.tiles.get(x, y);
+        var currentTile = _boardToUpdate.tiles.get(x, y);
 
         // skip empty cell
         if (currentTile == null) {
@@ -53,7 +71,7 @@ class LocalBoardRepository implements BoardRepository {
         }
 
         // get the tile final destination
-        var destination = board.getTileDestination(currentTile, vector);
+        var destination = _boardToUpdate.getTileDestination(currentTile, vector);
 
         // skip if tile does not move
         if (!destination.hasMoved) {
@@ -64,30 +82,33 @@ class LocalBoardRepository implements BoardRepository {
         hasBoardMoved = hasBoardMoved || destination.hasMoved;
 
         // empty the current cell
-        board.tiles.set(currentTile.x, currentTile.y, null);
+        _boardToUpdate.tiles.set(currentTile.x, currentTile.y, null);
 
         // get the new tile
         final newTile = Tile.fromDestination(currentTile.value, destination);
 
         // move the tile in its new cell
-        board.tiles.set(destination.x, destination.y, newTile);
+        _boardToUpdate.tiles.set(destination.x, destination.y, newTile);
       }
     }
 
     if (hasBoardMoved) {
       // if the board has moved, add a new tile randomly
-      board.addRandomTile();
+      _boardToUpdate.addRandomTile();
     }
 
     // update the board score
-    board.updateScore();
+    _boardToUpdate.updateScore();
 
     // persist high score if game is over
-    if (board.over) {
-      await _updateHighscore(board.score);
+    if (_boardToUpdate.over) {
+      await _updateHighscore(_boardToUpdate.score);
     }
 
-    return board;
+    // update current board
+    _currentBoard = Board.clone(_boardToUpdate);
+
+    return _boardToUpdate;
   }
 
   @override
@@ -105,14 +126,7 @@ class LocalBoardRepository implements BoardRepository {
     // get the current highscore
     final currentHighscore = await getHighscore();
 
-    print({
-      'currentHighscore': currentHighscore,
-      'newHighscore': highscore,
-      'update': currentHighscore < highscore,
-    });
-
     if (currentHighscore < highscore) {
-      print('called');
       // if the new highscore is greater than the current one then save it
       await datasource.setHighscore(highscore);
     }
