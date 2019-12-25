@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:piecemeal/piecemeal.dart' as pm;
@@ -161,37 +162,37 @@ void main() {
       verify(mockDatasource.setHighscore(newScore)).called(1);
     });
 
-    // test(
-    //     'should not call datasource to save highscore when game is over and the score is lower than the previous one',
-    //     () async {
-    //   // ARRANGE
-    //   var previousScore = 9000;
-    //   var newScore = 10;
-    //   var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+    test(
+        'should not call datasource to save highscore when game is over and the score is lower than the previous one',
+        () async {
+      // ARRANGE
+      var previousScore = 9000;
+      var newScore = 10;
+      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
 
-    //   // put '4' tiles in between
-    //   tiles.set(1, 0, Tile(4, x: 1, y: 0));
-    //   tiles.set(3, 0, Tile(4, x: 3, y: 0));
-    //   tiles.set(0, 1, Tile(4, x: 0, y: 1));
-    //   tiles.set(2, 1, Tile(4, x: 2, y: 1));
-    //   tiles.set(1, 2, Tile(4, x: 1, y: 2));
-    //   tiles.set(3, 2, Tile(4, x: 3, y: 2));
-    //   tiles.set(0, 3, Tile(4, x: 0, y: 3));
-    //   tiles.set(2, 3, Tile(4, x: 2, y: 3));
+      // put '4' tiles in between
+      tiles.set(1, 0, Tile(4, x: 1, y: 0));
+      tiles.set(3, 0, Tile(4, x: 3, y: 0));
+      tiles.set(0, 1, Tile(4, x: 0, y: 1));
+      tiles.set(2, 1, Tile(4, x: 2, y: 1));
+      tiles.set(1, 2, Tile(4, x: 1, y: 2));
+      tiles.set(3, 2, Tile(4, x: 3, y: 2));
+      tiles.set(0, 3, Tile(4, x: 0, y: 3));
+      tiles.set(2, 3, Tile(4, x: 2, y: 3));
 
-    //   var board = Board(tiles);
-    //   board.score = newScore;
+      var board = Board(tiles);
+      board.score = newScore;
 
-    //   // arrange mock
-    //   when(mockDatasource.getHighscore()).thenAnswer((_) => Future.value(previousScore));
-    //   when(mockDatasource.setHighscore(newScore));
+      // arrange mock
+      when(mockDatasource.getHighscore()).thenAnswer((_) => Future.value(previousScore));
+      when(mockDatasource.setHighscore(newScore));
 
-    //   // ACT
-    //   await repository.updateBoard(board, Direction.down);
+      // ACT
+      await repository.updateBoard(board, Direction.down);
 
-    //   // ASSERT
-    //   verifyNever(mockDatasource.setHighscore(newScore));
-    // });
+      // ASSERT
+      verifyNever(mockDatasource.setHighscore(newScore));
+    }, skip: true);
 
     group('merge', () {
       test("when 2 '2' are on the same row, direction is left and the merged tile move to the left",
@@ -512,17 +513,173 @@ void main() {
       verify(mockDatasource.getHighscore()).called(1);
     });
 
-    // test('should return datasource output', () async {
-    //   // ARRANGE
-    //   int highscore = 70000;
-    //   // when(mockDatasource.getHighscore()).thenAnswer((_) async => highscore);
-    //   when(mockDatasource.getHighscore()).thenReturn(Future.value(highscore));
+    test('should return datasource output', () async {
+      // ARRANGE
+      int highscore = 70000;
+      when(mockDatasource.getHighscore()).thenAnswer((_) async => highscore);
 
-    //   // ACT
-    //   int actual = await repository.getHighscore();
+      // ACT
+      int actual = await repository.getHighscore();
 
-    //   // ASSERT
-    //   expect(actual, highscore);
-    // });
+      // ASSERT
+      expect(actual, highscore);
+    }, skip: true);
+  });
+
+  group('getPreviousBoard', () {
+    test('should be initialized by getCurrentBoard function if not set yet', () async {
+      // ARRANGE
+      var currentBoard = await repository.getCurrentBoard();
+
+      // ACT
+      var actual = await repository.getPreviousBoard();
+
+      // ASSERT
+      int actualBoardTilesCount = actual.tiles.where((tile) => tile != null).length;
+      int currentBoardTilesCount = currentBoard.tiles.where((tile) => tile != null).length;
+      expect(actualBoardTilesCount == currentBoardTilesCount, true);
+    });
+
+    test('should not be initialized by getCurrentBoard function if already set', () async {
+      // ARRANGE
+      var currentBoard = await repository.getCurrentBoard();
+
+      // ACT
+      var actual = await repository.getPreviousBoard();
+
+      // ASSERT
+      expect(actual, isNot(equals(currentBoard)));
+    });
+    test('should be set on updateBoard function with the given board', () async {
+      // ARRANGE
+      var direction = Direction.down;
+
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var currentBoard = Board(tiles);
+
+      int x = 1;
+      int y = 0;
+
+      // free tile should be able to move down
+      var freeTile = Tile(2, x: x, y: y);
+      currentBoard.tiles.set(x, y, freeTile);
+
+      // starting board
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      var newBoard = await repository.updateBoard(currentBoard, direction);
+
+      // ACT
+      var actual = await repository.getPreviousBoard();
+
+      // ASSERT
+      int previousBoardTilesCount = actual.tiles.where((tile) => tile != null).length;
+      int newBoardTilesCount = newBoard.tiles.where((tile) => tile != null).length;
+
+      // previous and new board are not the same
+      expect(previousBoardTilesCount == newBoardTilesCount, false);
+    });
+
+    test('should return the same previous board on multiple call', () async {
+      // ARRANGE
+      var direction = Direction.down;
+
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var currentBoard = Board(tiles);
+
+      int x = 1;
+      int y = 0;
+
+      // free tile should be able to move down
+      var freeTile = Tile(2, x: x, y: y);
+      currentBoard.tiles.set(x, y, freeTile);
+
+      // starting board
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      await repository.updateBoard(currentBoard, direction);
+
+      // ACT
+      var actual1 = await repository.getPreviousBoard();
+      var actual2 = await repository.getPreviousBoard();
+
+      // ASSERT
+      int previousBoardTilesCount1 = actual1.tiles.where((tile) => tile != null).length;
+      int previousBoardTilesCount2 = actual2.tiles.where((tile) => tile != null).length;
+
+      // previous and new board are not the same
+      expect(previousBoardTilesCount1, previousBoardTilesCount2);
+    });
+
+    test('should return the same previous board event after moving', () async {
+      // ARRANGE
+      var direction = Direction.down;
+
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var currentBoard = Board(tiles);
+
+      int x = 1;
+      int y = 0;
+
+      // free tile should be able to move down
+      var freeTile = Tile(2, x: x, y: y);
+      currentBoard.tiles.set(x, y, freeTile);
+
+      // starting board
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+
+      // ACT
+      await repository.updateBoard(currentBoard, direction);
+      var previous1 = await repository.getPreviousBoard();
+      await repository.updateBoard(currentBoard, direction);
+      var previous2 = await repository.getPreviousBoard();
+
+      // ASSERT
+      int previousBoardTilesCount1 = previous1.tiles.where((tile) => tile != null).length;
+      int previousBoardTilesCount2 = previous2.tiles.where((tile) => tile != null).length;
+
+      // previous and new board are not the same
+      expect(previousBoardTilesCount1, previousBoardTilesCount2);
+    });
+
+    test('should clone the previous one to set it on the current one', () async {
+      // ARRANGE
+      var direction = Direction.down;
+
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var currentBoard = Board(tiles);
+
+      int x = 1;
+      int y = 0;
+
+      // free tile should be able to move down
+      var freeTile = Tile(2, x: x, y: y);
+      currentBoard.tiles.set(x, y, freeTile);
+
+      // starting board
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+
+      // ACT
+      await repository.updateBoard(currentBoard, direction);
+      var actual = await repository.getPreviousBoard();
+      var current = await repository.getCurrentBoard();
+
+      // ASSERT
+      int currentTilesCount = current.tiles.where((tile) => tile != null).length;
+      int previousBoardTilesCount = actual.tiles.where((tile) => tile != null).length;
+
+      // previous and new board are not the same
+      expect(currentTilesCount, previousBoardTilesCount);
+    });
   });
 }

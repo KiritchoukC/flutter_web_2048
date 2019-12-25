@@ -81,4 +81,20 @@ void main() {
       });
     });
   });
+
+  group('clone', () {
+    test('should return the same tile but different reference', () {
+      // ARRANGE
+      var currentTile = Tile(2, x: 0, y: 0);
+      // ACT
+      var actual = Tile.clone(currentTile);
+      // ASSERT
+      expect(actual, isNot(equals(currentTile)));
+      expect(actual.value, currentTile.value);
+      expect(actual.x, currentTile.x);
+      expect(actual.y, currentTile.y);
+      expect(actual.merged, currentTile.merged);
+      expect(actual.isNew, currentTile.isNew);
+    });
+  });
 }

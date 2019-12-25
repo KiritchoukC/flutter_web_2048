@@ -842,4 +842,25 @@ void main() {
       expect(actual, true);
     });
   });
+
+  group('clone', () {
+    test('should return the same board with different reference', () {
+      // ARRANGE
+      var board = Board(pm.Array2D(4, 4));
+
+      // ACT
+      var actual = Board.clone(board);
+
+      // ASSERT
+      expect(actual == board, false);
+    });
+    test('should throw when board arg is null', () {
+      // ARRANGE
+
+      // ACT
+      var call = () => Board.clone(null);
+      // ASSERT
+      expect(call, throwsArgumentError);
+    });
+  });
 }
