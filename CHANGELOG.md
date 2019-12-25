@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.23.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.23.0...v1.23.1) (2019-12-25)
+
+
+### Bug Fixes
+
+* **icon:** fix icon ([9b0baaf](https://github.com/KiritchoukC/flutter_web_2048/commit/9b0baaf)), closes [#39](https://github.com/KiritchoukC/flutter_web_2048/issues/39)
+
 ## [1.23.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.22.0...v1.23.0) (2019-12-23)
 
 
