@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.24.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.23.1...v1.24.0) (2019-12-25)
+
+
+### Features
+
+* **undo:** allow user to undo previous move ([b499f31](https://github.com/KiritchoukC/flutter_web_2048/commit/b499f31)), closes [#38](https://github.com/KiritchoukC/flutter_web_2048/issues/38)
+
 ### [1.23.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.23.0...v1.23.1) (2019-12-25)
 
 
