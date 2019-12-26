@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.24.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.0...v1.24.1) (2019-12-26)
+
+
+### Bug Fixes
+
+* **undo:** fix undo when board has not moved ([0d07a38](https://github.com/KiritchoukC/flutter_web_2048/commit/0d07a38)), closes [#38](https://github.com/KiritchoukC/flutter_web_2048/issues/38)
+
 ## [1.24.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.23.1...v1.24.0) (2019-12-25)
 
 
