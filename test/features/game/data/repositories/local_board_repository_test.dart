@@ -681,5 +681,40 @@ void main() {
       // previous and new board are not the same
       expect(currentTilesCount, previousBoardTilesCount);
     });
+
+    test('should return the previous board even when the board did not move', () async {
+      // ARRANGE
+
+      var tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      var currentBoard = Board(tiles);
+
+      int x = 1;
+      int y = 0;
+
+      // free tile should be able to move down
+      var freeTile = Tile(2, x: x, y: y);
+      currentBoard.tiles.set(x, y, freeTile);
+
+      // starting board
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+
+      // ACT
+      var movedBoard = await repository.updateBoard(currentBoard, Direction.down);
+      // moving up should not update the board
+      var notMovedBoard = await repository.updateBoard(movedBoard, Direction.up);
+      var actual = await repository.getPreviousBoard();
+
+      // ASSERT
+      var notMovedBoardTilesCount = notMovedBoard.tiles.where((tile) => tile != null).length;
+      var movedBoardTilesCount = movedBoard.tiles.where((tile) => tile != null).length;
+      var actualTilesCount = actual.tiles.where((tile) => tile != null).length;
+
+      // the previous board should be equal to the board that moved and not the board that did not move
+      expect(movedBoardTilesCount, equals(actualTilesCount));
+      expect(notMovedBoardTilesCount, isNot(equals(actualTilesCount)));
+    });
   });
 }

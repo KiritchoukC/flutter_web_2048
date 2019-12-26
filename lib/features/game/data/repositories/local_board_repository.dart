@@ -32,17 +32,20 @@ class LocalBoardRepository implements BoardRepository {
 
   @override
   Future<Board> getPreviousBoard() async {
-    // set the current board to the previous one
-    _currentBoard = Board.clone(_previousBoard);
-    return _previousBoard;
+    if (_previousBoard == null) {
+      // if previous board does not exist then return current ont.
+      return _currentBoard;
+    } else {
+      // set the current board to the previous one
+      _currentBoard = Board.clone(_previousBoard);
+      // and return the previous board
+      return _previousBoard;
+    }
   }
 
   /// Update the [board] by moving the tiles in the given [direction]
   @override
   Future<Board> updateBoard(Board board, Direction direction) async {
-    // refresh previous board
-    _previousBoard = Board.clone(board);
-
     var _boardToUpdate = Board.clone(board);
 
     final int size = 4;
@@ -93,6 +96,9 @@ class LocalBoardRepository implements BoardRepository {
     }
 
     if (hasBoardMoved) {
+      // if board moved then refresh previous board
+      _previousBoard = Board.clone(board);
+
       // if the board has moved, add a new tile randomly
       _boardToUpdate.addRandomTile();
     }
