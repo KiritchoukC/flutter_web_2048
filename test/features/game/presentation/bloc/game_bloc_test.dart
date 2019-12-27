@@ -54,25 +54,41 @@ void main() {
     expect(
         () => GameBloc(
             getCurrentBoard: null,
-            updateBoard: null,
-            resetBoard: null,
-            getHighscore: null,
-            getPreviousBoard: null),
+            updateBoard: mockUpdateBoard,
+            resetBoard: mockResetBoard,
+            getHighscore: mockGetHighscore,
+            getPreviousBoard: mockGetPreviousBoard),
         throwsA(isA<AssertionError>()));
     expect(
         () => GameBloc(
             getCurrentBoard: mockGetCurrentBoard,
             updateBoard: null,
-            resetBoard: null,
-            getHighscore: null,
-            getPreviousBoard: null),
+            resetBoard: mockResetBoard,
+            getHighscore: mockGetHighscore,
+            getPreviousBoard: mockGetPreviousBoard),
         throwsA(isA<AssertionError>()));
     expect(
         () => GameBloc(
-            getCurrentBoard: null,
+            getCurrentBoard: mockGetCurrentBoard,
             updateBoard: mockUpdateBoard,
             resetBoard: null,
+            getHighscore: mockGetHighscore,
+            getPreviousBoard: mockGetPreviousBoard),
+        throwsA(isA<AssertionError>()));
+    expect(
+        () => GameBloc(
+            getCurrentBoard: mockGetCurrentBoard,
+            updateBoard: mockUpdateBoard,
+            resetBoard: mockResetBoard,
             getHighscore: null,
+            getPreviousBoard: mockGetPreviousBoard),
+        throwsA(isA<AssertionError>()));
+    expect(
+        () => GameBloc(
+            getCurrentBoard: mockGetCurrentBoard,
+            updateBoard: mockUpdateBoard,
+            resetBoard: mockResetBoard,
+            getHighscore: mockGetHighscore,
             getPreviousBoard: null),
         throwsA(isA<AssertionError>()));
   });
