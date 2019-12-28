@@ -12,15 +12,7 @@ class GamePage extends StatelessWidget {
     return DefaultLayout(
       title: BoardScoreWidget(),
       body: GameWidget(),
-      actions: <Widget>[
-        UndoButton(),
-        FlatButton(
-          onPressed: () {
-            BlocProvider.of<GameBloc>(context).add(NewGame());
-          },
-          child: Text('New Game', semanticsLabel: 'Start a new game'),
-        )
-      ],
+      actions: <Widget>[UndoButton()],
     );
   }
 }
@@ -49,7 +41,6 @@ class _UndoButtonState extends State<UndoButton> {
   Widget build(BuildContext context) {
     return BlocListener<GameBloc, GameState>(
       condition: (previousState, newState) {
-        print(_moved);
         if (_disabled && newState is UpdateBoardEnd) {
           if (_moved > 0) {
             _moved = 0;
