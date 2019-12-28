@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.25.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.2...v1.25.0) (2019-12-28)
+
+
+### Features
+
+* **drawer:** add a drawer and move the reset game button to it ([ec364be](https://github.com/KiritchoukC/flutter_web_2048/commit/ec364be))
+
 ### [1.24.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.1...v1.24.2) (2019-12-27)
 
 ### [1.24.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.0...v1.24.1) (2019-12-26)
