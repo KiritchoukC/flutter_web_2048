@@ -12,7 +12,9 @@ class GamePage extends StatelessWidget {
     return DefaultLayout(
       title: BoardScoreWidget(),
       body: GameWidget(),
-      actions: <Widget>[UndoButton()],
+      actions: <Widget>[
+        UndoButton(),
+      ],
     );
   }
 }

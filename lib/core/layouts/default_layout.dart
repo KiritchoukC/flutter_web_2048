@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_2048/core/util/horizontal_spacing.dart';
 
 import '../../features/game/presentation/bloc/bloc.dart';
 import '../../features/game/presentation/bloc/game_event.dart';
@@ -51,10 +52,39 @@ class DefaultLayout extends StatelessWidget {
 class AnonymousDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DrawerHeader(
-      child: Text('Drawer Header'),
-      decoration: BoxDecoration(
-        color: CustomColors.accentColor,
+    return Container(
+      color: CustomColors.accentColor,
+      height: 120,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 0.0),
+            child: Text(
+              '2048 Game',
+              style: Theme.of(context).textTheme.display1,
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FlatButton(
+                onPressed: () {},
+                child: Text(
+                  'Sign in',
+                  style: TextStyle(color: Colors.black54),
+                ),
+              ),
+              RaisedButton(
+                onPressed: () {},
+                child: Text('Sign up', style: TextStyle(color: Colors.black)),
+              ),
+              HorizontalSpacing.extraSmall()
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -69,7 +99,7 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
       ),
       accountEmail: Text(
         'sample@mail.com',
-        style: TextStyle(color: Colors.black87),
+        style: TextStyle(color: Colors.grey.shade800),
       ),
       accountName: Text(
         'Username Placeholder',
