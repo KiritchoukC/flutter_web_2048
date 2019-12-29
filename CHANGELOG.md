@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.27.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.26.0...v1.27.0) (2019-12-29)
+
+
+### Features
+
+* **drawer:** styling anonymous drawer header ([85be7ae](https://github.com/KiritchoukC/flutter_web_2048/commit/85be7ae))
+
 ## [1.26.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.25.0...v1.26.0) (2019-12-28)
 
 
