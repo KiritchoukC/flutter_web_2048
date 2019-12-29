@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/authentication/presentation/bloc/authentication_bloc.dart';
+import '../../features/authentication/presentation/pages/authentication_page.dart';
 import '../../features/game/presentation/bloc/game_bloc.dart';
 import '../../features/game/presentation/pages/game_page.dart';
 import '../../injection_container.dart';
@@ -12,8 +14,12 @@ class Router {
     switch (settings.name) {
       case RoutePaths.Game:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<GameBloc>(
-                builder: (_) => sl<GameBloc>(), child: GamePage()));
+            builder: (_) =>
+                BlocProvider<GameBloc>(builder: (_) => sl<GameBloc>(), child: GamePage()));
+      case RoutePaths.Authentication:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<AuthenticationBloc>(
+                builder: (_) => sl<AuthenticationBloc>(), child: AuthenticationPage()));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

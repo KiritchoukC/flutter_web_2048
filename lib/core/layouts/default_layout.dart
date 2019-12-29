@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_2048/core/util/horizontal_spacing.dart';
 
 import '../../features/game/presentation/bloc/bloc.dart';
 import '../../features/game/presentation/bloc/game_event.dart';
+import '../router/route_paths.dart';
 import '../theme/custom_colors.dart';
+import '../util/horizontal_spacing.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Widget body;
   final Widget title;
   final List<Widget> actions;
-  final isAuthenticated = true;
+  final isAuthenticated = false;
 
   DefaultLayout({
     @required this.body,
@@ -78,7 +79,9 @@ class AnonymousDrawerHeader extends StatelessWidget {
                 ),
               ),
               RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(RoutePaths.Authentication);
+                },
                 child: Text('Sign up', style: TextStyle(color: Colors.black)),
               ),
               HorizontalSpacing.extraSmall()

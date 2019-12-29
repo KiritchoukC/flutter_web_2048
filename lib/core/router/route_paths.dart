@@ -3,4 +3,5 @@
 // duplicate variable names.
 class RoutePaths {
   static const String Game = '/';
+  static const String Authentication = '/authentication';
 }

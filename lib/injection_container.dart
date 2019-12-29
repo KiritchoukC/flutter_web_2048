@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 
 import 'core/network/network_info.dart';
+import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/game/data/datasources/board_datasource.dart';
 import 'features/game/data/datasources/hive_board_datasource.dart';
 import 'features/game/data/repositories/local_board_repository.dart';
@@ -19,6 +20,7 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! Features
   initGameFeature();
+  initAuthenticationFeature();
 
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => DataConnectionCheckerNetworkInfo(sl()));
@@ -53,4 +55,15 @@ void initGameFeature() {
 
   // Datasource
   sl.registerLazySingleton<BoardDataSource>(() => HiveBoardDataSource(localStorage: sl()));
+}
+
+void initAuthenticationFeature() {
+  // Bloc
+  sl.registerFactory(() => AuthenticationBloc());
+
+  // Usecases
+
+  // Repositories
+
+  // Datasource
 }
