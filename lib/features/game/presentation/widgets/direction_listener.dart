@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_web_2048/core/util/web_helper.dart';
 import 'package:swipedetector/swipedetector.dart';
+
+import '../../../../core/util/web_helper.dart';
 
 /// Listen to swipe direction on mobile or keyboard arrow on web
 class DirectionListener extends StatelessWidget {
