@@ -12,14 +12,25 @@ import 'route_paths.dart';
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      // Game route
       case RoutePaths.Game:
         return MaterialPageRoute(
-            builder: (_) =>
-                BlocProvider<GameBloc>(builder: (_) => sl<GameBloc>(), child: GamePage()));
+          builder: (_) => BlocProvider<GameBloc>(
+            builder: (_) => sl<GameBloc>(),
+            child: GamePage(),
+          ),
+        );
+
+      // Authentication route
       case RoutePaths.Authentication:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<AuthenticationBloc>(
-                builder: (_) => sl<AuthenticationBloc>(), child: AuthenticationPage()));
+          builder: (_) => BlocProvider<AuthenticationBloc>(
+            builder: (_) => sl<AuthenticationBloc>(),
+            child: AuthenticationPage(),
+          ),
+        );
+
+      // NotFound route
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

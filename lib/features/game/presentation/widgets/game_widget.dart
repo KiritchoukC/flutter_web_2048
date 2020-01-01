@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +32,9 @@ class _GameWidgetState extends State<GameWidget> {
   @override
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<GameBloc>(context);
-    FocusScope.of(context).requestFocus(_focusNode);
+    if (kIsWeb) {
+      FocusScope.of(context).requestFocus(_focusNode);
+    }
     return AspectRatio(
         aspectRatio: 1,
         child: DirectionListener(

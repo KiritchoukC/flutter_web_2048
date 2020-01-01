@@ -26,6 +26,7 @@ dependencies:
   hive_flutter: ^0.2.1
   path_provider: ^1.4.4
   pwa: ^0.2.0
+  flutter_signin_button: ^1.0.0
 
 dev_dependencies:
   flutter_test:
