@@ -7,6 +7,7 @@ import 'package:flutter_web_2048/features/game/domain/repositories/board_reposit
 import 'package:flutter_web_2048/features/game/domain/usecases/update_board.dart';
 import 'package:mockito/mockito.dart';
 import 'package:piecemeal/piecemeal.dart' as pm;
+import 'package:flutter_web_2048/core/extensions/either_extensions.dart';
 
 class MockBoardRepository extends Mock implements BoardRepository {}
 
@@ -48,7 +49,7 @@ void main() {
     var actual = await usecase(Params(board: board, direction: direction));
 
     // ASSERT
-    expect(actual, repositoryOutput);
+    expect(actual.getRight(), repositoryOutput);
   });
 
   test('should throw when initialized with null argument', () async {

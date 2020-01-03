@@ -1,5 +1,7 @@
+import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../entities/board.dart';
 import '../repositories/board_repository.dart';
@@ -9,7 +11,7 @@ class GetPreviousBoard implements UseCase<Board, NoParams> {
 
   GetPreviousBoard({@required this.boardRepository}) : assert(boardRepository != null);
   @override
-  Future<Board> call(NoParams params) async {
-    return await boardRepository.getPreviousBoard();
+  Future<Either<Failure, Board>> call(NoParams params) async {
+    return Right(await boardRepository.getPreviousBoard());
   }
 }

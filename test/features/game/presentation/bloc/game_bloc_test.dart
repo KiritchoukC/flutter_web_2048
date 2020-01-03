@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/enums/direction.dart';
 import 'package:flutter_web_2048/features/game/domain/entities/board.dart';
@@ -112,7 +113,8 @@ void main() {
   group('LoadInitialBoard', () {
     test('should call [GetCurentBoard] usecase', () async {
       // ARRANGE
-      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
+      when(mockGetCurrentBoard.call(any))
+          .thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
       bloc.add(LoadInitialBoard());
@@ -125,7 +127,7 @@ void main() {
     test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd]', () {
       // ARRANGE
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
-      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
 
       // ASSERT LATER
       final expected = [
@@ -146,7 +148,7 @@ void main() {
   group('Move', () {
     test('should call [UpdateBoard] usecase', () async {
       // ARRANGE
-      when(mockUpdateBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
+      when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
       bloc.add(Move(direction: Direction.down));
@@ -160,8 +162,8 @@ void main() {
       // ARRANGE
       final direction = Direction.down;
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
-      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
-      when(mockUpdateBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
+      when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
 
       // ASSERT LATER
       final expected = [
@@ -195,10 +197,10 @@ void main() {
       tiles.set(2, 3, Tile(4, x: 2, y: 3));
       final usecaseOutput = Board(tiles);
 
-      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => usecaseOutput);
-      when(mockUpdateBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
+      when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
       final highscore = 9000;
-      when(mockGetHighscore.call(any)).thenAnswer((_) async => highscore);
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(highscore));
 
       // ASSERT LATER
       final expected = [
@@ -220,7 +222,7 @@ void main() {
   group('NewGame', () {
     test('should call [ResetBoard] usecase', () async {
       // ARRANGE
-      when(mockResetBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
+      when(mockResetBoard.call(any)).thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
       bloc.add(NewGame());
@@ -233,9 +235,9 @@ void main() {
     test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd, HighscoreLoaded]', () {
       // ARRANGE
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
-      when(mockResetBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockResetBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
       final highscore = 9000;
-      when(mockGetHighscore.call(any)).thenAnswer((_) async => highscore);
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(highscore));
 
       // ASSERT LATER
       final expected = [
@@ -257,7 +259,7 @@ void main() {
   group('LoadHighscore', () {
     test('should call [GetHighscore] usecase', () async {
       // ARRANGE
-      when(mockGetHighscore.call(any)).thenAnswer((_) async => 9000);
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(9000));
 
       // ACT
       bloc.add(LoadHighscore());
@@ -270,7 +272,7 @@ void main() {
     test('should emit [InitialGame, HighscoreLoaded]', () {
       // ARRANGE
       final usecaseOutput = 9000;
-      when(mockGetHighscore.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(usecaseOutput));
 
       // ASSERT LATER
       final expected = [
@@ -290,7 +292,8 @@ void main() {
   group('Undo', () {
     test('should call [GetPreviousBoard] usecase', () async {
       // ARRANGE
-      when(mockGetPreviousBoard.call(any)).thenAnswer((_) async => Board(pm.Array2D<Tile>(4, 4)));
+      when(mockGetPreviousBoard.call(any))
+          .thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
       bloc.add(Undo());
@@ -303,7 +306,7 @@ void main() {
     test('should emit [InitialGame, HighscoreLoaded]', () {
       // ARRANGE
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
-      when(mockGetPreviousBoard.call(any)).thenAnswer((_) async => usecaseOutput);
+      when(mockGetPreviousBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
 
       // ASSERT LATER
       final expected = [

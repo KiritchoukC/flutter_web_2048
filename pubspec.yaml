@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^0.1.2
   http: ^0.12.0+2
   rxdart: ^0.22.1+1
@@ -27,6 +26,8 @@ dependencies:
   path_provider: ^1.4.4
   pwa: ^0.2.0
   flutter_signin_button: ^1.0.0
+  firebase_auth: ^0.15.3
+  cloud_firestore: ^0.13.0+1
 
 dev_dependencies:
   flutter_test:

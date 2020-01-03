@@ -6,6 +6,7 @@ import 'package:flutter_web_2048/features/game/domain/repositories/board_reposit
 import 'package:flutter_web_2048/features/game/domain/usecases/get_previous_board.dart';
 import 'package:mockito/mockito.dart';
 import 'package:piecemeal/piecemeal.dart';
+import 'package:flutter_web_2048/core/extensions/either_extensions.dart';
 
 class MockBoardRepository extends Mock implements BoardRepository {}
 
@@ -34,7 +35,7 @@ void main() {
     var actual = await usecase(NoParams());
 
     // ASSERT
-    expect(actual, repositoryOutput);
+    expect(actual.getRight(), repositoryOutput);
   });
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
