@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.30.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.3...v1.30.0) (2020-01-03)
+
+
+### Features
+
+* **authentication:** add anonymous signin from firebase datasource to usecase ([7a7ca36](https://github.com/KiritchoukC/flutter_web_2048/commit/7a7ca36)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ### [1.29.3](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.2...v1.29.3) (2020-01-03)
 
 ### [1.29.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.1...v1.29.2) (2020-01-03)
