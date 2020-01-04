@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.31.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.30.1...v1.31.0) (2020-01-04)
+
+
+### Features
+
+* **authentication:** add states ([6f5e4c5](https://github.com/KiritchoukC/flutter_web_2048/commit/6f5e4c5))
+
 ### [1.30.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.30.0...v1.30.1) (2020-01-04)
 
 ## [1.30.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.3...v1.30.0) (2020-01-03)
