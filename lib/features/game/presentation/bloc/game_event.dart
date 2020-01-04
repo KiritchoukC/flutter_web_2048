@@ -10,18 +10,18 @@ abstract class GameEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class Move extends GameEvent {
+class MoveEvent extends GameEvent {
   final Direction direction;
 
-  Move({@required this.direction});
+  MoveEvent({@required this.direction});
   @override
   List<Object> get props => [direction];
 }
 
-class LoadInitialBoard extends GameEvent {}
+class LoadInitialBoardEvent extends GameEvent {}
 
-class NewGame extends GameEvent {}
+class NewGameEvent extends GameEvent {}
 
-class LoadHighscore extends GameEvent {}
+class LoadHighscoreEvent extends GameEvent {}
 
-class Undo extends GameEvent {}
+class UndoEvent extends GameEvent {}

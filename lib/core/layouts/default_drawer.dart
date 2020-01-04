@@ -22,7 +22,7 @@ class DefaultDrawer extends StatelessWidget {
             ),
             trailing: Icon(Icons.refresh),
             onTap: () {
-              BlocProvider.of<GameBloc>(context).add(NewGame());
+              BlocProvider.of<GameBloc>(context).add(NewGameEvent());
             },
           ),
         ],

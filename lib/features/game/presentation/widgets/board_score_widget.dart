@@ -73,7 +73,7 @@ class HighscoreWidget extends StatelessWidget {
       builder: (context, state) {
         int _highscore = 0;
         if (state is InitialGameState) {
-          BlocProvider.of<GameBloc>(context).add(LoadHighscore());
+          BlocProvider.of<GameBloc>(context).add(LoadHighscoreEvent());
         }
 
         if (state is HighscoreLoadedState) {

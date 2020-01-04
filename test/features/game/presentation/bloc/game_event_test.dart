@@ -6,7 +6,7 @@ void main() {
   group('LoadInitialBoard', () {
     test('should extend GameEvent', () {
       // ACT
-      var loadInitialBoard = LoadInitialBoard();
+      var loadInitialBoard = LoadInitialBoardEvent();
       // ASSERT
       expect(loadInitialBoard, isA<GameEvent>());
     });
@@ -14,7 +14,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var loadInitialBoard = LoadInitialBoard();
+      var loadInitialBoard = LoadInitialBoardEvent();
       // ASSERT
       expect(loadInitialBoard.props, expected);
     });
@@ -24,7 +24,7 @@ void main() {
       // ARRANGE
       var direction = Direction.down;
       // ACT
-      var move = Move(direction: direction);
+      var move = MoveEvent(direction: direction);
       // ASSERT
       expect(move, isA<GameEvent>());
     });
@@ -33,7 +33,7 @@ void main() {
       var direction = Direction.down;
       var expected = <Object>[direction];
       // ACT
-      var move = Move(direction: direction);
+      var move = MoveEvent(direction: direction);
       // ASSERT
       expect(move.props, expected);
     });
@@ -41,7 +41,7 @@ void main() {
   group('NewGame', () {
     test('should extend GameEvent', () {
       // ACT
-      var newGame = NewGame();
+      var newGame = NewGameEvent();
       // ASSERT
       expect(newGame, isA<GameEvent>());
     });
@@ -49,7 +49,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var newGame = NewGame();
+      var newGame = NewGameEvent();
       // ASSERT
       expect(newGame.props, expected);
     });
@@ -57,7 +57,7 @@ void main() {
   group('LoadHighscore', () {
     test('should extend GameEvent', () {
       // ACT
-      var event = LoadHighscore();
+      var event = LoadHighscoreEvent();
       // ASSERT
       expect(event, isA<GameEvent>());
     });
@@ -65,7 +65,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var event = LoadHighscore();
+      var event = LoadHighscoreEvent();
       // ASSERT
       expect(event.props, expected);
     });
@@ -73,7 +73,7 @@ void main() {
   group('Undo', () {
     test('should extend GameEvent', () {
       // ACT
-      var event = Undo();
+      var event = UndoEvent();
       // ASSERT
       expect(event, isA<GameEvent>());
     });
@@ -81,7 +81,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var event = Undo();
+      var event = UndoEvent();
       // ASSERT
       expect(event.props, expected);
     });

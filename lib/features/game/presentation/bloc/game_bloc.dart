@@ -42,32 +42,30 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   /// Transforms event into a stream of states
   @override
-  Stream<GameState> mapEventToState(
-    GameEvent event,
-  ) async* {
-    if (event is Move) {
+  Stream<GameState> mapEventToState(GameEvent event) async* {
+    if (event is MoveEvent) {
       yield* _handleMoveEvent(event);
     }
 
-    if (event is LoadInitialBoard) {
+    if (event is LoadInitialBoardEvent) {
       yield* _handleLoadInitialBoardEvent(event);
     }
 
-    if (event is NewGame) {
+    if (event is NewGameEvent) {
       yield* _handleNewGameEvent(event);
     }
 
-    if (event is LoadHighscore) {
+    if (event is LoadHighscoreEvent) {
       yield* _handleLoadHighscoreEvent(event);
     }
 
-    if (event is Undo) {
+    if (event is UndoEvent) {
       yield* _handleUndoEvent(event);
     }
   }
 
-  /// Handle [Move] event and yield the right output
-  Stream<GameState> _handleMoveEvent(Move event) async* {
+  /// Handle [MoveEvent] event and yield the right output
+  Stream<GameState> _handleMoveEvent(MoveEvent event) async* {
     // send the start state
     yield UpdateBoardStartState();
 
@@ -99,8 +97,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
-  /// Handle [LoadInitialBoard] event and yield the right output
-  Stream<GameState> _handleLoadInitialBoardEvent(LoadInitialBoard event) async* {
+  /// Handle [LoadInitialBoardEvent] event and yield the right output
+  Stream<GameState> _handleLoadInitialBoardEvent(LoadInitialBoardEvent event) async* {
     // send the start state
     yield UpdateBoardStartState();
 
@@ -111,8 +109,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield UpdateBoardEndState(output?.getRight());
   }
 
-  /// Handle [NewGame] event and yield the right output
-  Stream<GameState> _handleNewGameEvent(NewGame event) async* {
+  /// Handle [NewGameEvent] event and yield the right output
+  Stream<GameState> _handleNewGameEvent(NewGameEvent event) async* {
     // send the start state
     yield UpdateBoardStartState();
 
@@ -128,8 +126,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield HighscoreLoadedState(highscore?.getRight());
   }
 
-  /// Handle [LoadHighscore] event and yield the right output
-  Stream<GameState> _handleLoadHighscoreEvent(LoadHighscore event) async* {
+  /// Handle [LoadHighscoreEvent] event and yield the right output
+  Stream<GameState> _handleLoadHighscoreEvent(LoadHighscoreEvent event) async* {
     // get the previous highscore
     final output = await getHighscore(NoParams());
 
@@ -137,8 +135,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield HighscoreLoadedState(output?.getRight());
   }
 
-  /// Handle [Undo] event and yield the right output
-  Stream<GameState> _handleUndoEvent(Undo event) async* {
+  /// Handle [UndoEvent] event and yield the right output
+  Stream<GameState> _handleUndoEvent(UndoEvent event) async* {
     // send the start state
     yield UpdateBoardStartState();
 

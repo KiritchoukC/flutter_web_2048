@@ -39,16 +39,16 @@ class _GameWidgetState extends State<GameWidget> {
         aspectRatio: 1,
         child: DirectionListener(
           onDown: () {
-            _bloc.add(Move(direction: Direction.down));
+            _bloc.add(MoveEvent(direction: Direction.down));
           },
           onLeft: () {
-            _bloc.add(Move(direction: Direction.left));
+            _bloc.add(MoveEvent(direction: Direction.left));
           },
           onRight: () {
-            _bloc.add(Move(direction: Direction.right));
+            _bloc.add(MoveEvent(direction: Direction.right));
           },
           onUp: () {
-            _bloc.add(Move(direction: Direction.up));
+            _bloc.add(MoveEvent(direction: Direction.up));
           },
           child: BoardWidget(),
         ));

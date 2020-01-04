@@ -17,7 +17,7 @@ class BoardWidget extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is InitialGameState) {
-          BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
+          BlocProvider.of<GameBloc>(context).add(LoadInitialBoardEvent());
         }
 
         if (state is UpdateBoardEndState) {

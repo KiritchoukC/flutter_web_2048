@@ -117,7 +117,7 @@ void main() {
           .thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
-      bloc.add(LoadInitialBoard());
+      bloc.add(LoadInitialBoardEvent());
       await untilCalled(mockGetCurrentBoard.call(any));
 
       // ASSERT
@@ -141,7 +141,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(LoadInitialBoard());
+      bloc.add(LoadInitialBoardEvent());
     });
   });
 
@@ -151,7 +151,7 @@ void main() {
       when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
-      bloc.add(Move(direction: Direction.down));
+      bloc.add(MoveEvent(direction: Direction.down));
       await untilCalled(mockUpdateBoard.call(any));
 
       // ASSERT
@@ -177,7 +177,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(Move(direction: direction));
+      bloc.add(MoveEvent(direction: direction));
     });
 
     test(
@@ -215,7 +215,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(Move(direction: direction));
+      bloc.add(MoveEvent(direction: direction));
     });
   });
 
@@ -225,7 +225,7 @@ void main() {
       when(mockResetBoard.call(any)).thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
-      bloc.add(NewGame());
+      bloc.add(NewGameEvent());
       await untilCalled(mockResetBoard.call(any));
 
       // ASSERT
@@ -252,7 +252,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(NewGame());
+      bloc.add(NewGameEvent());
     });
   });
 
@@ -262,7 +262,7 @@ void main() {
       when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(9000));
 
       // ACT
-      bloc.add(LoadHighscore());
+      bloc.add(LoadHighscoreEvent());
       await untilCalled(mockGetHighscore.call(any));
 
       // ASSERT
@@ -285,7 +285,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(LoadHighscore());
+      bloc.add(LoadHighscoreEvent());
     });
   });
 
@@ -296,7 +296,7 @@ void main() {
           .thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
-      bloc.add(Undo());
+      bloc.add(UndoEvent());
       await untilCalled(mockGetPreviousBoard.call(any));
 
       // ASSERT
@@ -320,7 +320,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(Undo());
+      bloc.add(UndoEvent());
     });
   });
 }

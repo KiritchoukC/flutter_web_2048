@@ -36,7 +36,7 @@ class _UndoButtonState extends State<UndoButton> {
       _disabled = true;
     });
     // send undo event
-    BlocProvider.of<GameBloc>(context).add(Undo());
+    BlocProvider.of<GameBloc>(context).add(UndoEvent());
   }
 
   @override
