@@ -45,85 +45,107 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Stream<GameState> mapEventToState(
     GameEvent event,
   ) async* {
-    // handle [Move] event
     if (event is Move) {
-      // send the start state
-      yield UpdateBoardStartState();
-
-      // get the current board
-      final currentBoard = await getCurrentBoard(NoParams());
-
-      // call the use case to update the current [board] with the given [direction]
-      final usecaseResult = await updateBoard(
-        update_board.Params(
-          board: currentBoard?.getRight(),
-          direction: event.direction,
-        ),
-      );
-
-      final output = usecaseResult?.getRight();
-
-      if (output.over) {
-        // send the game over state with the boad and highscore
-        yield GameOverState(output);
-
-        // get the new highscore
-        final highscore = await getHighscore(NoParams());
-        // send highscore loaded event
-        yield HighscoreLoadedState(highscore?.getRight());
-      } else {
-        // send the end state with the updated board
-        yield UpdateBoardEndState(output);
-      }
+      yield* _handleMoveEvent(event);
     }
 
-    // handle [LoadInitialBoard] event
     if (event is LoadInitialBoard) {
-      // send the start state
-      yield UpdateBoardStartState();
-
-      // call the use case to get the current board
-      final output = await getCurrentBoard(NoParams());
-
-      // send the end state with the initial board
-      yield UpdateBoardEndState(output?.getRight());
+      yield* _handleLoadInitialBoardEvent(event);
     }
 
-    // handle [NewGame] event
     if (event is NewGame) {
-      // send the start state
-      yield UpdateBoardStartState();
-
-      // call the use case to get the current board
-      final output = await resetBoard(NoParams());
-
-      // send the end state with the new board
-      yield UpdateBoardEndState(output?.getRight());
-
-      // send the updated highscore
-      final highscore = await getHighscore(NoParams());
-      yield HighscoreLoadedState(highscore?.getRight());
+      yield* _handleNewGameEvent(event);
     }
 
-    // handle [LoadHighscore] event
     if (event is LoadHighscore) {
-      // get the previous highscore
-      final output = await getHighscore(NoParams());
-
-      // send the event with the previous highscore
-      yield HighscoreLoadedState(output?.getRight());
+      yield* _handleLoadHighscoreEvent(event);
     }
 
-    // handle [Undo] event
     if (event is Undo) {
-      // send the start state
-      yield UpdateBoardStartState();
-
-      // call the use case to get the previous board
-      final output = await getPreviousBoard(NoParams());
-
-      // send the end state with the new board
-      yield UpdateBoardEndState(output?.getRight());
+      yield* _handleUndoEvent(event);
     }
+  }
+
+  /// Handle [Move] event and yield the right output
+  Stream<GameState> _handleMoveEvent(Move event) async* {
+    // send the start state
+    yield UpdateBoardStartState();
+
+    // get the current board
+    final currentBoard = await getCurrentBoard(NoParams());
+
+    // call the use case to update the current [board] with the given [direction]
+    final usecaseResult = await updateBoard(
+      update_board.Params(
+        board: currentBoard?.getRight(),
+        direction: event.direction,
+      ),
+    );
+
+    final output = usecaseResult?.getRight();
+
+    if (output.over) {
+      // send the game over state with the boad and highscore
+      yield GameOverState(output);
+
+      // get the new highscore
+      final highscore = await getHighscore(NoParams());
+
+      // send highscore loaded event
+      yield HighscoreLoadedState(highscore?.getRight());
+    } else {
+      // send the end state with the updated board
+      yield UpdateBoardEndState(output);
+    }
+  }
+
+  /// Handle [LoadInitialBoard] event and yield the right output
+  Stream<GameState> _handleLoadInitialBoardEvent(LoadInitialBoard event) async* {
+    // send the start state
+    yield UpdateBoardStartState();
+
+    // call the use case to get the current board
+    final output = await getCurrentBoard(NoParams());
+
+    // send the end state with the initial board
+    yield UpdateBoardEndState(output?.getRight());
+  }
+
+  /// Handle [NewGame] event and yield the right output
+  Stream<GameState> _handleNewGameEvent(NewGame event) async* {
+    // send the start state
+    yield UpdateBoardStartState();
+
+    // call the use case to get the current board
+    final output = await resetBoard(NoParams());
+
+    // send the end state with the new board
+    yield UpdateBoardEndState(output?.getRight());
+
+    // send the updated highscore
+    final highscore = await getHighscore(NoParams());
+
+    yield HighscoreLoadedState(highscore?.getRight());
+  }
+
+  /// Handle [LoadHighscore] event and yield the right output
+  Stream<GameState> _handleLoadHighscoreEvent(LoadHighscore event) async* {
+    // get the previous highscore
+    final output = await getHighscore(NoParams());
+
+    // send the event with the previous highscore
+    yield HighscoreLoadedState(output?.getRight());
+  }
+
+  /// Handle [Undo] event and yield the right output
+  Stream<GameState> _handleUndoEvent(Undo event) async* {
+    // send the start state
+    yield UpdateBoardStartState();
+
+    // call the use case to get the previous board
+    final output = await getPreviousBoard(NoParams());
+
+    // send the end state with the new board
+    yield UpdateBoardEndState(output?.getRight());
   }
 }
