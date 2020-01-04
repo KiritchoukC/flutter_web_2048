@@ -31,11 +31,11 @@ class ScoreWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
       condition: (previousState, state) {
-        if (previousState is GameOver) {
+        if (previousState is GameOverState) {
           return false;
         }
 
-        if (state is UpdateBoardEnd || state is GameOver) {
+        if (state is UpdateBoardEndState || state is GameOverState) {
           return true;
         }
         return false;
@@ -43,11 +43,11 @@ class ScoreWidget extends StatelessWidget {
       builder: (context, state) {
         int score = 0;
 
-        if (state is UpdateBoardEnd) {
+        if (state is UpdateBoardEndState) {
           score = state.board.score;
         }
 
-        if (state is GameOver) {
+        if (state is GameOverState) {
           score = state.board.score;
         }
 
@@ -65,18 +65,18 @@ class HighscoreWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
       condition: (previousState, state) {
-        if (state is HighscoreLoaded || state is InitialGame) {
+        if (state is HighscoreLoadedState || state is InitialGameState) {
           return true;
         }
         return false;
       },
       builder: (context, state) {
         int _highscore = 0;
-        if (state is InitialGame) {
+        if (state is InitialGameState) {
           BlocProvider.of<GameBloc>(context).add(LoadHighscore());
         }
 
-        if (state is HighscoreLoaded) {
+        if (state is HighscoreLoadedState) {
           _highscore = state.highscore;
         }
 

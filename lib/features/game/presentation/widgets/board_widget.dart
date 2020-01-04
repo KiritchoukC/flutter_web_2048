@@ -10,21 +10,21 @@ class BoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
       condition: (previousState, state) {
-        if (state is HighscoreLoaded) {
+        if (state is HighscoreLoadedState) {
           return false;
         }
         return true;
       },
       builder: (context, state) {
-        if (state is InitialGame) {
+        if (state is InitialGameState) {
           BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
         }
 
-        if (state is UpdateBoardEnd) {
+        if (state is UpdateBoardEndState) {
           return GameBoardWidget(board: state.board);
         }
 
-        if (state is GameOver) {
+        if (state is GameOverState) {
           return GameBoardWidget(board: state.board, isOver: true);
         }
 

@@ -11,7 +11,7 @@ void main() {
       // ARRANGE
       var board = Board(Array2D<Tile>(4, 4));
       // ACT
-      var gameOver = GameOver(board);
+      var gameOver = GameOverState(board);
       // ASSERT
       expect(gameOver, isA<GameState>());
     });
@@ -20,7 +20,7 @@ void main() {
       var board = Board(Array2D<Tile>(4, 4));
       var expected = <Object>[board];
       // ACT
-      var gameOver = GameOver(board);
+      var gameOver = GameOverState(board);
       // ASSERT
       expect(gameOver.props, expected);
     });
@@ -30,7 +30,7 @@ void main() {
       // ARRANGE
       int highscore = 9000;
       // ACT
-      var state = HighscoreLoaded(highscore);
+      var state = HighscoreLoadedState(highscore);
       // ASSERT
       expect(state, isA<GameState>());
     });
@@ -39,7 +39,7 @@ void main() {
       int highscore = 9000;
       var expected = <Object>[highscore];
       // ACT
-      var state = HighscoreLoaded(highscore);
+      var state = HighscoreLoadedState(highscore);
       // ASSERT
       expect(state.props, expected);
     });
@@ -49,7 +49,7 @@ void main() {
       // ARRANGE
       String message = 'message';
       // ACT
-      var error = Error(message);
+      var error = GameErrorState(message);
       // ASSERT
       expect(error, isA<GameState>());
     });
@@ -58,7 +58,7 @@ void main() {
       String message = 'message';
       var expected = <Object>[message];
       // ACT
-      var error = Error(message);
+      var error = GameErrorState(message);
       // ASSERT
       expect(error.props, expected);
     });

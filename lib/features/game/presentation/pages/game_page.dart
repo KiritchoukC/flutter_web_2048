@@ -43,7 +43,7 @@ class _UndoButtonState extends State<UndoButton> {
   Widget build(BuildContext context) {
     return BlocListener<GameBloc, GameState>(
       condition: (previousState, newState) {
-        if (_disabled && newState is UpdateBoardEnd) {
+        if (_disabled && newState is UpdateBoardEndState) {
           if (_moved > 0) {
             _moved = 0;
             return true;
@@ -57,7 +57,7 @@ class _UndoButtonState extends State<UndoButton> {
         return false;
       },
       listener: (context, state) {
-        if (state is UpdateBoardEnd) {
+        if (state is UpdateBoardEndState) {
           setState(() {
             _disabled = false;
           });

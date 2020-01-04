@@ -96,14 +96,14 @@ void main() {
 
   test('Initial state should be [InitialGame]', () {
     // ASSERT
-    expect(bloc.initialState, equals(InitialGame()));
+    expect(bloc.initialState, equals(InitialGameState()));
   });
 
   test('close should not emit new states', () {
     // ASSERT Later
     expectLater(
       bloc,
-      emitsInOrder([InitialGame(), emitsDone]),
+      emitsInOrder([InitialGameState(), emitsDone]),
     );
 
     // ACT
@@ -131,9 +131,9 @@ void main() {
 
       // ASSERT LATER
       final expected = [
-        InitialGame(),
-        UpdateBoardStart(),
-        UpdateBoardEnd(usecaseOutput),
+        InitialGameState(),
+        UpdateBoardStartState(),
+        UpdateBoardEndState(usecaseOutput),
       ];
 
       expectLater(
@@ -167,9 +167,9 @@ void main() {
 
       // ASSERT LATER
       final expected = [
-        InitialGame(),
-        UpdateBoardStart(),
-        UpdateBoardEnd(usecaseOutput),
+        InitialGameState(),
+        UpdateBoardStartState(),
+        UpdateBoardEndState(usecaseOutput),
       ];
 
       expectLater(
@@ -204,10 +204,10 @@ void main() {
 
       // ASSERT LATER
       final expected = [
-        InitialGame(),
-        UpdateBoardStart(),
-        GameOver(usecaseOutput),
-        HighscoreLoaded(highscore)
+        InitialGameState(),
+        UpdateBoardStartState(),
+        GameOverState(usecaseOutput),
+        HighscoreLoadedState(highscore)
       ];
 
       expectLater(
@@ -241,10 +241,10 @@ void main() {
 
       // ASSERT LATER
       final expected = [
-        InitialGame(),
-        UpdateBoardStart(),
-        UpdateBoardEnd(usecaseOutput),
-        HighscoreLoaded(highscore),
+        InitialGameState(),
+        UpdateBoardStartState(),
+        UpdateBoardEndState(usecaseOutput),
+        HighscoreLoadedState(highscore),
       ];
 
       expectLater(
@@ -276,8 +276,8 @@ void main() {
 
       // ASSERT LATER
       final expected = [
-        InitialGame(),
-        HighscoreLoaded(usecaseOutput),
+        InitialGameState(),
+        HighscoreLoadedState(usecaseOutput),
       ];
 
       expectLater(
@@ -310,9 +310,9 @@ void main() {
 
       // ASSERT LATER
       final expected = [
-        InitialGame(),
-        UpdateBoardStart(),
-        UpdateBoardEnd(usecaseOutput),
+        InitialGameState(),
+        UpdateBoardStartState(),
+        UpdateBoardEndState(usecaseOutput),
       ];
 
       expectLater(
