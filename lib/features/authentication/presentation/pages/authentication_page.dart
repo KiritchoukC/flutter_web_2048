@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/layouts/default_layout.dart';
 import '../../../../core/util/horizontal_spacing.dart';
 import '../../../../core/util/vertical_spacing.dart';
+import '../bloc/bloc.dart';
 import '../widgets/buttons/anonymous_signin_button.dart';
 import '../widgets/buttons/facebook_signin_button.dart';
 import '../widgets/buttons/google_signin_button.dart';
@@ -23,24 +25,58 @@ class AuthenticationPage extends StatelessWidget {
         },
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            VerticalSpacing.medium(),
-            LoginFormWidget(),
-            VerticalSpacing.medium(),
-            OrDivider(),
-            VerticalSpacing.medium(),
-            AnonymousSigninButton(),
-            VerticalSpacing.small(),
-            GoogleSigninButton(),
-            VerticalSpacing.small(),
-            FacebookSigninButton(),
-            VerticalSpacing.small(),
-            TwitterSigninButton(),
-          ],
+        child: BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            if (state is LoggedInState) {
+              Navigator.of(context).pop();
+            }
+          },
+          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) {
+              if (state is InitialAuthenticationState) {
+                return InitialAuthenticationPage();
+              }
+
+              if (state is AuthenticationLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ),
       ),
+    );
+  }
+}
+
+class InitialAuthenticationPage extends StatelessWidget {
+  const InitialAuthenticationPage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        VerticalSpacing.medium(),
+        LoginFormWidget(),
+        VerticalSpacing.medium(),
+        OrDivider(),
+        VerticalSpacing.medium(),
+        AnonymousSigninButton(),
+        VerticalSpacing.small(),
+        GoogleSigninButton(),
+        VerticalSpacing.small(),
+        FacebookSigninButton(),
+        VerticalSpacing.small(),
+        TwitterSigninButton(),
+      ],
     );
   }
 }
