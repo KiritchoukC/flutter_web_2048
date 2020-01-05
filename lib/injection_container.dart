@@ -1,8 +1,14 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 
 import 'core/network/network_info.dart';
+import 'features/authentication/data/datasources/authentication_datasource.dart';
+import 'features/authentication/data/datasources/firebase_authentication_datasource.dart';
+import 'features/authentication/data/repositories/authentication_repository_impl.dart';
+import 'features/authentication/domain/repositories/authentication_repository.dart';
+import 'features/authentication/domain/usecases/signin_anonymous.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/game/data/datasources/board_datasource.dart';
 import 'features/game/data/datasources/hive_board_datasource.dart';
@@ -17,6 +23,7 @@ import 'features/game/presentation/bloc/game_bloc.dart';
 
 final sl = GetIt.instance;
 
+/// Initialize de depdendency injection
 Future<void> init() async {
   //! Features
   initGameFeature();
@@ -29,8 +36,11 @@ Future<void> init() async {
   var box = await Hive.openBox<int>('highscoreBox');
   sl.registerLazySingleton<Box<int>>(() => box);
   sl.registerLazySingleton(() => DataConnectionChecker());
+
+  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
 }
 
+/// Register the dependencies needed for the game feature
 void initGameFeature() {
   // Bloc
   sl.registerFactory(
@@ -57,13 +67,17 @@ void initGameFeature() {
   sl.registerLazySingleton<BoardDataSource>(() => HiveBoardDataSource(localStorage: sl()));
 }
 
+/// Register the dependencies needed for the authentication feature
 void initAuthenticationFeature() {
   // Bloc
-  sl.registerFactory(() => AuthenticationBloc());
+  sl.registerFactory(() => AuthenticationBloc(signinAnonymous: sl()));
 
   // Usecases
+  sl.registerLazySingleton(() => SigninAnonymous(sl()));
 
   // Repositories
+  sl.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(sl()));
 
   // Datasource
+  sl.registerLazySingleton<AuthenticationDatasource>(() => FirebaseAuthenticationDatasource(sl()));
 }

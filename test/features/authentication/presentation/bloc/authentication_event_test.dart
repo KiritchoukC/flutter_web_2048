@@ -8,7 +8,7 @@ void main() {
       String _email = 'email@example.com';
       String _password = 'abc123';
       // ACT
-      var signin = Signin(_email, _password);
+      var signin = SigninEvent(_email, _password);
       // ASSERT
       expect(signin, isA<AuthenticationEvent>());
     });
@@ -18,7 +18,7 @@ void main() {
       String _password = 'abc123';
       var expected = <Object>[_email, _password];
       // ACT
-      var signin = Signin(_email, _password);
+      var signin = SigninEvent(_email, _password);
       // ASSERT
       expect(signin.props, expected);
     });
@@ -26,7 +26,7 @@ void main() {
   group('AnonymousSignin', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var anonymousSignin = AnonymousSignin();
+      var anonymousSignin = AnonymousSigninEvent();
       // ASSERT
       expect(anonymousSignin, isA<AuthenticationEvent>());
     });
@@ -34,7 +34,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var anonymousSignin = AnonymousSignin();
+      var anonymousSignin = AnonymousSigninEvent();
       // ASSERT
       expect(anonymousSignin.props, expected);
     });
@@ -42,7 +42,7 @@ void main() {
   group('GoogleSignin', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var googleSignin = GoogleSignin();
+      var googleSignin = GoogleSigninEvent();
       // ASSERT
       expect(googleSignin, isA<AuthenticationEvent>());
     });
@@ -50,7 +50,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var googleSignin = GoogleSignin();
+      var googleSignin = GoogleSigninEvent();
       // ASSERT
       expect(googleSignin.props, expected);
     });
@@ -58,7 +58,7 @@ void main() {
   group('TwitterSignin', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var twitterSignin = TwitterSignin();
+      var twitterSignin = TwitterSigninEvent();
       // ASSERT
       expect(twitterSignin, isA<AuthenticationEvent>());
     });
@@ -66,7 +66,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var twitterSignin = TwitterSignin();
+      var twitterSignin = TwitterSigninEvent();
       // ASSERT
       expect(twitterSignin.props, expected);
     });
@@ -74,7 +74,7 @@ void main() {
   group('FacebookSignin', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var facebookSignin = FacebookSignin();
+      var facebookSignin = FacebookSigninEvent();
       // ASSERT
       expect(facebookSignin, isA<AuthenticationEvent>());
     });
@@ -82,7 +82,7 @@ void main() {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var facebookSignin = FacebookSignin();
+      var facebookSignin = FacebookSigninEvent();
       // ASSERT
       expect(facebookSignin.props, expected);
     });
