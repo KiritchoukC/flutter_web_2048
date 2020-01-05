@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.35.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.34.0...v1.35.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** add anonymous signin button to login page ([47d8958](https://github.com/KiritchoukC/flutter_web_2048/commit/47d8958)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ## [1.34.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.33.0...v1.34.0) (2020-01-05)
 
 
