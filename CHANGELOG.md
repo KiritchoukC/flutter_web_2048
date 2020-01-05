@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.36.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.35.0...v1.36.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** add unique id property to user entity ([9335c51](https://github.com/KiritchoukC/flutter_web_2048/commit/9335c51)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ## [1.35.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.34.0...v1.35.0) (2020-01-05)
 
 
