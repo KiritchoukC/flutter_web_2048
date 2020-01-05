@@ -49,11 +49,18 @@ void main() {
 
     test('should return a [User] for success requests', () async {
       // ARRANGE
+      String uniqueId = 'uniqueId';
       String username = 'username';
       String email = 'email@example.com';
       String picture = 'https://google/picture.jpg';
 
-      UserModel userModel = UserModel(username, email, picture, AuthenticationProvider.Anonymous);
+      UserModel userModel = UserModel(
+        uniqueId,
+        username,
+        email,
+        picture,
+        AuthenticationProvider.Anonymous,
+      );
 
       User expectedUser = userModel;
 

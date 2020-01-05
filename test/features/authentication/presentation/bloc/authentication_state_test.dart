@@ -3,6 +3,13 @@ import 'package:flutter_web_2048/features/authentication/domain/entities/user.da
 import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
 
 void main() {
+  final anonymousUser = User(
+    'uniqueId',
+    'username',
+    'email@example.com',
+    'https://google.com/picture.jpg',
+    AuthenticationProvider.Anonymous,
+  );
   group('InitialAuthenticationState', () {
     test('should extend AuthenticationState', () {
       // ACT
@@ -22,7 +29,7 @@ void main() {
   group('LoggedInState', () {
     test('should extend AuthenticationState', () {
       // ARRANGE
-      var user = User('username', '', '', AuthenticationProvider.Anonymous);
+      var user = anonymousUser;
       // ACT
       var loggedIn = LoggedInState(user);
       // ASSERT
@@ -30,7 +37,7 @@ void main() {
     });
     test('should have props list with the user', () {
       // ARRANGE
-      var user = User('username', '', '', AuthenticationProvider.Anonymous);
+      var user = anonymousUser;
       var expected = <Object>[user];
       // ACT
       var loggedIn = LoggedInState(user);
@@ -41,7 +48,7 @@ void main() {
   group('LoggedOutState', () {
     test('should extend AuthenticationState', () {
       // ARRANGE
-      var user = User('username', '', '', AuthenticationProvider.Anonymous);
+      var user = anonymousUser;
       // ACT
       var loggedOut = LoggedOutState(user);
       // ASSERT
@@ -49,7 +56,7 @@ void main() {
     });
     test('should have props list with the user', () {
       // ARRANGE
-      var user = User('username', '', '', AuthenticationProvider.Anonymous);
+      var user = anonymousUser;
       var expected = <Object>[user];
       // ACT
       var loggedOut = LoggedOutState(user);

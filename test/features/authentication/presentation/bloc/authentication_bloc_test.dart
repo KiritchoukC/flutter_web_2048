@@ -13,6 +13,7 @@ void main() {
   AuthenticationBloc bloc;
   MockSigninAnonymous mockSigninAnonymous;
   User testUser = User(
+    'uniqueid',
     'UsernameTest',
     'email@example.com',
     'https://google.com/picture.jpg',

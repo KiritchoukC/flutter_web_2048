@@ -8,8 +8,16 @@ class MockFirebaseUser extends Mock implements FirebaseUser {}
 
 void main() {
   test('should extend [User]', () async {
+    // ARRANGE
+    var userModel = UserModel(
+      'uniqueId',
+      'username',
+      'email',
+      'picture',
+      AuthenticationProvider.Google,
+    );
     // ASSERT
-    expect(UserModel('username', 'email', 'picture', AuthenticationProvider.Google), isA<User>());
+    expect(userModel, isA<User>());
   });
 
   group('fromFirebaseUser', () {

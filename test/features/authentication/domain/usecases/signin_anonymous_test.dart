@@ -48,7 +48,7 @@ void main() {
 
   test('should return [User] on Right case', () async {
     // ARRANGE
-    var user = User('username', 'email', 'picutre', AuthenticationProvider.Anonymous);
+    var user = User('uniqueId', 'username', 'email', 'picutre', AuthenticationProvider.Anonymous);
     when(mockRepository.signinAnonymously()).thenAnswer((_) async => Right(user));
 
     // ACT
