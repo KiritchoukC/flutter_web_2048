@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/layouts/default_layout.dart';
 import '../../../../core/util/horizontal_spacing.dart';
 import '../../../../core/util/vertical_spacing.dart';
+import '../widgets/buttons/anonymous_signin_button.dart';
 import '../widgets/buttons/facebook_signin_button.dart';
 import '../widgets/buttons/google_signin_button.dart';
 import '../widgets/buttons/twitter_signin_button.dart';
@@ -30,6 +31,8 @@ class AuthenticationPage extends StatelessWidget {
             VerticalSpacing.medium(),
             OrDivider(),
             VerticalSpacing.medium(),
+            AnonymousSigninButton(),
+            VerticalSpacing.small(),
             GoogleSigninButton(),
             VerticalSpacing.small(),
             FacebookSigninButton(),
