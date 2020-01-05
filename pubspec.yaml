@@ -1,7 +1,7 @@
 name: flutter_web_2048
 description: 2048 game made with flutter web framework
 
-version: 1.30.0
+version: 1.36.0
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -28,6 +28,7 @@ dependencies:
   flutter_signin_button: ^1.0.0
   firebase_auth: ^0.15.3
   cloud_firestore: ^0.13.0+1
+  font_awesome_flutter: ^8.5.0
 
 dev_dependencies:
   flutter_test:

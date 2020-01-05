@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../bloc/bloc.dart';
 
 class AnonymousSigninButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      onPressed: () {},
-      child: Text(
-        'Signin Anonymously',
-        style: TextStyle(color: Colors.grey.shade700),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 45.0),
+    return SignInButtonBuilder(
+      backgroundColor: Theme.of(context).primaryColor,
+      text: 'Sign in Anonymously',
+      onPressed: () {
+        BlocProvider.of<AuthenticationBloc>(context).add(AnonymousSigninEvent());
+      },
+      textColor: Colors.grey.shade500,
+      icon: FontAwesomeIcons.userSecret,
     );
   }
 }
