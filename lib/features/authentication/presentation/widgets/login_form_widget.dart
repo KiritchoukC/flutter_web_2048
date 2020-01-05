@@ -25,6 +25,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   Widget get _emailField => DefaultTextFormFieldWidget(
         controller: _emailController,
         labelText: 'Email',
+        textInputAction: TextInputAction.next,
       );
 
   Widget get _passwordField => DefaultTextFormFieldWidget(
