@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.33.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.32.2...v1.33.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** change email text input action to next ([3ca1b5c](https://github.com/KiritchoukC/flutter_web_2048/commit/3ca1b5c)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ### [1.32.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.32.1...v1.32.2) (2020-01-04)
 
 ### [1.32.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.32.0...v1.32.1) (2020-01-04)
