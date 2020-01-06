@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.40.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.39.0...v1.40.0) (2020-01-06)
+
+
+### Features
+
+* **authentication:** style web login form ([ccef4a8](https://github.com/KiritchoukC/flutter_web_2048/commit/ccef4a8)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ## [1.39.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.38.2...v1.39.0) (2020-01-06)
 
 
