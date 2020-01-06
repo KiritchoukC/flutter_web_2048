@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/error/exceptions.dart';
@@ -8,6 +9,8 @@ import 'package:mockito/mockito.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
+class MockFirestore extends Mock implements Firestore {}
+
 class MockAuthResult extends Mock implements AuthResult {}
 
 class MockFirebaseUser extends Mock implements FirebaseUser {}
@@ -15,10 +18,13 @@ class MockFirebaseUser extends Mock implements FirebaseUser {}
 main() {
   FirebaseAuthenticationDatasource datasource;
   MockFirebaseAuth mockFirebaseAuth;
+  MockFirestore mockFirestore;
 
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
-    datasource = FirebaseAuthenticationDatasource(mockFirebaseAuth);
+    mockFirestore = MockFirestore();
+    datasource =
+        FirebaseAuthenticationDatasource(firebaseAuth: mockFirebaseAuth, firestore: mockFirestore);
   });
 
   test('should implement [AuthenticationDatasource]', () {
@@ -28,7 +34,10 @@ main() {
 
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
-    expect(() => FirebaseAuthenticationDatasource(null), throwsA(isA<AssertionError>()));
+    expect(() => FirebaseAuthenticationDatasource(firebaseAuth: null, firestore: mockFirestore),
+        throwsA(isA<AssertionError>()));
+    expect(() => FirebaseAuthenticationDatasource(firebaseAuth: mockFirebaseAuth, firestore: null),
+        throwsA(isA<AssertionError>()));
   });
 
   group('SigninAnonymously', () {

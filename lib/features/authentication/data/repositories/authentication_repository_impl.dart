@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -11,7 +12,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   /// the authentication third party datasource
   final AuthenticationDatasource _datasource;
 
-  AuthenticationRepositoryImpl(this._datasource) : assert(_datasource != null);
+  AuthenticationRepositoryImpl({@required AuthenticationDatasource datasource})
+      : _datasource = datasource,
+        assert(_datasource != null);
 
   /// Allow a user to sign in anonymously
   @override

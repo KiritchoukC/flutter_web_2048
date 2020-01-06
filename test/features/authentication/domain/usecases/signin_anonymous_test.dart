@@ -15,7 +15,7 @@ void main() {
 
   setUp(() {
     mockRepository = MockAuthenticationRepository();
-    usecase = SigninAnonymous(mockRepository);
+    usecase = SigninAnonymous(repository: mockRepository);
   });
 
   test('should implements [UseCase<User, NoParams>]', () {
@@ -25,7 +25,7 @@ void main() {
 
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
-    expect(() => SigninAnonymous(null), throwsA(isA<AssertionError>()));
+    expect(() => SigninAnonymous(repository: null), throwsA(isA<AssertionError>()));
   });
 
   test('should call the repository', () async {

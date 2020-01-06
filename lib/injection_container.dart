@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -25,19 +26,21 @@ final sl = GetIt.instance;
 
 /// Initialize de depdendency injection
 Future<void> init() async {
-  //! Features
+  //! FEATURES
   initGameFeature();
   initAuthenticationFeature();
 
-  //! Core
+  //! CORE
   sl.registerLazySingleton<NetworkInfo>(() => DataConnectionCheckerNetworkInfo(sl()));
 
-  //! External
+  //! EXTERNAL
   var box = await Hive.openBox<int>('highscoreBox');
   sl.registerLazySingleton<Box<int>>(() => box);
   sl.registerLazySingleton(() => DataConnectionChecker());
 
+  // Firebase dependencies
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  sl.registerLazySingleton<Firestore>(() => Firestore.instance);
 }
 
 /// Register the dependencies needed for the game feature
@@ -73,11 +76,17 @@ void initAuthenticationFeature() {
   sl.registerFactory(() => AuthenticationBloc(signinAnonymous: sl()));
 
   // Usecases
-  sl.registerLazySingleton(() => SigninAnonymous(sl()));
+  sl.registerLazySingleton(() => SigninAnonymous(repository: sl()));
 
   // Repositories
-  sl.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(sl()));
+  sl.registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationRepositoryImpl(datasource: sl()));
 
   // Datasource
-  sl.registerLazySingleton<AuthenticationDatasource>(() => FirebaseAuthenticationDatasource(sl()));
+  sl.registerLazySingleton<AuthenticationDatasource>(
+    () => FirebaseAuthenticationDatasource(
+      firebaseAuth: sl(),
+      firestore: sl(),
+    ),
+  );
 }

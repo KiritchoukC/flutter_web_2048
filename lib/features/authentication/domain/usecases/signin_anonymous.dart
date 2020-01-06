@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -12,7 +13,9 @@ class SigninAnonymous extends UseCase<User, NoParams> {
 
   /// Initialize an instance of [SinginAnonymous]
   /// with [AuthenticationRepository] as a dependency
-  SigninAnonymous(this._repository) : assert(_repository != null);
+  SigninAnonymous({@required AuthenticationRepository repository})
+      : _repository = repository,
+        assert(_repository != null);
 
   /// Execute the usecase
   @override

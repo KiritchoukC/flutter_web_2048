@@ -10,9 +10,11 @@ import '../../../../core/usecases/usecase.dart';
 import '../../domain/usecases/signin_anonymous.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final SigninAnonymous signinAnonymous;
+  final SigninAnonymous _signinAnonymous;
 
-  AuthenticationBloc({@required this.signinAnonymous}) : assert(signinAnonymous != null);
+  AuthenticationBloc({@required SigninAnonymous signinAnonymous})
+      : _signinAnonymous = signinAnonymous,
+        assert(_signinAnonymous != null);
 
   @override
   AuthenticationState get initialState => InitialAuthenticationState();
@@ -29,7 +31,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     yield AuthenticationLoadingState();
 
     // call the usecase
-    final output = await signinAnonymous(NoParams());
+    final output = await _signinAnonymous(NoParams());
 
     // what to do if something wrong happens
     var onFailure = (failure) async* {

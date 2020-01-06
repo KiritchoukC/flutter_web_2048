@@ -17,7 +17,7 @@ void main() {
 
   setUp(() {
     datasource = MockAuthenticationDatasource();
-    repository = AuthenticationRepositoryImpl(datasource);
+    repository = AuthenticationRepositoryImpl(datasource: datasource);
   });
 
   test('should implements [AuthenticationRepository]', () {
@@ -27,7 +27,7 @@ void main() {
 
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
-    expect(() => AuthenticationRepositoryImpl(null), throwsA(isA<AssertionError>()));
+    expect(() => AuthenticationRepositoryImpl(datasource: null), throwsA(isA<AssertionError>()));
   });
 
   group('signinAnonymously', () {
