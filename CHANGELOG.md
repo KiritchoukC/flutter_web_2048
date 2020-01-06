@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.39.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.38.2...v1.39.0) (2020-01-06)
+
+
+### Features
+
+* **authentication:** persist user's data after anonymous sign in ([3c32080](https://github.com/KiritchoukC/flutter_web_2048/commit/3c32080)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ### [1.38.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.38.1...v1.38.2) (2020-01-06)
 
 
