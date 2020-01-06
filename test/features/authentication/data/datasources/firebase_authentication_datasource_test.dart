@@ -23,8 +23,10 @@ main() {
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
     mockFirestore = MockFirestore();
-    datasource =
-        FirebaseAuthenticationDatasource(firebaseAuth: mockFirebaseAuth, firestore: mockFirestore);
+    datasource = FirebaseAuthenticationDatasource(
+      firebaseAuth: mockFirebaseAuth,
+      firestore: mockFirestore,
+    );
   });
 
   test('should implement [AuthenticationDatasource]', () {

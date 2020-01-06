@@ -14,7 +14,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   AuthenticationRepositoryImpl({@required AuthenticationDatasource datasource})
       : _datasource = datasource,
-        assert(_datasource != null);
+        assert(datasource != null);
 
   /// Allow a user to sign in anonymously
   @override

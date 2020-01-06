@@ -21,8 +21,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   })  : _firebaseAuth = firebaseAuth,
         _firestore = firestore,
         assert(
-          _firebaseAuth != null,
-          _firestore != null,
+          firebaseAuth != null && firestore != null,
         );
 
   /// Sign in a user anonymously

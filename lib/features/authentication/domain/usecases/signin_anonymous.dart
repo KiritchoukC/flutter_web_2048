@@ -15,7 +15,7 @@ class SigninAnonymous extends UseCase<User, NoParams> {
   /// with [AuthenticationRepository] as a dependency
   SigninAnonymous({@required AuthenticationRepository repository})
       : _repository = repository,
-        assert(_repository != null);
+        assert(repository != null);
 
   /// Execute the usecase
   @override

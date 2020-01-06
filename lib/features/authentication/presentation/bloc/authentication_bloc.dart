@@ -14,7 +14,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   AuthenticationBloc({@required SigninAnonymous signinAnonymous})
       : _signinAnonymous = signinAnonymous,
-        assert(_signinAnonymous != null);
+        assert(signinAnonymous != null);
 
   @override
   AuthenticationState get initialState => InitialAuthenticationState();
