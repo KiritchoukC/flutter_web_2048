@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/enums/direction.dart';
+import '../../../../core/router/route_paths.dart';
 import '../bloc/bloc.dart';
 import 'board_widget.dart';
 import 'direction_listener.dart';
@@ -24,15 +25,27 @@ class _GameWidgetState extends State<GameWidget> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _focusNode?.dispose();
     _bloc?.close();
     super.dispose();
+  }
+
+  String _getCurrentRoute(BuildContext context) {
+    String currentRoute = '';
+
+    Navigator.of(context).popUntil((route) {
+      currentRoute = route.settings.name;
+      return true;
+    });
+
+    return currentRoute;
   }
 
   @override
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<GameBloc>(context);
-    if (kIsWeb) {
+    // to listen on arrow keys, the focus need to be requested but only on the Game page
+    if (kIsWeb && _getCurrentRoute(context) == RoutePaths.Game) {
       FocusScope.of(context).requestFocus(_focusNode);
     }
     return AspectRatio(

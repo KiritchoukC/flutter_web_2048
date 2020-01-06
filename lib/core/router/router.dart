@@ -19,6 +19,10 @@ class Router {
             builder: (_) => sl<GameBloc>(),
             child: GamePage(),
           ),
+          settings: RouteSettings(
+            name: RoutePaths.Game,
+            isInitialRoute: true,
+          ),
         );
 
       // Authentication route
@@ -28,6 +32,7 @@ class Router {
             builder: (_) => sl<AuthenticationBloc>(),
             child: AuthenticationPage(),
           ),
+          settings: RouteSettings(name: RoutePaths.Authentication),
         );
 
       // NotFound route
