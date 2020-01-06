@@ -5,6 +5,7 @@ import 'package:flutter_web_2048/core/error/exceptions.dart';
 import 'package:flutter_web_2048/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:flutter_web_2048/features/authentication/data/datasources/firebase_authentication_datasource.dart';
 import 'package:flutter_web_2048/features/authentication/data/models/user_model.dart';
+import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
@@ -15,10 +16,16 @@ class MockAuthResult extends Mock implements AuthResult {}
 
 class MockFirebaseUser extends Mock implements FirebaseUser {}
 
+class MockCollectionReference extends Mock implements CollectionReference {}
+
+class MockDocumentReference extends Mock implements DocumentReference {}
+
 main() {
   FirebaseAuthenticationDatasource datasource;
   MockFirebaseAuth mockFirebaseAuth;
   MockFirestore mockFirestore;
+  MockCollectionReference mockCollectionReference;
+  MockDocumentReference mockDocumentReference;
 
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
@@ -27,6 +34,9 @@ main() {
       firebaseAuth: mockFirebaseAuth,
       firestore: mockFirestore,
     );
+
+    mockCollectionReference = MockCollectionReference();
+    mockDocumentReference = MockDocumentReference();
   });
 
   test('should implement [AuthenticationDatasource]', () {
@@ -92,6 +102,89 @@ main() {
 
       // ASSERT
       expect(user, isA<UserModel>());
+    });
+  });
+  group('updateUserData', () {
+    var testUser = UserModel(
+      uid: 'uid',
+      email: 'email',
+      username: 'username',
+      picture: 'picture',
+      authenticationProvider: AuthenticationProvider.Anonymous,
+    );
+    test('should return the [DocumentReference.setData()] method output', () async {
+      // ARRANGE
+      var setDataOutput = Future.value();
+
+      when(mockDocumentReference.setData(
+        testUser.toJson(lastSeenDateTime: DateTime.now()),
+        merge: true,
+      )).thenAnswer((_) => setDataOutput);
+      when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
+      when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
+
+      // ACT
+      var actual = datasource.updateUserData(testUser);
+
+      // ASSERT
+      expect(actual, isA<Future>());
+    });
+    test('should call [DocumentReference.setData()]', () async {
+      // ARRANGE
+      var setDataOutput = Future.value();
+      var lastSeendDateTime = DateTime.now();
+
+      when(mockDocumentReference.setData(
+        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        merge: true,
+      )).thenAnswer((_) => setDataOutput);
+      when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
+      when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
+
+      // ACT
+      datasource.updateUserData(testUser);
+
+      // ASSERT
+      verify(mockDocumentReference.setData(
+        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        merge: true,
+      )).called(1);
+    }, retry: 5);
+    test('should call [CollectionReference.document()]', () async {
+      // ARRANGE
+      var setDataOutput = Future.value();
+      var lastSeendDateTime = DateTime.now();
+
+      when(mockDocumentReference.setData(
+        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        merge: true,
+      )).thenAnswer((_) => setDataOutput);
+      when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
+      when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
+
+      // ACT
+      datasource.updateUserData(testUser);
+
+      // ASSERT
+      verify(mockCollectionReference.document(testUser.uid)).called(1);
+    });
+    test('should call [Firestore.collection()]', () async {
+      // ARRANGE
+      var setDataOutput = Future.value();
+      var lastSeendDateTime = DateTime.now();
+
+      when(mockDocumentReference.setData(
+        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        merge: true,
+      )).thenAnswer((_) => setDataOutput);
+      when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
+      when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
+
+      // ACT
+      datasource.updateUserData(testUser);
+
+      // ASSERT
+      verify(mockFirestore.collection('users')).called(1);
     });
   });
 }

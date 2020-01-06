@@ -4,4 +4,7 @@ import '../models/user_model.dart';
 abstract class AuthenticationDatasource {
   /// Provide a user model to anonymous users.
   Future<UserModel> signinAnonymously();
+
+  /// update or persist user's data
+  Future updateUserData(UserModel user);
 }

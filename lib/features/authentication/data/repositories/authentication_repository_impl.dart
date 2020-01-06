@@ -23,6 +23,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       // get user from datasource
       var user = await _datasource.signinAnonymously();
 
+      // update stored user's data
+      await _datasource.updateUserData(user);
+
       // return the user
       return Right(user);
     } on FirebaseException {

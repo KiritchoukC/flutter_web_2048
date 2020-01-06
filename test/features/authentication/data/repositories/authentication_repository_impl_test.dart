@@ -40,11 +40,18 @@ void main() {
       expect(actual, Left(FirebaseFailure()));
     });
 
-    test('should call datasource', () async {
+    test('should call datasource [signinAnonymously] method]', () async {
       // ACT
       await repository.signinAnonymously();
       // ASSERT
       verify(datasource.signinAnonymously()).called(1);
+    });
+
+    test('should call datasource [updateUserData] method', () async {
+      // ACT
+      await repository.signinAnonymously();
+      // ASSERT
+      verify(datasource.updateUserData(any)).called(1);
     });
 
     test('should return a [User] for success requests', () async {
@@ -55,11 +62,11 @@ void main() {
       String picture = 'https://google/picture.jpg';
 
       UserModel userModel = UserModel(
-        uniqueId,
-        username,
-        email,
-        picture,
-        AuthenticationProvider.Anonymous,
+        uid: uniqueId,
+        username: username,
+        email: email,
+        picture: picture,
+        authenticationProvider: AuthenticationProvider.Anonymous,
       );
 
       User expectedUser = userModel;

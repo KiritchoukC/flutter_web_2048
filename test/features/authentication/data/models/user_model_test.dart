@@ -10,11 +10,11 @@ void main() {
   test('should extend [User]', () async {
     // ARRANGE
     var userModel = UserModel(
-      'uniqueId',
-      'username',
-      'email',
-      'picture',
-      AuthenticationProvider.Google,
+      uid: 'uniqueId',
+      username: 'username',
+      email: 'email',
+      picture: 'picture',
+      authenticationProvider: AuthenticationProvider.Google,
     );
     // ASSERT
     expect(userModel, isA<User>());
@@ -32,13 +32,44 @@ void main() {
       when(firebaseUser.photoUrl).thenReturn(picture);
 
       // ACT
-      var userModel = UserModel.fromFirebaseUser(firebaseUser, AuthenticationProvider.Google);
+      var userModel = UserModel.fromFirebaseUser(
+        firebaseUser: firebaseUser,
+        authenticationProvider: AuthenticationProvider.Google,
+      );
 
       // ASSERT
       expect(userModel.authenticationProvider, AuthenticationProvider.Google);
       expect(userModel.username, username);
       expect(userModel.email, email);
       expect(userModel.picture, picture);
+    });
+  });
+
+  group('toJson', () {
+    test('should convert the [UserModel] to json with the given [lastSeenDateTime]', () async {
+      // ARRANGE
+      var userModel = UserModel(
+        uid: 'uid',
+        username: 'username',
+        email: 'email',
+        picture: 'picture',
+        authenticationProvider: AuthenticationProvider.Anonymous,
+      );
+      var lastSeenDateTime = DateTime.now();
+
+      // ACT
+      var actual = userModel.toJson(lastSeenDateTime: lastSeenDateTime);
+
+      // ASSERT
+      expect(
+          actual,
+          equals({
+            'uid': userModel.uid,
+            'email': userModel.email,
+            'picture': userModel.picture,
+            'username': userModel.username,
+            'lastSeen': lastSeenDateTime
+          }));
     });
   });
 }

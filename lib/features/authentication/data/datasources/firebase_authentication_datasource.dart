@@ -37,7 +37,10 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
       }
 
       // Return the firebase user
-      return UserModel.fromFirebaseUser(result.user, AuthenticationProvider.Anonymous);
+      return UserModel.fromFirebaseUser(
+        firebaseUser: result.user,
+        authenticationProvider: AuthenticationProvider.Anonymous,
+      );
     } catch (e) {
       // Log error and throw exception
       print(e.toString());
@@ -45,17 +48,15 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
     }
   }
 
-  // void _updateUserData(UserModel user) async {
-  //   // Get the reference of the users docuement
-  //   var ref = db.collection('users').document(user.uid);
-
-  //   // Update the user data in the retrieved document reference
-  //   return ref.setData({
-  //     'uid': user.uid,
-  //     'email': user.email,
-  //     'photoURL': user.photoUrl,
-  //     'displayName': user.displayName,
-  //     'lastSeen': DateTime.now()
-  //   }, merge: true);
-  // }
+  /// Update or perist [user]'s data
+  Future updateUserData(UserModel user) async {
+    return _firestore
+        // Get the reference of the users collection
+        .collection('users')
+        // Get the reference of the users document
+        .document(user.uid)
+        // Update the user data with the user converted to json in the retrieved document reference
+        // set [merge] to true so the the document will be updated instead of overwrited
+        .setData(user.toJson(lastSeenDateTime: DateTime.now()), merge: true);
+  }
 }
