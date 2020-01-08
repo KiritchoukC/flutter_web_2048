@@ -6,5 +6,5 @@ abstract class AuthenticationDatasource {
   Future<UserModel> signinAnonymously();
 
   /// update or persist user's data
-  Future updateUserData(UserModel user);
+  Future<void> updateUserData(UserModel user);
 }

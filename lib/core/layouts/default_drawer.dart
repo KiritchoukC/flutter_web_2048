@@ -1,32 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/authentication/domain/entities/user.dart';
+import '../../features/authentication/presentation/bloc/bloc.dart';
 import '../../features/game/presentation/bloc/bloc.dart';
+import '../config/config.dart';
 import '../router/route_paths.dart';
 import '../theme/custom_colors.dart';
 import '../util/horizontal_spacing.dart';
 
 class DefaultDrawer extends StatelessWidget {
-  final isAuthenticated = false;
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          isAuthenticated ? AuthenticatedDrawerHeader() : AnonymousDrawerHeader(),
-          ListTile(
-            title: Text(
-              'Reset game',
-              style: TextStyle(color: Colors.white),
-              semanticsLabel: 'Reset the game',
-            ),
-            trailing: Icon(Icons.refresh),
-            onTap: () {
-              BlocProvider.of<GameBloc>(context).add(NewGameEvent());
-            },
-          ),
+          DefaultDrawerHeader(),
+          DrawerMenu(),
         ],
       ),
+    );
+  }
+}
+
+class DrawerMenu extends StatelessWidget {
+  const DrawerMenu({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        'Reset game',
+        style: TextStyle(color: Colors.white),
+        semanticsLabel: 'Reset the game',
+      ),
+      trailing: Icon(Icons.refresh),
+      onTap: () {
+        BlocProvider.of<GameBloc>(context).add(NewGameEvent());
+      },
+    );
+  }
+}
+
+class DefaultDrawerHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      condition: (previousState, state) {
+        if (state is LoggedInState || state is LoggedOutState) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        if (state is LoggedInState) {
+          AuthenticatedDrawerHeader(user: state.user);
+        }
+
+        return AnonymousDrawerHeader();
+      },
     );
   }
 }
@@ -57,7 +91,7 @@ class AnonymousDrawerHeader extends StatelessWidget {
                 child: RaisedButton(
                   color: CustomColors.accentColor.shade200,
                   onPressed: () {
-                    Navigator.of(context).pushNamed(RoutePaths.Authentication);
+                    Navigator.of(context).pushNamed(RoutePaths.authentication);
                   },
                   child: Text('Sign up', style: TextStyle(color: Colors.black)),
                 ),
@@ -72,6 +106,12 @@ class AnonymousDrawerHeader extends StatelessWidget {
 }
 
 class AuthenticatedDrawerHeader extends StatelessWidget {
+  final User _user;
+
+  const AuthenticatedDrawerHeader({Key key, User user})
+      : _user = user,
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return UserAccountsDrawerHeader(
@@ -79,11 +119,11 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
         color: CustomColors.accentColor,
       ),
       accountEmail: Text(
-        'sample@mail.com',
+        _user?.email ?? 'Anonymous',
         style: TextStyle(color: Colors.grey.shade800),
       ),
       accountName: Text(
-        'Username Placeholder',
+        _user?.username ?? 'Anonymous',
         style: TextStyle(color: Colors.black),
       ),
       currentAccountPicture: Container(
@@ -91,8 +131,7 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage(
-                "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"),
+            image: NetworkImage(_user.picture ?? Config.anonymousPicture),
           ),
         ),
       ),

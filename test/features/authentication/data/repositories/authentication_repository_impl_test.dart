@@ -31,13 +31,23 @@ void main() {
   });
 
   group('signinAnonymously', () {
-    test('should return a [FirebaseFailure] when an exception is thrown by datasource', () async {
+    test('should return a [FirebaseFailure] when a [FirebaseException] is thrown by datasource',
+        () async {
       // ARRANGE
       when(datasource.signinAnonymously()).thenThrow(FirebaseException());
       // ACT
       var actual = await repository.signinAnonymously();
       // ASSERT
       expect(actual, Left(FirebaseFailure()));
+    });
+    test('should return a [FirestoreFailure] when a [FirestoreException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      when(datasource.signinAnonymously()).thenThrow(FirestoreException());
+      // ACT
+      var actual = await repository.signinAnonymously();
+      // ASSERT
+      expect(actual, Left(FirestoreFailure()));
     });
 
     test('should call datasource [signinAnonymously] method]', () async {

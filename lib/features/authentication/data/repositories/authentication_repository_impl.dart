@@ -31,6 +31,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on FirebaseException {
       // on Firebase Exception, return a Firebase Failure
       return Left(FirebaseFailure());
+    } on FirestoreException {
+      // on Firestore Exception, return a Firestore Failure
+      return Left(FirestoreFailure());
     }
   }
 }

@@ -35,7 +35,7 @@ class _GameWidgetState extends State<GameWidget> {
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<GameBloc>(context);
 
-    bool isOnGamePage = Navigator.of(context).getCurrentRoute() == RoutePaths.Game;
+    bool isOnGamePage = Navigator.of(context).getCurrentRoute() == RoutePaths.game;
     // to listen on arrow keys, the focus need to be requested but only on the Game page
     if (kIsWeb && isOnGamePage) {
       FocusScope.of(context).requestFocus(_focusNode);

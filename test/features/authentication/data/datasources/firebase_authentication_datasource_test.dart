@@ -52,7 +52,7 @@ main() {
         throwsA(isA<AssertionError>()));
   });
 
-  group('SigninAnonymously', () {
+  group('signinAnonymously', () {
     test('should call firebase auth', () async {
       // ARRANGE
       String username = 'username';
@@ -142,7 +142,7 @@ main() {
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
       // ACT
-      datasource.updateUserData(testUser);
+      await datasource.updateUserData(testUser);
 
       // ASSERT
       verify(mockDocumentReference.setData(
@@ -163,7 +163,7 @@ main() {
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
       // ACT
-      datasource.updateUserData(testUser);
+      await datasource.updateUserData(testUser);
 
       // ASSERT
       verify(mockCollectionReference.document(testUser.uid)).called(1);
@@ -181,10 +181,28 @@ main() {
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
       // ACT
-      datasource.updateUserData(testUser);
+      await datasource.updateUserData(testUser);
 
       // ASSERT
       verify(mockFirestore.collection('users')).called(1);
+    });
+
+    test('should throw a FirestoreException if something goes wrong', () async {
+      // ARRANGE
+      var lastSeendDateTime = DateTime.now();
+
+      when(mockDocumentReference.setData(
+        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        merge: true,
+      )).thenThrow(Exception());
+      when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
+      when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
+
+      // ACT
+      var call = () async => await datasource.updateUserData(testUser);
+
+      // ASSERT
+      expect(call, throwsA(isA<FirestoreException>()));
     });
   });
 }

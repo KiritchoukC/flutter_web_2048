@@ -23,3 +23,5 @@ class ApplicationFailure extends Failure {
 }
 
 class FirebaseFailure extends Failure {}
+
+class FirestoreFailure extends Failure {}

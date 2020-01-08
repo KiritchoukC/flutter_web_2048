@@ -12,12 +12,12 @@ class InitialAuthenticationState extends AuthenticationState {
 }
 
 class LoggedOutState extends AuthenticationState {
-  final User _user;
+  final User user;
 
-  LoggedOutState(this._user);
+  LoggedOutState(this.user);
 
   @override
-  List<Object> get props => [_user];
+  List<Object> get props => [user];
 }
 
 class AuthenticationLoadingState extends AuthenticationState {
@@ -26,19 +26,19 @@ class AuthenticationLoadingState extends AuthenticationState {
 }
 
 class LoggedInState extends AuthenticationState {
-  final User _user;
+  final User user;
 
-  LoggedInState(this._user);
+  LoggedInState(this.user);
 
   @override
-  List<Object> get props => [_user];
+  List<Object> get props => [user];
 }
 
 class AuthenticationErrorState extends AuthenticationState {
-  final String _message;
+  final String message;
 
-  AuthenticationErrorState(this._message);
+  AuthenticationErrorState(this.message);
 
   @override
-  List<Object> get props => [_message];
+  List<Object> get props => [message];
 }

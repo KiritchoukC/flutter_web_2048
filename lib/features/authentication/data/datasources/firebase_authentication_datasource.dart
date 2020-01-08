@@ -49,14 +49,19 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   }
 
   /// Update or perist [user]'s data
-  Future updateUserData(UserModel user) async {
-    return _firestore
-        // Get the reference of the users collection
-        .collection('users')
-        // Get the reference of the users document
-        .document(user.uid)
-        // Update the user data with the user converted to json in the retrieved document reference
-        // set [merge] to true so the the document will be updated instead of overwrited
-        .setData(user.toJson(lastSeenDateTime: DateTime.now()), merge: true);
+  Future<void> updateUserData(UserModel user) async {
+    try {
+      return _firestore
+          // Get the reference of the users collection
+          .collection('users')
+          // Get the reference of the users document
+          .document(user.uid)
+          // Update the user data with the user converted to json in the retrieved document reference
+          // set [merge] to true so the the document will be updated instead of overwrited
+          .setData(user.toJson(lastSeenDateTime: DateTime.now()), merge: true);
+    } catch (e) {
+      print(e.toString());
+      throw FirestoreException();
+    }
   }
 }

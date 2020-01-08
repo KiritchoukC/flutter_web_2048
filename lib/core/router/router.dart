@@ -1,38 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/authentication/presentation/bloc/authentication_bloc.dart';
 import '../../features/authentication/presentation/pages/authentication_page.dart';
-import '../../features/game/presentation/bloc/game_bloc.dart';
 import '../../features/game/presentation/pages/game_page.dart';
-import '../../injection_container.dart';
 import 'route_paths.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       // Game route
-      case RoutePaths.Game:
+      case RoutePaths.game:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider<GameBloc>(
-            builder: (_) => sl<GameBloc>(),
-            child: GamePage(),
-          ),
+          builder: (_) => GamePage(),
           settings: RouteSettings(
-            name: RoutePaths.Game,
+            name: RoutePaths.game,
             isInitialRoute: true,
           ),
         );
 
       // Authentication route
-      case RoutePaths.Authentication:
+      case RoutePaths.authentication:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider<AuthenticationBloc>(
-            builder: (_) => sl<AuthenticationBloc>(),
-            child: AuthenticationPage(),
-          ),
-          settings: RouteSettings(name: RoutePaths.Authentication),
+          builder: (_) => AuthenticationPage(),
+          settings: RouteSettings(name: RoutePaths.authentication),
         );
 
       // NotFound route

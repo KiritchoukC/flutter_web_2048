@@ -1,13 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'core/router/route_paths.dart';
 import 'core/router/router.dart';
 import 'core/theme/custom_theme.dart';
+import 'features/authentication/presentation/bloc/bloc.dart';
+import 'features/game/presentation/bloc/game_bloc.dart';
 import 'injection_container.dart' as di;
+import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,12 +42,18 @@ void initBlocLogging() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '2048',
-      theme: CustomTheme.themeData,
-      initialRoute: RoutePaths.Game,
-      onGenerateRoute: Router.generateRoute,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GameBloc>(builder: (_) => sl<GameBloc>()),
+        BlocProvider<AuthenticationBloc>(builder: (_) => sl<AuthenticationBloc>()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: '2048',
+        theme: CustomTheme.themeData,
+        initialRoute: RoutePaths.game,
+        onGenerateRoute: Router.generateRoute,
+      ),
     );
   }
 }
