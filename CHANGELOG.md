@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.41.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.40.1...v1.41.0) (2020-01-08)
+
+
+### Features
+
+* **authentication:** store anonymous user in Firestore ([54c5a93](https://github.com/KiritchoukC/flutter_web_2048/commit/54c5a93)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ### [1.40.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.40.0...v1.40.1) (2020-01-07)
 
 ## [1.40.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.39.0...v1.40.0) (2020-01-06)
