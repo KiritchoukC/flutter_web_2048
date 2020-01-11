@@ -26,12 +26,12 @@ void main() {
       expect(initialState.props, expected);
     });
   });
-  group('LoggedInState', () {
+  group('SignedLoggedInState', () {
     test('should extend AuthenticationState', () {
       // ARRANGE
       var user = anonymousUser;
       // ACT
-      var loggedIn = LoggedInState(user);
+      var loggedIn = SignedInState(user);
       // ASSERT
       expect(loggedIn, isA<AuthenticationState>());
     });
@@ -40,26 +40,23 @@ void main() {
       var user = anonymousUser;
       var expected = <Object>[user];
       // ACT
-      var loggedIn = LoggedInState(user);
+      var loggedIn = SignedInState(user);
       // ASSERT
       expect(loggedIn.props, expected);
     });
   });
-  group('LoggedOutState', () {
+  group('SignedOutState', () {
     test('should extend AuthenticationState', () {
-      // ARRANGE
-      var user = anonymousUser;
       // ACT
-      var loggedOut = LoggedOutState(user);
+      var loggedOut = SignedOutState();
       // ASSERT
       expect(loggedOut, isA<AuthenticationState>());
     });
     test('should have props list with the user', () {
       // ARRANGE
-      var user = anonymousUser;
-      var expected = <Object>[user];
+      var expected = <Object>[];
       // ACT
-      var loggedOut = LoggedOutState(user);
+      var loggedOut = SignedOutState();
       // ASSERT
       expect(loggedOut.props, expected);
     });

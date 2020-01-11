@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class FacebookSigninButton extends StatelessWidget {
-  const FacebookSigninButton({
+class FacebookSignInButton extends StatelessWidget {
+  const FacebookSignInButton({
     Key key,
   }) : super(key: key);
 

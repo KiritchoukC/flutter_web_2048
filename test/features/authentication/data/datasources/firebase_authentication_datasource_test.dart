@@ -68,7 +68,7 @@ main() {
       when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) async => authResult);
 
       // ACT
-      await datasource.signinAnonymously();
+      await datasource.signInAnonymously();
 
       // ASSERT
       verify(mockFirebaseAuth.signInAnonymously()).called(1);
@@ -77,7 +77,7 @@ main() {
       // ARRANGE
       when(mockFirebaseAuth.signInAnonymously()).thenThrow(Error);
       // ACT
-      var call = () async => await datasource.signinAnonymously();
+      var call = () async => await datasource.signInAnonymously();
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
@@ -86,7 +86,7 @@ main() {
       // ARRANGE
       when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) => null);
       // ACT
-      var call = () async => await datasource.signinAnonymously();
+      var call = () async => await datasource.signInAnonymously();
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
@@ -98,7 +98,7 @@ main() {
       when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) async => authResult);
 
       // ACT
-      var user = await datasource.signinAnonymously();
+      var user = await datasource.signInAnonymously();
 
       // ASSERT
       expect(user, isA<UserModel>());
@@ -204,5 +204,25 @@ main() {
       // ASSERT
       expect(call, throwsA(isA<FirestoreException>()));
     }, retry: 5);
+  });
+
+  group('signOut', () {
+    test('should call [FirebaseAuth.signOut()]', () async {
+      // ACT
+      await datasource.signOut();
+      // ASSERT
+      verify(mockFirebaseAuth.signOut()).called(1);
+    });
+
+    test('should throw a [FirebaseException] when an error occurs', () async {
+      // ARRANGE
+      when(mockFirebaseAuth.signOut()).thenThrow(Exception());
+
+      // ACT
+      var call = () async => await datasource.signOut();
+
+      // ASSERT
+      expect(call, throwsA(isA<FirebaseException>()));
+    });
   });
 }

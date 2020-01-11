@@ -49,19 +49,19 @@ class DefaultDrawerHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        if (state is LoggedInState || state is LoggedOutState) {
+        if (state is SignedInState || state is SignedOutState) {
           Navigator.of(context).pop();
         }
       },
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         condition: (previousState, state) {
-          if (state is LoggedInState || state is LoggedOutState) {
+          if (state is SignedInState || state is SignedOutState) {
             return true;
           }
           return false;
         },
         builder: (context, state) {
-          if (state is LoggedInState) {
+          if (state is SignedInState) {
             return AuthenticatedDrawerHeader(user: state.user);
           }
 
@@ -154,7 +154,7 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
           ),
           backgroundColor: CustomColors.accentColor.shade100,
           onPressed: () {
-            BlocProvider.of<AuthenticationBloc>(context).add(SignoutEvent());
+            BlocProvider.of<AuthenticationBloc>(context).add(SignOutEvent());
           },
         )
       ],

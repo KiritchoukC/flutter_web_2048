@@ -27,10 +27,6 @@ class AuthenticationPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
-            if (state is LoggedInState) {
-              Navigator.of(context).pop();
-            }
-
             if (state is AuthenticationErrorState) {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
@@ -47,11 +43,9 @@ class AuthenticationPage extends StatelessWidget {
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
-              if (state is InitialAuthenticationState) {
-                return InitialAuthenticationPage();
-              }
-
-              if (state is AuthenticationErrorState) {
+              if (state is InitialAuthenticationState ||
+                  state is AuthenticationErrorState ||
+                  state is SignedOutState) {
                 return InitialAuthenticationPage();
               }
 
@@ -85,13 +79,13 @@ class InitialAuthenticationPage extends StatelessWidget {
         VerticalSpacing.medium(),
         OrDivider(),
         VerticalSpacing.medium(),
-        AnonymousSigninButton(),
+        AnonymousSignInButton(),
         VerticalSpacing.small(),
-        GoogleSigninButton(),
+        GoogleSignInButton(),
         VerticalSpacing.small(),
-        FacebookSigninButton(),
+        FacebookSignInButton(),
         VerticalSpacing.small(),
-        TwitterSigninButton(),
+        TwitterSignInButton(),
       ],
     );
   }

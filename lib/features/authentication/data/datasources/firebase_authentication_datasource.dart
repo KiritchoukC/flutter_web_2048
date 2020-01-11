@@ -26,7 +26,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
 
   /// Sign in a user anonymously
   @override
-  Future<UserModel> signinAnonymously() async {
+  Future<UserModel> signInAnonymously() async {
     try {
       // Sign in anonymously to firebase
       var result = await _firebaseAuth.signInAnonymously();
@@ -49,6 +49,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   }
 
   /// Update or perist [user]'s data
+  @override
   Future<void> updateUserData(UserModel user) async {
     try {
       return _firestore
@@ -62,6 +63,18 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
     } catch (e) {
       print(e.toString());
       throw FirestoreException();
+    }
+  }
+
+  /// Signs out the current [user]
+  @override
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      // Log and throw specific exception
+      print(e.toString());
+      throw FirebaseException();
     }
   }
 }

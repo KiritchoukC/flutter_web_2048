@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_2048/core/util/horizontal_spacing.dart';
 
+import '../../../../core/util/horizontal_spacing.dart';
 import '../bloc/bloc.dart';
 
 class BoardScoreWidget extends StatelessWidget {

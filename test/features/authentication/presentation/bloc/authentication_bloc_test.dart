@@ -4,14 +4,19 @@ import 'package:flutter_web_2048/core/error/failures.dart';
 import 'package:flutter_web_2048/core/error/messages.dart';
 import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_anonymous.dart';
+import 'package:flutter_web_2048/features/authentication/domain/usecases/signout.dart';
 import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
 import 'package:mockito/mockito.dart';
 
-class MockSigninAnonymous extends Mock implements SigninAnonymous {}
+class MockSignInAnonymous extends Mock implements SignInAnonymous {}
+
+class MockSignOut extends Mock implements SignOut {}
 
 void main() {
   AuthenticationBloc bloc;
-  MockSigninAnonymous mockSigninAnonymous;
+  MockSignInAnonymous mockSignInAnonymous;
+  MockSignOut mockSignOut;
+
   User testUser = User(
     'uniqueid',
     'UsernameTest',
@@ -21,10 +26,12 @@ void main() {
   );
 
   setUp(() {
-    mockSigninAnonymous = MockSigninAnonymous();
+    mockSignInAnonymous = MockSignInAnonymous();
+    mockSignOut = MockSignOut();
 
     bloc = AuthenticationBloc(
-      signinAnonymous: mockSigninAnonymous,
+      signInAnonymous: mockSignInAnonymous,
+      signout: mockSignOut,
     );
   });
 
@@ -34,7 +41,10 @@ void main() {
 
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
-    expect(() => AuthenticationBloc(signinAnonymous: null), throwsA(isA<AssertionError>()));
+    expect(() => AuthenticationBloc(signInAnonymous: null, signout: mockSignOut),
+        throwsA(isA<AssertionError>()));
+    expect(() => AuthenticationBloc(signInAnonymous: mockSignInAnonymous, signout: null),
+        throwsA(isA<AssertionError>()));
   });
 
   test('Initial state should be [InitialAuthenticationState]', () {
@@ -53,30 +63,30 @@ void main() {
     bloc.close();
   });
 
-  group('AnonymousSignin', () {
-    test('should call [SigninAnonymous] usecase', () async {
+  group('AnonymousSignIn', () {
+    test('should call [SignInAnonymous] usecase', () async {
       // ARRANGE
-      when(mockSigninAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
+      when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
 
       // ACT
-      bloc.add(AnonymousSigninEvent());
-      await untilCalled(mockSigninAnonymous.call(any));
+      bloc.add(AnonymousSignInEvent());
+      await untilCalled(mockSignInAnonymous.call(any));
 
       // ASSERT
-      verify(mockSigninAnonymous.call(any));
+      verify(mockSignInAnonymous.call(any));
     });
 
     test(
         'should emit [InitialAuthenticationState, AuthenticationLoadingState, LoggedInState] on success',
         () {
       // ARRANGE
-      when(mockSigninAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
+      when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
 
       // ASSERT LATER
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        LoggedInState(testUser),
+        SignedInState(testUser),
       ];
 
       expectLater(
@@ -84,20 +94,20 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(AnonymousSigninEvent());
+      bloc.add(AnonymousSignInEvent());
     });
 
     test(
         'should emit [InitialAuthenticationState, AuthenticationLoadingState, AuthenticationErrorState] on failure',
         () {
       // ARRANGE
-      when(mockSigninAnonymous.call(any)).thenAnswer((_) async => Left(FirebaseFailure()));
+      when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Left(FirebaseFailure()));
 
       // ASSERT LATER
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        AuthenticationErrorState(FirebaseErrorMessage),
+        AuthenticationErrorState(firebaseErrorMessage),
       ];
 
       expectLater(
@@ -105,7 +115,63 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(AnonymousSigninEvent());
+      bloc.add(AnonymousSignInEvent());
+    });
+  });
+
+  group('SignOut', () {
+    test('should call [SignOut] usecase', () async {
+      // ARRANGE
+      when(mockSignOut.call(any)).thenAnswer((_) async => Right(null));
+
+      // ACT
+      bloc.add(SignOutEvent());
+      await untilCalled(mockSignOut.call(any));
+
+      // ASSERT
+      verify(mockSignOut.call(any));
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, SignedOutState] on success',
+        () async {
+      // ARRANGE
+      when(mockSignOut.call(any)).thenAnswer((_) async => Right(null));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        SignedOutState(),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(SignOutEvent());
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, SignedOutState] on failure',
+        () async {
+      // ARRANGE
+      when(mockSignOut.call(any)).thenAnswer((_) async => Left(FirebaseFailure()));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        AuthenticationErrorState(firebaseErrorMessage),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(SignOutEvent());
     });
   });
 }

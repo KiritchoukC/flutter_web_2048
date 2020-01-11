@@ -2,13 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
 
 void main() {
-  group('Signin', () {
+  group('SignIn', () {
     test('should extend AuthenticationEvent', () {
       // ARRANGE
       String _email = 'email@example.com';
       String _password = 'abc123';
       // ACT
-      var signin = SigninEvent(_email, _password);
+      var signin = SignInEvent(_email, _password);
       // ASSERT
       expect(signin, isA<AuthenticationEvent>());
     });
@@ -18,89 +18,57 @@ void main() {
       String _password = 'abc123';
       var expected = <Object>[_email, _password];
       // ACT
-      var signin = SigninEvent(_email, _password);
+      var signin = SignInEvent(_email, _password);
       // ASSERT
       expect(signin.props, expected);
     });
   });
-  group('Signout', () {
+  group('SignOut', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var anonymousSignin = SignoutEvent();
+      var anonymousSignIn = SignOutEvent();
       // ASSERT
-      expect(anonymousSignin, isA<AuthenticationEvent>());
+      expect(anonymousSignIn, isA<AuthenticationEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var anonymousSignin = SignoutEvent();
+      var anonymousSignIn = SignOutEvent();
       // ASSERT
-      expect(anonymousSignin.props, expected);
+      expect(anonymousSignIn.props, expected);
     });
   });
-  group('AnonymousSignin', () {
+  group('AnonymousSignIn', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var anonymousSignin = AnonymousSigninEvent();
+      var anonymousSignIn = AnonymousSignInEvent();
       // ASSERT
-      expect(anonymousSignin, isA<AuthenticationEvent>());
+      expect(anonymousSignIn, isA<AuthenticationEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var anonymousSignin = AnonymousSigninEvent();
+      var anonymousSignIn = AnonymousSignInEvent();
       // ASSERT
-      expect(anonymousSignin.props, expected);
+      expect(anonymousSignIn.props, expected);
     });
   });
-  group('GoogleSignin', () {
+  group('GoogleSignIn', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      var googleSignin = GoogleSigninEvent();
+      var googleSignIn = GoogleSignInEvent();
       // ASSERT
-      expect(googleSignin, isA<AuthenticationEvent>());
+      expect(googleSignIn, isA<AuthenticationEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
       var expected = <Object>[];
       // ACT
-      var googleSignin = GoogleSigninEvent();
+      var googleSignIn = GoogleSignInEvent();
       // ASSERT
-      expect(googleSignin.props, expected);
-    });
-  });
-  group('TwitterSignin', () {
-    test('should extend AuthenticationEvent', () {
-      // ACT
-      var twitterSignin = TwitterSigninEvent();
-      // ASSERT
-      expect(twitterSignin, isA<AuthenticationEvent>());
-    });
-    test('should have an empty props list', () {
-      // ARRANGE
-      var expected = <Object>[];
-      // ACT
-      var twitterSignin = TwitterSigninEvent();
-      // ASSERT
-      expect(twitterSignin.props, expected);
-    });
-  });
-  group('FacebookSignin', () {
-    test('should extend AuthenticationEvent', () {
-      // ACT
-      var facebookSignin = FacebookSigninEvent();
-      // ASSERT
-      expect(facebookSignin, isA<AuthenticationEvent>());
-    });
-    test('should have an empty props list', () {
-      // ARRANGE
-      var expected = <Object>[];
-      // ACT
-      var facebookSignin = FacebookSigninEvent();
-      // ASSERT
-      expect(facebookSignin.props, expected);
+      expect(googleSignIn.props, expected);
     });
   });
 }

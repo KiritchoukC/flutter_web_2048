@@ -4,31 +4,21 @@ import '../../domain/entities/user.dart';
 
 abstract class AuthenticationState extends Equatable {
   const AuthenticationState();
-}
 
-class InitialAuthenticationState extends AuthenticationState {
   @override
   List<Object> get props => [];
 }
 
-class LoggedOutState extends AuthenticationState {
+class InitialAuthenticationState extends AuthenticationState {}
+
+class SignedOutState extends AuthenticationState {}
+
+class AuthenticationLoadingState extends AuthenticationState {}
+
+class SignedInState extends AuthenticationState {
   final User user;
 
-  LoggedOutState(this.user);
-
-  @override
-  List<Object> get props => [user];
-}
-
-class AuthenticationLoadingState extends AuthenticationState {
-  @override
-  List<Object> get props => [];
-}
-
-class LoggedInState extends AuthenticationState {
-  final User user;
-
-  LoggedInState(this.user);
+  SignedInState(this.user);
 
   @override
   List<Object> get props => [user];

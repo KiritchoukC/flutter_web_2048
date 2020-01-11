@@ -18,10 +18,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   /// Allow a user to sign in anonymously
   @override
-  Future<Either<Failure, User>> signinAnonymously() async {
+  Future<Either<Failure, User>> signInAnonymously() async {
     try {
       // get user from datasource
-      var user = await _datasource.signinAnonymously();
+      var user = await _datasource.signInAnonymously();
 
       // update stored user's data
       await _datasource.updateUserData(user);
@@ -34,6 +34,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on FirestoreException {
       // on Firestore Exception, return a Firestore Failure
       return Left(FirestoreFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> signOut() async {
+    try {
+      return Right(await _datasource.signOut());
+    } on FirebaseException {
+      return Left(FirebaseFailure());
     }
   }
 }

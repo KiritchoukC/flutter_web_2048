@@ -5,14 +5,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../bloc/bloc.dart';
 
-class AnonymousSigninButton extends StatelessWidget {
+class AnonymousSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SignInButtonBuilder(
       backgroundColor: Theme.of(context).primaryColor,
       text: 'Sign in Anonymously',
       onPressed: () {
-        BlocProvider.of<AuthenticationBloc>(context).add(AnonymousSigninEvent());
+        BlocProvider.of<AuthenticationBloc>(context).add(AnonymousSignInEvent());
       },
       textColor: Colors.grey.shade500,
       icon: FontAwesomeIcons.userSecret,

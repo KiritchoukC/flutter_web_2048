@@ -10,6 +10,7 @@ import 'features/authentication/data/datasources/firebase_authentication_datasou
 import 'features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'features/authentication/domain/repositories/authentication_repository.dart';
 import 'features/authentication/domain/usecases/signin_anonymous.dart';
+import 'features/authentication/domain/usecases/signout.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/game/data/datasources/board_datasource.dart';
 import 'features/game/data/datasources/hive_board_datasource.dart';
@@ -73,10 +74,11 @@ void initGameFeature() {
 /// Register the dependencies needed for the authentication feature
 void initAuthenticationFeature() {
   // Bloc
-  sl.registerFactory(() => AuthenticationBloc(signinAnonymous: sl()));
+  sl.registerFactory(() => AuthenticationBloc(signInAnonymous: sl(), signout: sl()));
 
   // Usecases
-  sl.registerLazySingleton(() => SigninAnonymous(repository: sl()));
+  sl.registerLazySingleton(() => SignInAnonymous(repository: sl()));
+  sl.registerLazySingleton(() => SignOut(repository: sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(

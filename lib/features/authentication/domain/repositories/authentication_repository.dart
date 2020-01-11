@@ -6,5 +6,6 @@ import '../entities/user.dart';
 /// Interface of the authentication repository
 abstract class AuthenticationRepository {
   /// Allow a user to sign in anonymously
-  Future<Either<Failure, User>> signinAnonymously();
+  Future<Either<Failure, User>> signInAnonymously();
+  Future<Either<Failure, void>> signOut();
 }

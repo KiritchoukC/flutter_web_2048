@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class TwitterSigninButton extends StatelessWidget {
-  const TwitterSigninButton({
+class TwitterSignInButton extends StatelessWidget {
+  const TwitterSignInButton({
     Key key,
   }) : super(key: key);
 
