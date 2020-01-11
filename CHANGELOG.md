@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.42.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.41.0...v1.42.0) (2020-01-11)
+
+
+### Features
+
+* **authentication:** fix authenticated drawer header and add sign out button ([73049c0](https://github.com/KiritchoukC/flutter_web_2048/commit/73049c0)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+* **authentication:** implement sign out ([640d278](https://github.com/KiritchoukC/flutter_web_2048/commit/640d278)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ## [1.41.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.40.1...v1.41.0) (2020-01-08)
 
 
