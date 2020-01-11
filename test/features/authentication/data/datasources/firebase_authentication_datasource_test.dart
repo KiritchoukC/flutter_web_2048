@@ -203,6 +203,6 @@ main() {
 
       // ASSERT
       expect(call, throwsA(isA<FirestoreException>()));
-    });
+    }, retry: 5);
   });
 }

@@ -30,10 +30,28 @@ class AuthenticationPage extends StatelessWidget {
             if (state is LoggedInState) {
               Navigator.of(context).pop();
             }
+
+            if (state is AuthenticationErrorState) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.grey.shade700,
+                ),
+              );
+            }
           },
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
               if (state is InitialAuthenticationState) {
+                return InitialAuthenticationPage();
+              }
+
+              if (state is AuthenticationErrorState) {
                 return InitialAuthenticationPage();
               }
 

@@ -47,20 +47,27 @@ class DrawerMenu extends StatelessWidget {
 class DefaultDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      condition: (previousState, state) {
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
         if (state is LoggedInState || state is LoggedOutState) {
-          return true;
+          Navigator.of(context).pop();
         }
-        return false;
       },
-      builder: (context, state) {
-        if (state is LoggedInState) {
-          AuthenticatedDrawerHeader(user: state.user);
-        }
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        condition: (previousState, state) {
+          if (state is LoggedInState || state is LoggedOutState) {
+            return true;
+          }
+          return false;
+        },
+        builder: (context, state) {
+          if (state is LoggedInState) {
+            return AuthenticatedDrawerHeader(user: state.user);
+          }
 
-        return AnonymousDrawerHeader();
-      },
+          return AnonymousDrawerHeader();
+        },
+      ),
     );
   }
 }
@@ -108,6 +115,10 @@ class AnonymousDrawerHeader extends StatelessWidget {
 class AuthenticatedDrawerHeader extends StatelessWidget {
   final User _user;
 
+  String get _email => _user.email == null || _user.email == '' ? 'Anonymous' : _user.email;
+  String get _username =>
+      _user.username == null || _user.username == '' ? 'Anonymous' : _user.username;
+
   const AuthenticatedDrawerHeader({Key key, User user})
       : _user = user,
         super(key: key);
@@ -119,11 +130,11 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
         color: CustomColors.accentColor,
       ),
       accountEmail: Text(
-        _user?.email ?? 'Anonymous',
+        _email,
         style: TextStyle(color: Colors.grey.shade800),
       ),
       accountName: Text(
-        _user?.username ?? 'Anonymous',
+        _username,
         style: TextStyle(color: Colors.black),
       ),
       currentAccountPicture: Container(
@@ -135,6 +146,18 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
           ),
         ),
       ),
+      otherAccountsPictures: <Widget>[
+        FloatingActionButton(
+          child: Icon(
+            Icons.exit_to_app,
+            color: Colors.black,
+          ),
+          backgroundColor: CustomColors.accentColor.shade100,
+          onPressed: () {
+            BlocProvider.of<AuthenticationBloc>(context).add(SignoutEvent());
+          },
+        )
+      ],
     );
   }
 }

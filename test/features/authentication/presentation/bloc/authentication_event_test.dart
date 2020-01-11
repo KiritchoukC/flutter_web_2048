@@ -23,6 +23,22 @@ void main() {
       expect(signin.props, expected);
     });
   });
+  group('Signout', () {
+    test('should extend AuthenticationEvent', () {
+      // ACT
+      var anonymousSignin = SignoutEvent();
+      // ASSERT
+      expect(anonymousSignin, isA<AuthenticationEvent>());
+    });
+    test('should have an empty props list', () {
+      // ARRANGE
+      var expected = <Object>[];
+      // ACT
+      var anonymousSignin = SignoutEvent();
+      // ASSERT
+      expect(anonymousSignin.props, expected);
+    });
+  });
   group('AnonymousSignin', () {
     test('should extend AuthenticationEvent', () {
       // ACT
