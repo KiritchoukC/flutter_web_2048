@@ -8,22 +8,22 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/board.dart';
 import '../repositories/board_repository.dart';
 
-class UpdateBoard implements UseCase<Board, Params> {
+class UpdateBoard implements UseCase<Board, UpdateBoardParams> {
   final BoardRepository boardRepository;
 
   UpdateBoard({@required this.boardRepository}) : assert(boardRepository != null);
 
   @override
-  Future<Either<Failure, Board>> call(Params params) async {
+  Future<Either<Failure, Board>> call(UpdateBoardParams params) async {
     return Right(await boardRepository.updateBoard(params.board, params.direction));
   }
 }
 
-class Params extends Equatable {
+class UpdateBoardParams extends Equatable {
   final Direction direction;
   final Board board;
 
-  Params({
+  UpdateBoardParams({
     @required this.direction,
     @required this.board,
   });

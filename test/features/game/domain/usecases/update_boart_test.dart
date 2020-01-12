@@ -29,7 +29,7 @@ void main() {
     when(repository.updateBoard(board, direction)).thenAnswer((_) async => Board(tiles));
 
     // ACT
-    await usecase(Params(board: board, direction: direction));
+    await usecase(UpdateBoardParams(board: board, direction: direction));
 
     // ASSERT
     verify(repository.updateBoard(board, direction)).called(1);
@@ -46,7 +46,7 @@ void main() {
     when(repository.updateBoard(board, direction)).thenAnswer((_) async => repositoryOutput);
 
     // ACT
-    var actual = await usecase(Params(board: board, direction: direction));
+    var actual = await usecase(UpdateBoardParams(board: board, direction: direction));
 
     // ASSERT
     expect(actual.getRight(), repositoryOutput);
@@ -64,7 +64,7 @@ void main() {
       var board = Board(tiles);
       var direction = Direction.right;
       // ACT
-      var params = Params(
+      var params = UpdateBoardParams(
         direction: direction,
         board: board,
       );
@@ -80,7 +80,7 @@ void main() {
       var expected = <Object>[direction, board];
 
       // ACT
-      var params = Params(
+      var params = UpdateBoardParams(
         direction: direction,
         board: board,
       );

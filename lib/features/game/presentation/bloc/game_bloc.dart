@@ -74,7 +74,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
     // call the use case to update the current [board] with the given [direction]
     final usecaseResult = await updateBoard(
-      update_board.Params(
+      update_board.UpdateBoardParams(
         board: currentBoard?.getRight(),
         direction: event.direction,
       ),
