@@ -6,9 +6,7 @@ import '../../../../core/util/horizontal_spacing.dart';
 import '../../../../core/util/vertical_spacing.dart';
 import '../bloc/bloc.dart';
 import '../widgets/buttons/anonymous_signin_button.dart';
-import '../widgets/buttons/facebook_signin_button.dart';
 import '../widgets/buttons/google_signin_button.dart';
-import '../widgets/buttons/twitter_signin_button.dart';
 import '../widgets/login_form_widget.dart';
 
 /// The main page of authentication feature
@@ -85,10 +83,6 @@ class InitialAuthenticationPage extends StatelessWidget {
         AnonymousSignInButton(),
         VerticalSpacing.small(),
         GoogleSignInButton(),
-        VerticalSpacing.small(),
-        FacebookSignInButton(),
-        VerticalSpacing.small(),
-        TwitterSignInButton(),
       ],
     );
   }

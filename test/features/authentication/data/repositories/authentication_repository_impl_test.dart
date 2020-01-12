@@ -94,7 +94,7 @@ void main() {
   group('signOut', () {
     test('should call datasource [signOut()] method', () async {
       // ACT
-      var actual = await repository.signOut();
+      await repository.signOut();
 
       // ASSERT
       verify(mockDatasource.signOut()).called(1);
