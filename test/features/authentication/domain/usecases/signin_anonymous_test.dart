@@ -46,6 +46,17 @@ void main() {
     expect(result, Left(FirebaseFailure()));
   });
 
+  test('should return [FirestoreFailure] on Left case', () async {
+    // ARRANGE
+    when(mockRepository.signInAnonymously()).thenAnswer((_) async => Left(FirestoreFailure()));
+
+    // ACT
+    var result = await usecase(NoParams());
+
+    // ASSERT
+    expect(result, Left(FirestoreFailure()));
+  });
+
   test('should return [User] on Right case', () async {
     // ARRANGE
     var user = User('uniqueId', 'username', 'email', 'picutre', AuthenticationProvider.Anonymous);
