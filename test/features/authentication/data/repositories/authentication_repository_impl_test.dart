@@ -125,4 +125,86 @@ void main() {
       expect(call, throwsA(isA<Exception>()));
     });
   });
+
+  group('signInWithEmailAndPassword', () {
+    test('should call datasource [signInWithEmailAndPassword] function', () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+
+      // ACT
+      await repository.signInWithEmailAndPassword(email: email, password: password);
+
+      // ASSERT
+      verify(mockDatasource.signInWithEmailAndPassword(email, password)).called(1);
+    });
+    test('should call datasource [updateUserData] function', () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+
+      // ACT
+      await repository.signInWithEmailAndPassword(email: email, password: password);
+
+      // ASSERT
+      verify(mockDatasource.updateUserData(any)).called(1);
+    });
+    test('should return [Right] on success with the datasource user', () async {
+      // ARRANGE
+      String uniqueId = 'uniqueId';
+      String username = 'username';
+      String email = 'email@example.com';
+      String password = 'password';
+      String picture = 'https://google/picture.jpg';
+
+      UserModel userModel = UserModel(
+        uid: uniqueId,
+        username: username,
+        email: email,
+        picture: picture,
+        authenticationProvider: AuthenticationProvider.Anonymous,
+      );
+
+      User datasourceUser = userModel;
+
+      when(mockDatasource.signInWithEmailAndPassword(email, password))
+          .thenAnswer((_) async => datasourceUser);
+
+      // ACT
+      var actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+
+      // ASSERT
+      expect(actual, equals(Right(datasourceUser)));
+    });
+    test('should return a [FirebaseFailure] when a [FirebaseException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+
+      when(mockDatasource.signInWithEmailAndPassword(email, password))
+          .thenThrow(FirebaseException());
+
+      // ACT
+      var actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+
+      // ASSERT
+      expect(actual, Left(FirebaseFailure()));
+    });
+    test('should return a [FirestoreFailure] when a [FirestoreException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+
+      when(mockDatasource.signInWithEmailAndPassword(email, password))
+          .thenThrow(FirestoreException());
+
+      // ACT
+      var actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+
+      // ASSERT
+      expect(actual, Left(FirestoreFailure()));
+    });
+  });
 }
