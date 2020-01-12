@@ -203,7 +203,7 @@ main() {
 
       // ASSERT
       expect(call, throwsA(isA<FirestoreException>()));
-    }, retry: 5);
+    }, retry: 10);
   });
 
   group('signOut', () {
@@ -220,6 +220,87 @@ main() {
 
       // ACT
       var call = () async => await datasource.signOut();
+
+      // ASSERT
+      expect(call, throwsA(isA<FirebaseException>()));
+    });
+  });
+
+  group('signInWithEmailAndPassword', () {
+    test('should call [Firebase.signInWithEmailAndPassword()] function', () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+      String username = 'username';
+      String photoUrl = 'photoUrl';
+      var firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.photoUrl).thenReturn(photoUrl);
+
+      var authResult = MockAuthResult();
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
+          .thenAnswer((_) async => authResult);
+
+      // ACT
+      await datasource.signInWithEmailAndPassword(email, password);
+
+      // ASSERT
+      verify(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
+          .called(1);
+    });
+    test(
+        'should throw [FirebaseException] if [Firebase.signInWithEmailAndPassword()] function returns NULL',
+        () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
+          .thenAnswer((_) async => null);
+
+      // ACT
+      var call = () async => await datasource.signInWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(call, throwsA(isA<FirebaseException>()));
+    });
+
+    test('should returns a [UserModel]', () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+      String username = 'username';
+      String photoUrl = 'photoUrl';
+      var firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.photoUrl).thenReturn(photoUrl);
+
+      var authResult = MockAuthResult();
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
+          .thenAnswer((_) async => authResult);
+
+      // ACT
+      var actual = await datasource.signInWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(actual, isA<UserModel>());
+    });
+
+    test('should throw [FirebaseException] if [Firebase.signInWithEmailAndPassword()] fails',
+        () async {
+      // ARRANGE
+      String email = 'email@example.com';
+      String password = 'password';
+
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
+          .thenThrow(Exception());
+
+      // ACT
+      var call = () async => await datasource.signInWithEmailAndPassword(email, password);
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));

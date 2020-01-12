@@ -5,9 +5,12 @@ abstract class AuthenticationDatasource {
   /// Provide a user model to anonymous users.
   Future<UserModel> signInAnonymously();
 
-  /// update or persist user's data
+  /// Updates or persists user's data
   Future<void> updateUserData(UserModel user);
 
-  /// signs the current user out
+  /// Signs the current user out
   Future<void> signOut();
+
+  /// Signs user with [email] and [password]
+  Future<UserModel> signInWithEmailAndPassword(String email, String password);
 }

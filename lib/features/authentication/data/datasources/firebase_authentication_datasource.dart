@@ -24,19 +24,16 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
           firebaseAuth != null && firestore != null,
         );
 
-  /// Sign in a user anonymously
+  /// Signs in a user anonymously
   @override
   Future<UserModel> signInAnonymously() async {
     try {
-      // Sign in anonymously to firebase
       var result = await _firebaseAuth.signInAnonymously();
 
-      // If no result is returned from firebase then throw exception
       if (result == null) {
         throw FirebaseException();
       }
 
-      // Return the firebase user
       return UserModel.fromFirebaseUser(
         firebaseUser: result.user,
         authenticationProvider: AuthenticationProvider.Anonymous,
@@ -48,7 +45,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
     }
   }
 
-  /// Update or perist [user]'s data
+  /// Updates or persists [user]'s data
   @override
   Future<void> updateUserData(UserModel user) async {
     try {
@@ -75,6 +72,26 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
     } catch (e) {
       // Log and throw specific exception
       print(e.toString());
+      throw FirebaseException();
+    }
+  }
+
+  /// Signs in a user with Email and password
+  @override
+  Future<UserModel> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      var authResult =
+          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+
+      if (authResult == null) {
+        throw FirebaseException();
+      }
+
+      return UserModel.fromFirebaseUser(
+        firebaseUser: authResult.user,
+        authenticationProvider: AuthenticationProvider.EmailAndPassword,
+      );
+    } catch (e) {
       throw FirebaseException();
     }
   }
