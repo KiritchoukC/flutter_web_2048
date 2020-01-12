@@ -19,8 +19,5 @@ class SignInAnonymous extends UseCase<User, NoParams> {
 
   /// Execute the usecase
   @override
-  Future<Either<Failure, User>> call(NoParams params) {
-    // simply return the repository result
-    return _repository.signInAnonymously();
-  }
+  Future<Either<Failure, User>> call(NoParams params) => _repository.signInAnonymously();
 }

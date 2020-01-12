@@ -42,7 +42,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
         authenticationProvider: AuthenticationProvider.Anonymous,
       );
     } catch (e) {
-      // Log error and throw exception
+      // Log and throw specific exception
       print(e.toString());
       throw FirebaseException();
     }
@@ -61,6 +61,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
           // set [merge] to true so the the document will be updated instead of overwrited
           .setData(user.toJson(lastSeenDateTime: DateTime.now()), merge: true);
     } catch (e) {
+      // Log and throw specific exception
       print(e.toString());
       throw FirestoreException();
     }

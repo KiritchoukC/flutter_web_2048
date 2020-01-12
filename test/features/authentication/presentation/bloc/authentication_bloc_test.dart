@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/error/failures.dart';
-import 'package:flutter_web_2048/core/error/messages.dart';
+import 'package:flutter_web_2048/core/error/error_messages.dart';
 import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_anonymous.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signout.dart';
@@ -107,7 +107,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        AuthenticationErrorState(firebaseErrorMessage),
+        AuthenticationErrorState(ErrorMessages.firebase),
       ];
 
       expectLater(
@@ -163,7 +163,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        AuthenticationErrorState(firebaseErrorMessage),
+        AuthenticationErrorState(ErrorMessages.firebase),
       ];
 
       expectLater(

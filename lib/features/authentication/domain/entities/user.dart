@@ -1,5 +1,6 @@
 enum AuthenticationProvider { Google, Facebook, Twitter, Anonymous }
 
+/// Holds properties of the user
 class User {
   final String uid;
   final String username;

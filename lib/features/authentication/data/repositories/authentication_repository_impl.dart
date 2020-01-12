@@ -37,6 +37,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
+  /// Signs out the current [User]
   @override
   Future<Either<Failure, void>> signOut() async {
     try {
