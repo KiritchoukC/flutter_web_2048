@@ -51,7 +51,10 @@ class AuthenticationPage extends StatelessWidget {
 
               if (state is AuthenticationLoadingState) {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: Container(
+                    margin: EdgeInsets.all(10.0),
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
 
