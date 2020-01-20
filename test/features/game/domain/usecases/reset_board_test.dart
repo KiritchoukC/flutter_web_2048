@@ -29,11 +29,11 @@ void main() {
   });
   test('should return the repository output', () async {
     // ARRANGE
-    var repositoryOutput = Board(Array2D<Tile>(4, 4));
+    final repositoryOutput = Board(Array2D<Tile>(4, 4));
     when(repository.getCurrentBoard()).thenAnswer((_) async => repositoryOutput);
 
     // ACT
-    var actual = await usecase(NoParams());
+    final actual = await usecase(NoParams());
 
     // ASSERT
     expect(actual.getRight(), repositoryOutput);

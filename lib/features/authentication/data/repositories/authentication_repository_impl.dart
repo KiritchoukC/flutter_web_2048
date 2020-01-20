@@ -20,7 +20,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<Either<Failure, User>> signInAnonymously() async {
     try {
-      var user = await _datasource.signInAnonymously();
+      final user = await _datasource.signInAnonymously();
 
       await _datasource.updateUserData(user);
 
@@ -47,7 +47,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, User>> signInWithEmailAndPassword(
       {@required String email, @required String password}) async {
     try {
-      var user = await _datasource.signInWithEmailAndPassword(email, password);
+      final user = await _datasource.signInWithEmailAndPassword(email, password);
 
       await _datasource.updateUserData(user);
 

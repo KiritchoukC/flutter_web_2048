@@ -5,10 +5,10 @@ abstract class Failure extends Equatable {
   final List properties;
   // If the subclasses have some properties, they'll get passed to this constructor
   // so that Equatable can perform value comparison.
-  Failure([this.properties = const <dynamic>[]]);
+  const Failure([this.properties = const <dynamic>[]]);
 
   @override
-  List<Object> get props => [this.properties];
+  List<Object> get props => [properties];
 }
 
 // General failures
@@ -19,7 +19,7 @@ class NetworkFailure extends Failure {}
 class ApplicationFailure extends Failure {
   final String message;
 
-  ApplicationFailure({@required this.message});
+  const ApplicationFailure({@required this.message});
 }
 
 class FirebaseFailure extends Failure {}

@@ -30,24 +30,25 @@ void main() {
 
   test('should call the repository', () async {
     // ARRANGE
-    String email = 'email@example.com';
-    String password = 'password';
+    const String email = 'email@example.com';
+    const String password = 'password';
     // ACT
-    await usecase(SignInEmailAndPasswordParams(email: email, password: password));
+    await usecase(const SignInEmailAndPasswordParams(email: email, password: password));
     // ASSERT
     verify(mockRepository.signInWithEmailAndPassword(email: email, password: password)).called(1);
   });
 
   test('should return [FirebaseFailure] on Left case', () async {
     // ARRANGE
-    String email = 'email@example.com';
-    String password = 'password';
+    const String email = 'email@example.com';
+    const String password = 'password';
 
     when(mockRepository.signInWithEmailAndPassword(email: email, password: password))
         .thenAnswer((_) async => Left(FirebaseFailure()));
 
     // ACT
-    var result = await usecase(SignInEmailAndPasswordParams(email: email, password: password));
+    final result =
+        await usecase(const SignInEmailAndPasswordParams(email: email, password: password));
 
     // ASSERT
     expect(result, Left(FirebaseFailure()));
@@ -55,14 +56,15 @@ void main() {
 
   test('should return [FirestoreFailure] on Left case', () async {
     // ARRANGE
-    String email = 'email@example.com';
-    String password = 'password';
+    const String email = 'email@example.com';
+    const String password = 'password';
 
     when(mockRepository.signInWithEmailAndPassword(email: email, password: password))
         .thenAnswer((_) async => Left(FirestoreFailure()));
 
     // ACT
-    var result = await usecase(SignInEmailAndPasswordParams(email: email, password: password));
+    final result =
+        await usecase(const SignInEmailAndPasswordParams(email: email, password: password));
 
     // ASSERT
     expect(result, Left(FirestoreFailure()));
@@ -70,16 +72,17 @@ void main() {
 
   test('should return [User] on Right case', () async {
     // ARRANGE
-    String email = 'email@example.com';
-    String password = 'password';
+    const String email = 'email@example.com';
+    const String password = 'password';
 
-    var user =
-        User('uniqueId', 'username', 'email', 'picture', AuthenticationProvider.EmailAndPassword);
+    final user =
+        User('uniqueId', 'username', 'email', 'picture', AuthenticationProvider.emailAndPassword);
     when(mockRepository.signInWithEmailAndPassword(email: email, password: password))
         .thenAnswer((_) async => Right(user));
 
     // ACT
-    var result = await usecase(SignInEmailAndPasswordParams(email: email, password: password));
+    final result =
+        await usecase(const SignInEmailAndPasswordParams(email: email, password: password));
 
     // ASSERT
     expect(result, Right(user));

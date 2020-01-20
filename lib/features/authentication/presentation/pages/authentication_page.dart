@@ -14,8 +14,8 @@ class AuthenticationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: Text('Authentication'),
-      actions: <Widget>[],
+      title: const Text('Authentication'),
+      actions: const <Widget>[],
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
@@ -31,9 +31,9 @@ class AuthenticationPage extends StatelessWidget {
                   content: Text(
                     state.message,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
-                  duration: Duration(seconds: 3),
+                  duration: const Duration(seconds: 3),
                   backgroundColor: Colors.grey.shade700,
                 ),
               );
@@ -44,14 +44,14 @@ class AuthenticationPage extends StatelessWidget {
               if (state is InitialAuthenticationState ||
                   state is AuthenticationErrorState ||
                   state is SignedOutState) {
-                return InitialAuthenticationPage();
+                return const InitialAuthenticationPage();
               }
 
               if (state is AuthenticationLoadingState) {
                 return Center(
                   child: Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: CircularProgressIndicator(),
+                    margin: const EdgeInsets.all(10.0),
+                    child: const CircularProgressIndicator(),
                   ),
                 );
               }
@@ -75,14 +75,14 @@ class InitialAuthenticationPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        VerticalSpacing.medium(),
+        const VerticalSpacing.medium(),
         LoginFormWidget(),
-        VerticalSpacing.medium(),
+        const VerticalSpacing.medium(),
         OrDivider(),
-        VerticalSpacing.medium(),
+        const VerticalSpacing.medium(),
         AnonymousSignInButton(),
-        VerticalSpacing.small(),
-        GoogleSignInButton(),
+        const VerticalSpacing.small(),
+        const GoogleSignInButton(),
       ],
     );
   }
@@ -101,12 +101,12 @@ class OrDivider extends StatelessWidget {
           height: 1,
           color: Colors.white60,
         ),
-        HorizontalSpacing.medium(),
+        const HorizontalSpacing.medium(),
         Text(
           'OR',
           style: TextStyle(color: Colors.white60),
         ),
-        HorizontalSpacing.medium(),
+        const HorizontalSpacing.medium(),
         Container(
           width: 120,
           height: 1,

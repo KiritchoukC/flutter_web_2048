@@ -13,7 +13,7 @@ class HiveBoardDataSource implements BoardDataSource {
   @override
   Future<int> getHighscore() async {
     // return score if it exists
-    int output = localStorage.get(highscoreKey);
+    final int output = localStorage.get(highscoreKey);
     if (output != null) {
       return output;
     }

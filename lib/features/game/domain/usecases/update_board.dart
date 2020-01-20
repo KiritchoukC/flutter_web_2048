@@ -23,7 +23,7 @@ class UpdateBoardParams extends Equatable {
   final Direction direction;
   final Board board;
 
-  UpdateBoardParams({
+  const UpdateBoardParams({
     @required this.direction,
     @required this.board,
   });

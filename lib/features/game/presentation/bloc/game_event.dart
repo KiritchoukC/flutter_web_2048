@@ -13,7 +13,7 @@ abstract class GameEvent extends Equatable {
 class MoveEvent extends GameEvent {
   final Direction direction;
 
-  MoveEvent({@required this.direction});
+  const MoveEvent({@required this.direction});
   @override
   List<Object> get props => [direction];
 }

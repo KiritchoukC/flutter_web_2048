@@ -35,7 +35,7 @@ class _GameWidgetState extends State<GameWidget> {
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<GameBloc>(context);
 
-    bool isOnGamePage = Navigator.of(context).getCurrentRoute() == RoutePaths.game;
+    final bool isOnGamePage = Navigator.of(context).getCurrentRoute() == RoutePaths.game;
     // to listen on arrow keys, the focus need to be requested but only on the Game page
     if (kIsWeb && isOnGamePage) {
       FocusScope.of(context).requestFocus(_focusNode);
@@ -45,16 +45,16 @@ class _GameWidgetState extends State<GameWidget> {
         aspectRatio: 1,
         child: DirectionListener(
           onDown: () {
-            _bloc.add(MoveEvent(direction: Direction.down));
+            _bloc.add(const MoveEvent(direction: Direction.down));
           },
           onLeft: () {
-            _bloc.add(MoveEvent(direction: Direction.left));
+            _bloc.add(const MoveEvent(direction: Direction.left));
           },
           onRight: () {
-            _bloc.add(MoveEvent(direction: Direction.right));
+            _bloc.add(const MoveEvent(direction: Direction.right));
           },
           onUp: () {
-            _bloc.add(MoveEvent(direction: Direction.up));
+            _bloc.add(const MoveEvent(direction: Direction.up));
           },
           child: BoardWidget(),
         ));

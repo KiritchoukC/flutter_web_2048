@@ -1,4 +1,4 @@
-const String ArrowLeftKeyLabel = "ArrowLeft";
-const String ArrowUpKeyLabel = "ArrowUp";
-const String ArrowRightKeyLabel = "ArrowRight";
-const String ArrowDownKeyLabel = "ArrowDown";
+const String arrowLeftKeyLabel = "ArrowLeft";
+const String arrowUpKeyLabel = "ArrowUp";
+const String arrowRightKeyLabel = "ArrowRight";
+const String arrowDownKeyLabel = "ArrowDown";

@@ -27,7 +27,7 @@ class DefaultTextFormFieldWidget extends TextFormField {
           focusNode: focusNode,
           decoration: decoration ??
               InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 labelText: labelText,
                 prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
               ),

@@ -20,7 +20,7 @@ class MockCollectionReference extends Mock implements CollectionReference {}
 
 class MockDocumentReference extends Mock implements DocumentReference {}
 
-main() {
+void main() {
   FirebaseAuthenticationDatasource datasource;
   MockFirebaseAuth mockFirebaseAuth;
   MockFirestore mockFirestore;
@@ -55,15 +55,15 @@ main() {
   group('signinAnonymously', () {
     test('should call firebase auth', () async {
       // ARRANGE
-      String username = 'username';
-      String email = 'email';
-      String photoUrl = 'photoUrl';
-      var firebaseUser = MockFirebaseUser();
+      const String username = 'username';
+      const String email = 'email';
+      const String photoUrl = 'photoUrl';
+      final firebaseUser = MockFirebaseUser();
       when(firebaseUser.displayName).thenReturn(username);
       when(firebaseUser.email).thenReturn(email);
       when(firebaseUser.photoUrl).thenReturn(photoUrl);
 
-      var authResult = MockAuthResult();
+      final authResult = MockAuthResult();
       when(authResult.user).thenReturn(firebaseUser);
       when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) async => authResult);
 
@@ -77,7 +77,7 @@ main() {
       // ARRANGE
       when(mockFirebaseAuth.signInAnonymously()).thenThrow(Error);
       // ACT
-      var call = () async => await datasource.signInAnonymously();
+      Future<UserModel> call() async => datasource.signInAnonymously();
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
@@ -86,35 +86,35 @@ main() {
       // ARRANGE
       when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) => null);
       // ACT
-      var call = () async => await datasource.signInAnonymously();
+      Future<UserModel> call() async => datasource.signInAnonymously();
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
     });
     test('should return a [UserModel]', () async {
       // ARRANGE
-      var authResult = MockAuthResult();
+      final authResult = MockAuthResult();
       when(authResult.user).thenReturn(MockFirebaseUser());
       when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) async => authResult);
 
       // ACT
-      var user = await datasource.signInAnonymously();
+      final user = await datasource.signInAnonymously();
 
       // ASSERT
       expect(user, isA<UserModel>());
     });
   });
   group('updateUserData', () {
-    var testUser = UserModel(
+    final testUser = UserModel(
       uid: 'uid',
       email: 'email',
       username: 'username',
       picture: 'picture',
-      authenticationProvider: AuthenticationProvider.Anonymous,
+      authenticationProvider: AuthenticationProvider.anonymous,
     );
     test('should return the [DocumentReference.setData()] method output', () async {
       // ARRANGE
-      var setDataOutput = Future.value();
+      final setDataOutput = Future.value();
 
       when(mockDocumentReference.setData(
         testUser.toJson(lastSeenDateTime: DateTime.now()),
@@ -124,15 +124,15 @@ main() {
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
       // ACT
-      var actual = datasource.updateUserData(testUser);
+      final actual = datasource.updateUserData(testUser);
 
       // ASSERT
       expect(actual, isA<Future>());
     });
     test('should call [DocumentReference.setData()]', () async {
       // ARRANGE
-      var setDataOutput = Future.value();
-      var lastSeendDateTime = DateTime.now();
+      final setDataOutput = Future.value();
+      final lastSeendDateTime = DateTime.now();
 
       when(mockDocumentReference.setData(
         testUser.toJson(lastSeenDateTime: lastSeendDateTime),
@@ -152,8 +152,8 @@ main() {
     }, retry: 5);
     test('should call [CollectionReference.document()]', () async {
       // ARRANGE
-      var setDataOutput = Future.value();
-      var lastSeendDateTime = DateTime.now();
+      final setDataOutput = Future.value();
+      final lastSeendDateTime = DateTime.now();
 
       when(mockDocumentReference.setData(
         testUser.toJson(lastSeenDateTime: lastSeendDateTime),
@@ -170,8 +170,8 @@ main() {
     });
     test('should call [Firestore.collection()]', () async {
       // ARRANGE
-      var setDataOutput = Future.value();
-      var lastSeendDateTime = DateTime.now();
+      final setDataOutput = Future.value();
+      final lastSeendDateTime = DateTime.now();
 
       when(mockDocumentReference.setData(
         testUser.toJson(lastSeenDateTime: lastSeendDateTime),
@@ -189,7 +189,7 @@ main() {
 
     test('should throw a FirestoreException if something goes wrong', () async {
       // ARRANGE
-      var lastSeendDateTime = DateTime.now();
+      final lastSeendDateTime = DateTime.now();
 
       when(mockDocumentReference.setData(
         testUser.toJson(lastSeenDateTime: lastSeendDateTime),
@@ -199,7 +199,7 @@ main() {
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
       // ACT
-      var call = () async => await datasource.updateUserData(testUser);
+      Future call() async => datasource.updateUserData(testUser);
 
       // ASSERT
       expect(call, throwsA(isA<FirestoreException>()));
@@ -219,7 +219,7 @@ main() {
       when(mockFirebaseAuth.signOut()).thenThrow(Exception());
 
       // ACT
-      var call = () async => await datasource.signOut();
+      Future call() async => datasource.signOut();
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
@@ -229,16 +229,16 @@ main() {
   group('signInWithEmailAndPassword', () {
     test('should call [Firebase.signInWithEmailAndPassword()] function', () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
-      String username = 'username';
-      String photoUrl = 'photoUrl';
-      var firebaseUser = MockFirebaseUser();
+      const String email = 'email@example.com';
+      const String password = 'password';
+      const String username = 'username';
+      const String photoUrl = 'photoUrl';
+      final firebaseUser = MockFirebaseUser();
       when(firebaseUser.displayName).thenReturn(username);
       when(firebaseUser.email).thenReturn(email);
       when(firebaseUser.photoUrl).thenReturn(photoUrl);
 
-      var authResult = MockAuthResult();
+      final authResult = MockAuthResult();
       when(authResult.user).thenReturn(firebaseUser);
       when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
           .thenAnswer((_) async => authResult);
@@ -254,14 +254,14 @@ main() {
         'should throw [FirebaseException] if [Firebase.signInWithEmailAndPassword()] function returns NULL',
         () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
+      const String email = 'email@example.com';
+      const String password = 'password';
 
       when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
           .thenAnswer((_) async => null);
 
       // ACT
-      var call = () async => await datasource.signInWithEmailAndPassword(email, password);
+      Future call() async => datasource.signInWithEmailAndPassword(email, password);
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
@@ -269,22 +269,22 @@ main() {
 
     test('should returns a [UserModel]', () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
-      String username = 'username';
-      String photoUrl = 'photoUrl';
-      var firebaseUser = MockFirebaseUser();
+      const String email = 'email@example.com';
+      const String password = 'password';
+      const String username = 'username';
+      const String photoUrl = 'photoUrl';
+      final firebaseUser = MockFirebaseUser();
       when(firebaseUser.displayName).thenReturn(username);
       when(firebaseUser.email).thenReturn(email);
       when(firebaseUser.photoUrl).thenReturn(photoUrl);
 
-      var authResult = MockAuthResult();
+      final authResult = MockAuthResult();
       when(authResult.user).thenReturn(firebaseUser);
       when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
           .thenAnswer((_) async => authResult);
 
       // ACT
-      var actual = await datasource.signInWithEmailAndPassword(email, password);
+      final actual = await datasource.signInWithEmailAndPassword(email, password);
 
       // ASSERT
       expect(actual, isA<UserModel>());
@@ -293,14 +293,14 @@ main() {
     test('should throw [FirebaseException] if [Firebase.signInWithEmailAndPassword()] fails',
         () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
+      const String email = 'email@example.com';
+      const String password = 'password';
 
       when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
           .thenThrow(Exception());
 
       // ACT
-      var call = () async => await datasource.signInWithEmailAndPassword(email, password);
+      Future call() async => datasource.signInWithEmailAndPassword(email, password);
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));

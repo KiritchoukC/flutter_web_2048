@@ -12,7 +12,7 @@ class Router {
       case RoutePaths.game:
         return MaterialPageRoute(
           builder: (_) => GamePage(),
-          settings: RouteSettings(
+          settings: const RouteSettings(
             name: RoutePaths.game,
             isInitialRoute: true,
           ),
@@ -22,7 +22,7 @@ class Router {
       case RoutePaths.authentication:
         return MaterialPageRoute(
           builder: (_) => AuthenticationPage(),
-          settings: RouteSettings(name: RoutePaths.authentication),
+          settings: const RouteSettings(name: RoutePaths.authentication),
         );
 
       // NotFound route

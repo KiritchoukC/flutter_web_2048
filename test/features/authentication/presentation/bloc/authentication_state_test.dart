@@ -8,20 +8,20 @@ void main() {
     'username',
     'email@example.com',
     'https://google.com/picture.jpg',
-    AuthenticationProvider.Anonymous,
+    AuthenticationProvider.anonymous,
   );
   group('InitialAuthenticationState', () {
     test('should extend AuthenticationState', () {
       // ACT
-      var initialState = InitialAuthenticationState();
+      final initialState = InitialAuthenticationState();
       // ASSERT
       expect(initialState, isA<AuthenticationState>());
     });
     test('should have props list with the user', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
       // ACT
-      var initialState = InitialAuthenticationState();
+      final initialState = InitialAuthenticationState();
       // ASSERT
       expect(initialState.props, expected);
     });
@@ -29,18 +29,18 @@ void main() {
   group('SignedLoggedInState', () {
     test('should extend AuthenticationState', () {
       // ARRANGE
-      var user = anonymousUser;
+      final user = anonymousUser;
       // ACT
-      var loggedIn = SignedInState(user);
+      final loggedIn = SignedInState(user);
       // ASSERT
       expect(loggedIn, isA<AuthenticationState>());
     });
     test('should have props list with the user', () {
       // ARRANGE
-      var user = anonymousUser;
-      var expected = <Object>[user];
+      final user = anonymousUser;
+      final expected = <Object>[user];
       // ACT
-      var loggedIn = SignedInState(user);
+      final loggedIn = SignedInState(user);
       // ASSERT
       expect(loggedIn.props, expected);
     });
@@ -48,15 +48,15 @@ void main() {
   group('SignedOutState', () {
     test('should extend AuthenticationState', () {
       // ACT
-      var loggedOut = SignedOutState();
+      final loggedOut = SignedOutState();
       // ASSERT
       expect(loggedOut, isA<AuthenticationState>());
     });
     test('should have props list with the user', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
       // ACT
-      var loggedOut = SignedOutState();
+      final loggedOut = SignedOutState();
       // ASSERT
       expect(loggedOut.props, expected);
     });
@@ -64,18 +64,18 @@ void main() {
   group('Error', () {
     test('should extend AuthenticationState', () {
       // ARRANGE
-      String message = 'message';
+      const String message = 'message';
       // ACT
-      var error = AuthenticationErrorState(message);
+      const error = AuthenticationErrorState(message);
       // ASSERT
       expect(error, isA<AuthenticationState>());
     });
     test('should have a props list with the message', () {
       // ARRANGE
-      String message = 'message';
-      var expected = <Object>[message];
+      const String message = 'message';
+      const expected = <Object>[message];
       // ACT
-      var error = AuthenticationErrorState(message);
+      const error = AuthenticationErrorState(message);
       // ASSERT
       expect(error.props, expected);
     });

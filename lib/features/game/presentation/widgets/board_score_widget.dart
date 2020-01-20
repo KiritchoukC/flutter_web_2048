@@ -13,8 +13,8 @@ class BoardScoreWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          ScoreWidget(),
-          HorizontalSpacing.small(),
+          const ScoreWidget(),
+          const HorizontalSpacing.small(),
           HighscoreWidget(),
         ],
       ),
@@ -85,7 +85,7 @@ class HighscoreWidget extends StatelessWidget {
           child: Text(
             '(${_highscore.toString()})',
             semanticsLabel: 'The previous highscore',
-            style: TextStyle(fontSize: 20.0),
+            style: const TextStyle(fontSize: 20.0),
           ),
         );
       },

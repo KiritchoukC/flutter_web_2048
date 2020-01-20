@@ -23,9 +23,7 @@ class LocalBoardRepository implements BoardRepository {
     _currentBoard = _currentBoard ?? Board.initialize();
 
     // Initialize previous board if it's not set yet
-    if (_previousBoard == null) {
-      _previousBoard = Board.clone(_currentBoard);
-    }
+    _previousBoard ??= Board.clone(_currentBoard);
 
     return _currentBoard;
   }
@@ -46,9 +44,9 @@ class LocalBoardRepository implements BoardRepository {
   /// Update the [board] by moving the tiles in the given [direction]
   @override
   Future<Board> updateBoard(Board board, Direction direction) async {
-    var _boardToUpdate = Board.clone(board);
+    final _boardToUpdate = Board.clone(board);
 
-    final int size = 4;
+    const int size = 4;
     final vector = Vector.fromDirection(direction);
     final traversal = Traversal.fromVector(vector, size);
     bool hasBoardMoved = false;
@@ -61,12 +59,12 @@ class LocalBoardRepository implements BoardRepository {
 
     // traverse the grid
     for (var i = 0; i < size; i++) {
-      int x = traversal.x[i];
+      final int x = traversal.x[i];
       for (var j = 0; j < size; j++) {
-        int y = traversal.y[j];
+        final int y = traversal.y[j];
 
         // get the tile at the current position [x][y]
-        var currentTile = _boardToUpdate.tiles.get(x, y);
+        final currentTile = _boardToUpdate.tiles.get(x, y);
 
         // skip empty cell
         if (currentTile == null) {
@@ -74,7 +72,7 @@ class LocalBoardRepository implements BoardRepository {
         }
 
         // get the tile final destination
-        var destination = _boardToUpdate.getTileDestination(currentTile, vector);
+        final destination = _boardToUpdate.getTileDestination(currentTile, vector);
 
         // skip if tile does not move
         if (!destination.hasMoved) {
@@ -123,6 +121,7 @@ class LocalBoardRepository implements BoardRepository {
   }
 
   /// get persisted high score
+  @override
   Future<int> getHighscore() async {
     // get high score from data source
     return datasource.getHighscore();

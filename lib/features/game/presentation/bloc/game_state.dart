@@ -16,7 +16,7 @@ class UpdateBoardStartState extends GameState {}
 class UpdateBoardEndState extends GameState {
   final Board board;
 
-  UpdateBoardEndState(this.board);
+  const UpdateBoardEndState(this.board);
 
   @override
   List<Object> get props => [board];
@@ -25,7 +25,7 @@ class UpdateBoardEndState extends GameState {
 class GameOverState extends GameState {
   final Board board;
 
-  GameOverState(this.board);
+  const GameOverState(this.board);
 
   @override
   List<Object> get props => [board];
@@ -34,7 +34,7 @@ class GameOverState extends GameState {
 class GameErrorState extends GameState {
   final String message;
 
-  GameErrorState(this.message);
+  const GameErrorState(this.message);
 
   @override
   List<Object> get props => [message];
@@ -43,7 +43,7 @@ class GameErrorState extends GameState {
 class HighscoreLoadedState extends GameState {
   final int highscore;
 
-  HighscoreLoadedState(this.highscore);
+  const HighscoreLoadedState(this.highscore);
 
   @override
   List<Object> get props => [highscore];

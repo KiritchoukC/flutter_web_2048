@@ -16,7 +16,7 @@ class DefaultDrawer extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           DefaultDrawerHeader(),
-          DrawerMenu(),
+          const DrawerMenu(),
         ],
       ),
     );
@@ -103,7 +103,7 @@ class AnonymousDrawerHeader extends StatelessWidget {
                   child: Text('Sign up', style: TextStyle(color: Colors.black)),
                 ),
               ),
-              HorizontalSpacing.extraSmall()
+              const HorizontalSpacing.extraSmall()
             ],
           ),
         ],
@@ -148,14 +148,14 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
       ),
       otherAccountsPictures: <Widget>[
         FloatingActionButton(
-          child: Icon(
-            Icons.exit_to_app,
-            color: Colors.black,
-          ),
           backgroundColor: CustomColors.accentColor.shade100,
           onPressed: () {
             BlocProvider.of<AuthenticationBloc>(context).add(SignOutEvent());
           },
+          child: Icon(
+            Icons.exit_to_app,
+            color: Colors.black,
+          ),
         )
       ],
     );

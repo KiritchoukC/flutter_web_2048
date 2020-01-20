@@ -48,8 +48,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
         children: <Widget>[
           RaisedButton(
             onPressed: () {},
-            child: Text('Sign In'),
             color: CustomColors.accentColor,
+            child: const Text('Sign In'),
           )
         ],
       );
@@ -63,7 +63,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
         child: Column(
           children: <Widget>[
             _emailField,
-            VerticalSpacing.extraSmall(),
+            const VerticalSpacing.extraSmall(),
             _passwordField,
             _submitButton,
           ],

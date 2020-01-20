@@ -103,16 +103,16 @@ class _WebDirectionListenerState extends State<WebDirectionListener> {
       focusNode: _focusNode,
       onKey: (RawKeyEvent event) {
         if (event is RawKeyDownEvent) {
-          if (event.data.keyLabel == ArrowDownKeyLabel) {
+          if (event.data.keyLabel == arrowDownKeyLabel) {
             widget.onDown();
           }
-          if (event.data.keyLabel == ArrowUpKeyLabel) {
+          if (event.data.keyLabel == arrowUpKeyLabel) {
             widget.onUp();
           }
-          if (event.data.keyLabel == ArrowRightKeyLabel) {
+          if (event.data.keyLabel == arrowRightKeyLabel) {
             widget.onRight();
           }
-          if (event.data.keyLabel == ArrowLeftKeyLabel) {
+          if (event.data.keyLabel == arrowLeftKeyLabel) {
             widget.onLeft();
           }
         }

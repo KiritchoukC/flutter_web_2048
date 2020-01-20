@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import './bloc.dart';
 import '../../../../core/error/error_messages.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../domain/entities/user.dart';
 import '../../domain/usecases/signin_anonymous.dart';
 import '../../domain/usecases/signout.dart';
 
@@ -43,13 +44,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   Stream<AuthenticationState> _handleAnonymousSignInEvent(AnonymousSignInEvent event) async* {
     yield AuthenticationLoadingState();
 
-    var onFailure = (failure) async* {
-      yield AuthenticationErrorState(ErrorMessages.firebase);
-    };
+    Stream<AuthenticationState> onFailure(failure) async* {
+      yield const AuthenticationErrorState(ErrorMessages.firebase);
+    }
 
-    var onSuccess = (user) async* {
+    Stream<AuthenticationState> onSuccess(User user) async* {
       yield SignedInState(user);
-    };
+    }
 
     yield* (await _signInAnonymous(NoParams())).fold(onFailure, onSuccess);
   }
@@ -58,13 +59,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   Stream<AuthenticationState> _handleSignOutEvent(SignOutEvent event) async* {
     yield AuthenticationLoadingState();
 
-    var onFailure = (failure) async* {
-      yield AuthenticationErrorState(ErrorMessages.firebase);
-    };
+    Stream<AuthenticationState> onFailure(failure) async* {
+      yield const AuthenticationErrorState(ErrorMessages.firebase);
+    }
 
-    var onSuccess = (success) async* {
+    Stream<AuthenticationState> onSuccess(success) async* {
       yield SignedOutState();
-    };
+    }
 
     yield* (await _signout(NoParams())).fold(onFailure, onSuccess);
   }

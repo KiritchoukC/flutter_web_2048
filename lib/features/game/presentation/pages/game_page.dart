@@ -30,7 +30,7 @@ class _UndoButtonState extends State<UndoButton> {
   // check if board moved more than once
   int _moved = 0;
 
-  _undo() {
+  void _undo() {
     // disanle the button when undoing
     setState(() {
       _disabled = true;

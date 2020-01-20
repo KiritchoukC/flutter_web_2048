@@ -20,7 +20,7 @@ class TileScoreWidget extends StatelessWidget {
               Shadow(
                 blurRadius: 5.0,
                 color: Colors.grey.shade100.withOpacity(0.3),
-                offset: Offset(1.0, 1.0),
+                offset: const Offset(1.0, 1.0),
               )
             ]),
       ),

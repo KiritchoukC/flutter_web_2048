@@ -30,10 +30,10 @@ class UserModel extends User {
   /// Convert the [UserModel] to json
   Map<String, dynamic> toJson({DateTime lastSeenDateTime}) {
     return {
-      'uid': this.uid,
-      'email': this.email,
-      'picture': this.picture,
-      'username': this.username,
+      'uid': uid,
+      'email': email,
+      'picture': picture,
+      'username': username,
       'lastSeen': lastSeenDateTime ?? DateTime.now()
     };
   }

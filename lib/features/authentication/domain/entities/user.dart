@@ -1,4 +1,4 @@
-enum AuthenticationProvider { Google, Anonymous, EmailAndPassword }
+enum AuthenticationProvider { google, anonymous, emailAndPassword }
 
 /// Holds properties of the user
 class User {

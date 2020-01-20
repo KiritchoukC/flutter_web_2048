@@ -6,17 +6,17 @@ void main() {
   group('NoParams', () {
     test('should extend [Equatable]', () {
       // ACT
-      var noparams = NoParams();
+      final noparams = NoParams();
       // ASSERT
       expect(noparams, isA<Equatable>());
     });
 
     test('should have an empty props list', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
 
       // ACT
-      var noparams = NoParams();
+      final noparams = NoParams();
 
       // ASSERT
       expect(noparams.props, expected);

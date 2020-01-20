@@ -1,0 +1,13 @@
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    - parameter_assignments
+
+analyzer:
+  errors:
+    missing_required_param: error
+    parameter_assignments: error
+    missing_return: error
+    directives_ordering: ignore
+    prefer_const_constructors_in_immutables: warning

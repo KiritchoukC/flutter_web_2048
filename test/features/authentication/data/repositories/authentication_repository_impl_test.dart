@@ -36,7 +36,7 @@ void main() {
       // ARRANGE
       when(mockDatasource.signInAnonymously()).thenThrow(FirebaseException());
       // ACT
-      var actual = await repository.signInAnonymously();
+      final actual = await repository.signInAnonymously();
       // ASSERT
       expect(actual, Left(FirebaseFailure()));
     });
@@ -45,7 +45,7 @@ void main() {
       // ARRANGE
       when(mockDatasource.signInAnonymously()).thenThrow(FirestoreException());
       // ACT
-      var actual = await repository.signInAnonymously();
+      final actual = await repository.signInAnonymously();
       // ASSERT
       expect(actual, Left(FirestoreFailure()));
     });
@@ -66,25 +66,25 @@ void main() {
 
     test('should return a [User] for success requests', () async {
       // ARRANGE
-      String uniqueId = 'uniqueId';
-      String username = 'username';
-      String email = 'email@example.com';
-      String picture = 'https://google/picture.jpg';
+      const String uniqueId = 'uniqueId';
+      const String username = 'username';
+      const String email = 'email@example.com';
+      const String picture = 'https://google/picture.jpg';
 
-      UserModel userModel = UserModel(
+      final UserModel userModel = UserModel(
         uid: uniqueId,
         username: username,
         email: email,
         picture: picture,
-        authenticationProvider: AuthenticationProvider.Anonymous,
+        authenticationProvider: AuthenticationProvider.anonymous,
       );
 
-      User expectedUser = userModel;
+      final User expectedUser = userModel;
 
       when(mockDatasource.signInAnonymously()).thenAnswer((_) async => userModel);
 
       // ACT
-      var user = await repository.signInAnonymously();
+      final user = await repository.signInAnonymously();
 
       // ASSERT
       expect(user, equals(Right(expectedUser)));
@@ -102,7 +102,7 @@ void main() {
 
     test('should return [Right] on success', () async {
       // ACT
-      var actual = await repository.signOut();
+      final actual = await repository.signOut();
       // ASSERT
       expect(actual, equals(Right(null)));
     });
@@ -111,7 +111,7 @@ void main() {
       // ARRANGE
       when(mockDatasource.signOut()).thenThrow(FirebaseException());
       // ACT
-      var actual = await repository.signOut();
+      final actual = await repository.signOut();
       // ASSERT
       expect(actual, equals(Left(FirebaseFailure())));
     });
@@ -120,7 +120,7 @@ void main() {
       // ARRANGE
       when(mockDatasource.signOut()).thenThrow(Exception());
       // ACT
-      var call = () async => await repository.signOut();
+      Future call() async => repository.signOut();
       // ASSERT
       expect(call, throwsA(isA<Exception>()));
     });
@@ -129,8 +129,8 @@ void main() {
   group('signInWithEmailAndPassword', () {
     test('should call datasource [signInWithEmailAndPassword] function', () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
+      const String email = 'email@example.com';
+      const String password = 'password';
 
       // ACT
       await repository.signInWithEmailAndPassword(email: email, password: password);
@@ -140,8 +140,8 @@ void main() {
     });
     test('should call datasource [updateUserData] function', () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
+      const String email = 'email@example.com';
+      const String password = 'password';
 
       // ACT
       await repository.signInWithEmailAndPassword(email: email, password: password);
@@ -151,27 +151,27 @@ void main() {
     });
     test('should return [Right] on success with the datasource user', () async {
       // ARRANGE
-      String uniqueId = 'uniqueId';
-      String username = 'username';
-      String email = 'email@example.com';
-      String password = 'password';
-      String picture = 'https://google/picture.jpg';
+      const String uniqueId = 'uniqueId';
+      const String username = 'username';
+      const String email = 'email@example.com';
+      const String password = 'password';
+      const String picture = 'https://google/picture.jpg';
 
-      UserModel userModel = UserModel(
+      final UserModel userModel = UserModel(
         uid: uniqueId,
         username: username,
         email: email,
         picture: picture,
-        authenticationProvider: AuthenticationProvider.Anonymous,
+        authenticationProvider: AuthenticationProvider.anonymous,
       );
 
-      User datasourceUser = userModel;
+      final User datasourceUser = userModel;
 
       when(mockDatasource.signInWithEmailAndPassword(email, password))
-          .thenAnswer((_) async => datasourceUser);
+          .thenAnswer((_) async => userModel);
 
       // ACT
-      var actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+      final actual = await repository.signInWithEmailAndPassword(email: email, password: password);
 
       // ASSERT
       expect(actual, equals(Right(datasourceUser)));
@@ -179,14 +179,14 @@ void main() {
     test('should return a [FirebaseFailure] when a [FirebaseException] is thrown by datasource',
         () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
+      const String email = 'email@example.com';
+      const String password = 'password';
 
       when(mockDatasource.signInWithEmailAndPassword(email, password))
           .thenThrow(FirebaseException());
 
       // ACT
-      var actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+      final actual = await repository.signInWithEmailAndPassword(email: email, password: password);
 
       // ASSERT
       expect(actual, Left(FirebaseFailure()));
@@ -194,14 +194,14 @@ void main() {
     test('should return a [FirestoreFailure] when a [FirestoreException] is thrown by datasource',
         () async {
       // ARRANGE
-      String email = 'email@example.com';
-      String password = 'password';
+      const String email = 'email@example.com';
+      const String password = 'password';
 
       when(mockDatasource.signInWithEmailAndPassword(email, password))
           .thenThrow(FirestoreException());
 
       // ACT
-      var actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+      final actual = await repository.signInWithEmailAndPassword(email: email, password: password);
 
       // ASSERT
       expect(actual, Left(FirestoreFailure()));

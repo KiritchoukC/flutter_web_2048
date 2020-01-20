@@ -6,7 +6,7 @@ extension EitherExtensions<TLeft, TRight> on Either<TLeft, TRight> {
       return null;
     }
     TRight result;
-    this.fold((left) {}, (right) => result = right);
+    fold((left) {}, (right) => result = right);
     return result;
   }
 }

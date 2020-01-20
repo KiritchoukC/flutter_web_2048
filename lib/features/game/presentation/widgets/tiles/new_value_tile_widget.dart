@@ -5,7 +5,7 @@ import 'value_tile_widget.dart';
 class NewValueTileWidget extends StatefulWidget {
   final int value;
 
-  NewValueTileWidget({Key key, this.value}) : super(key: key);
+  const NewValueTileWidget({Key key, this.value}) : super(key: key);
 
   @override
   _NewValueTileWidgetState createState() => _NewValueTileWidgetState();

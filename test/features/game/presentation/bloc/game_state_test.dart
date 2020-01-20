@@ -9,18 +9,18 @@ void main() {
   group('GameOver', () {
     test('should extend GameState', () {
       // ARRANGE
-      var board = Board(Array2D<Tile>(4, 4));
+      final board = Board(Array2D<Tile>(4, 4));
       // ACT
-      var gameOver = GameOverState(board);
+      final gameOver = GameOverState(board);
       // ASSERT
       expect(gameOver, isA<GameState>());
     });
     test('should have props list with the board', () {
       // ARRANGE
-      var board = Board(Array2D<Tile>(4, 4));
-      var expected = <Object>[board];
+      final board = Board(Array2D<Tile>(4, 4));
+      final expected = <Object>[board];
       // ACT
-      var gameOver = GameOverState(board);
+      final gameOver = GameOverState(board);
       // ASSERT
       expect(gameOver.props, expected);
     });
@@ -28,18 +28,18 @@ void main() {
   group('HighscoreLoaded', () {
     test('should extend GameState', () {
       // ARRANGE
-      int highscore = 9000;
+      const int highscore = 9000;
       // ACT
-      var state = HighscoreLoadedState(highscore);
+      const state = HighscoreLoadedState(highscore);
       // ASSERT
       expect(state, isA<GameState>());
     });
     test('should have props list with the board and highscore', () {
       // ARRANGE
-      int highscore = 9000;
-      var expected = <Object>[highscore];
+      const int highscore = 9000;
+      const expected = <Object>[highscore];
       // ACT
-      var state = HighscoreLoadedState(highscore);
+      const state = HighscoreLoadedState(highscore);
       // ASSERT
       expect(state.props, expected);
     });
@@ -47,18 +47,18 @@ void main() {
   group('Error', () {
     test('should extend GameState', () {
       // ARRANGE
-      String message = 'message';
+      const String message = 'message';
       // ACT
-      var error = GameErrorState(message);
+      const error = GameErrorState(message);
       // ASSERT
       expect(error, isA<GameState>());
     });
     test('should have a props list with the message', () {
       // ARRANGE
-      String message = 'message';
-      var expected = <Object>[message];
+      const String message = 'message';
+      const expected = <Object>[message];
       // ACT
-      var error = GameErrorState(message);
+      const error = GameErrorState(message);
       // ASSERT
       expect(error.props, expected);
     });

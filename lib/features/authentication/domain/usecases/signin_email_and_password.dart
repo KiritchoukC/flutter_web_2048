@@ -28,7 +28,7 @@ class SignInEmailAndPasswordParams extends Equatable {
   final String email;
   final String password;
 
-  SignInEmailAndPasswordParams({@required this.email, @required this.password});
+  const SignInEmailAndPasswordParams({@required this.email, @required this.password});
   @override
   List<Object> get props => [email, password];
 }

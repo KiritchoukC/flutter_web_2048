@@ -4,7 +4,7 @@ extension NavigatorStateExtensions on NavigatorState {
   String getCurrentRoute() {
     String currentRoute = '';
 
-    this.popUntil((route) {
+    popUntil((route) {
       currentRoute = route.settings.name;
       return true;
     });

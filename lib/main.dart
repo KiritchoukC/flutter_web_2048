@@ -13,7 +13,7 @@ import 'features/game/presentation/bloc/game_bloc.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
-void main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // no need to init hive for browser
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: '2048',
-        theme: CustomTheme.themeData,
+        theme: customTheme,
         initialRoute: RoutePaths.game,
         onGenerateRoute: Router.generateRoute,
       ),

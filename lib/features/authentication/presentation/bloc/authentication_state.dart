@@ -18,7 +18,7 @@ class AuthenticationLoadingState extends AuthenticationState {}
 class SignedInState extends AuthenticationState {
   final User user;
 
-  SignedInState(this.user);
+  const SignedInState(this.user);
 
   @override
   List<Object> get props => [user];
@@ -27,7 +27,7 @@ class SignedInState extends AuthenticationState {
 class AuthenticationErrorState extends AuthenticationState {
   final String message;
 
-  AuthenticationErrorState(this.message);
+  const AuthenticationErrorState(this.message);
 
   @override
   List<Object> get props => [message];

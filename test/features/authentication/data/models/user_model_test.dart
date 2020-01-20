@@ -9,12 +9,12 @@ class MockFirebaseUser extends Mock implements FirebaseUser {}
 void main() {
   test('should extend [User]', () async {
     // ARRANGE
-    var userModel = UserModel(
+    final userModel = UserModel(
       uid: 'uniqueId',
       username: 'username',
       email: 'email',
       picture: 'picture',
-      authenticationProvider: AuthenticationProvider.Google,
+      authenticationProvider: AuthenticationProvider.google,
     );
     // ASSERT
     expect(userModel, isA<User>());
@@ -23,22 +23,22 @@ void main() {
   group('fromFirebaseUser', () {
     test('should return [UserModel] filled with [FirebaseUser] properties', () async {
       // ARRANGE
-      String username = 'username';
-      String email = 'email@example.com';
-      String picture = 'https://google/picture.jpg';
-      var firebaseUser = MockFirebaseUser();
+      const String username = 'username';
+      const String email = 'email@example.com';
+      const String picture = 'https://google/picture.jpg';
+      final firebaseUser = MockFirebaseUser();
       when(firebaseUser.displayName).thenReturn(username);
       when(firebaseUser.email).thenReturn(email);
       when(firebaseUser.photoUrl).thenReturn(picture);
 
       // ACT
-      var userModel = UserModel.fromFirebaseUser(
+      final userModel = UserModel.fromFirebaseUser(
         firebaseUser: firebaseUser,
-        authenticationProvider: AuthenticationProvider.Google,
+        authenticationProvider: AuthenticationProvider.google,
       );
 
       // ASSERT
-      expect(userModel.authenticationProvider, AuthenticationProvider.Google);
+      expect(userModel.authenticationProvider, AuthenticationProvider.google);
       expect(userModel.username, username);
       expect(userModel.email, email);
       expect(userModel.picture, picture);
@@ -48,17 +48,17 @@ void main() {
   group('toJson', () {
     test('should convert the [UserModel] to json with the given [lastSeenDateTime]', () async {
       // ARRANGE
-      var userModel = UserModel(
+      final userModel = UserModel(
         uid: 'uid',
         username: 'username',
         email: 'email',
         picture: 'picture',
-        authenticationProvider: AuthenticationProvider.Anonymous,
+        authenticationProvider: AuthenticationProvider.anonymous,
       );
-      var lastSeenDateTime = DateTime.now();
+      final lastSeenDateTime = DateTime.now();
 
       // ACT
-      var actual = userModel.toJson(lastSeenDateTime: lastSeenDateTime);
+      final actual = userModel.toJson(lastSeenDateTime: lastSeenDateTime);
 
       // ASSERT
       expect(

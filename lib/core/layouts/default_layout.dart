@@ -8,7 +8,7 @@ class DefaultLayout extends StatelessWidget {
   final List<Widget> actions;
   final Widget leading;
 
-  DefaultLayout({
+  const DefaultLayout({
     @required this.body,
     @required this.title,
     @required this.actions,

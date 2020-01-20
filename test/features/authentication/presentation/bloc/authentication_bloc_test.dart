@@ -17,12 +17,12 @@ void main() {
   MockSignInAnonymous mockSignInAnonymous;
   MockSignOut mockSignOut;
 
-  User testUser = User(
+  final User testUser = User(
     'uniqueid',
     'UsernameTest',
     'email@example.com',
     'https://google.com/picture.jpg',
-    AuthenticationProvider.Anonymous,
+    AuthenticationProvider.anonymous,
   );
 
   setUp(() {
@@ -107,7 +107,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        AuthenticationErrorState(ErrorMessages.firebase),
+        const AuthenticationErrorState(ErrorMessages.firebase),
       ];
 
       expectLater(
@@ -163,7 +163,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        AuthenticationErrorState(ErrorMessages.firebase),
+        const AuthenticationErrorState(ErrorMessages.firebase),
       ];
 
       expectLater(

@@ -23,7 +23,7 @@ import 'features/game/domain/usecases/reset_board.dart';
 import 'features/game/domain/usecases/update_board.dart';
 import 'features/game/presentation/bloc/game_bloc.dart';
 
-final sl = GetIt.instance;
+final GetIt sl = GetIt.instance;
 
 /// Initialize de depdendency injection
 Future<void> init() async {
@@ -32,10 +32,11 @@ Future<void> init() async {
   initAuthenticationFeature();
 
   //! CORE
-  sl.registerLazySingleton<NetworkInfo>(() => DataConnectionCheckerNetworkInfo(sl()));
+  sl.registerLazySingleton<NetworkInfo>(
+      () => DataConnectionCheckerNetworkInfo(sl<DataConnectionChecker>()));
 
   //! EXTERNAL
-  var box = await Hive.openBox<int>('highscoreBox');
+  final box = await Hive.openBox<int>('highscoreBox');
   sl.registerLazySingleton<Box<int>>(() => box);
   sl.registerLazySingleton(() => DataConnectionChecker());
 
@@ -49,46 +50,49 @@ void initGameFeature() {
   // Bloc
   sl.registerFactory(
     () => GameBloc(
-      updateBoard: sl(),
-      getCurrentBoard: sl(),
-      resetBoard: sl(),
-      getHighscore: sl(),
-      getPreviousBoard: sl(),
+      updateBoard: sl<UpdateBoard>(),
+      getCurrentBoard: sl<GetCurrentBoard>(),
+      resetBoard: sl<ResetBoard>(),
+      getHighscore: sl<GetHighscore>(),
+      getPreviousBoard: sl<GetPreviousBoard>(),
     ),
   );
 
   // Usecases
-  sl.registerLazySingleton(() => UpdateBoard(boardRepository: sl()));
-  sl.registerLazySingleton(() => GetCurrentBoard(boardRepository: sl()));
-  sl.registerLazySingleton(() => ResetBoard(boardRepository: sl()));
-  sl.registerLazySingleton(() => GetHighscore(boardRepository: sl()));
-  sl.registerLazySingleton(() => GetPreviousBoard(boardRepository: sl()));
+  sl.registerLazySingleton(() => UpdateBoard(boardRepository: sl<BoardRepository>()));
+  sl.registerLazySingleton(() => GetCurrentBoard(boardRepository: sl<BoardRepository>()));
+  sl.registerLazySingleton(() => ResetBoard(boardRepository: sl<BoardRepository>()));
+  sl.registerLazySingleton(() => GetHighscore(boardRepository: sl<BoardRepository>()));
+  sl.registerLazySingleton(() => GetPreviousBoard(boardRepository: sl<BoardRepository>()));
 
   // Repositories
-  sl.registerLazySingleton<BoardRepository>(() => LocalBoardRepository(datasource: sl()));
+  sl.registerLazySingleton<BoardRepository>(
+      () => LocalBoardRepository(datasource: sl<BoardDataSource>()));
 
   // Datasource
-  sl.registerLazySingleton<BoardDataSource>(() => HiveBoardDataSource(localStorage: sl()));
+  sl.registerLazySingleton<BoardDataSource>(
+      () => HiveBoardDataSource(localStorage: sl<Box<int>>()));
 }
 
 /// Register the dependencies needed for the authentication feature
 void initAuthenticationFeature() {
   // Bloc
-  sl.registerFactory(() => AuthenticationBloc(signInAnonymous: sl(), signout: sl()));
+  sl.registerFactory(
+      () => AuthenticationBloc(signInAnonymous: sl<SignInAnonymous>(), signout: sl<SignOut>()));
 
   // Usecases
-  sl.registerLazySingleton(() => SignInAnonymous(repository: sl()));
-  sl.registerLazySingleton(() => SignOut(repository: sl()));
+  sl.registerLazySingleton(() => SignInAnonymous(repository: sl<AuthenticationRepository>()));
+  sl.registerLazySingleton(() => SignOut(repository: sl<AuthenticationRepository>()));
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
-      () => AuthenticationRepositoryImpl(datasource: sl()));
+      () => AuthenticationRepositoryImpl(datasource: sl<AuthenticationDatasource>()));
 
   // Datasource
   sl.registerLazySingleton<AuthenticationDatasource>(
     () => FirebaseAuthenticationDatasource(
-      firebaseAuth: sl(),
-      firestore: sl(),
+      firebaseAuth: sl<FirebaseAuth>(),
+      firestore: sl<Firestore>(),
     ),
   );
 }

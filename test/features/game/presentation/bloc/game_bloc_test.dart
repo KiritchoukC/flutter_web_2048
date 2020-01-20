@@ -151,7 +151,7 @@ void main() {
       when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(Board(pm.Array2D<Tile>(4, 4))));
 
       // ACT
-      bloc.add(MoveEvent(direction: Direction.down));
+      bloc.add(const MoveEvent(direction: Direction.down));
       await untilCalled(mockUpdateBoard.call(any));
 
       // ASSERT
@@ -160,7 +160,7 @@ void main() {
 
     test('should emit [InitialGame, UpdateBoardStart, UpdateBoardEnd]', () {
       // ARRANGE
-      final direction = Direction.down;
+      const direction = Direction.down;
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
       when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
       when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
@@ -177,16 +177,16 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(MoveEvent(direction: direction));
+      bloc.add(const MoveEvent(direction: direction));
     });
 
     test(
         'should emit [InitialGame, UpdateBoardStart, GameOver, HighscoreLoaded] when the game is over',
         () {
       // ARRANGE
-      final direction = Direction.down;
+      const direction = Direction.down;
       // generate board in a game over state
-      var tiles = pm.Array2D<Tile>.generated(4, 4, (x, y) => Tile(2, x: x, y: y));
+      final tiles = pm.Array2D<Tile>.generated(4, 4, (int x, int y) => Tile(2, x: x, y: y));
       tiles.set(1, 0, Tile(4, x: 1, y: 0));
       tiles.set(3, 0, Tile(4, x: 3, y: 0));
       tiles.set(0, 1, Tile(4, x: 0, y: 1));
@@ -199,7 +199,7 @@ void main() {
 
       when(mockGetCurrentBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
       when(mockUpdateBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
-      final highscore = 9000;
+      const highscore = 9000;
       when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(highscore));
 
       // ASSERT LATER
@@ -207,7 +207,7 @@ void main() {
         InitialGameState(),
         UpdateBoardStartState(),
         GameOverState(usecaseOutput),
-        HighscoreLoadedState(highscore)
+        const HighscoreLoadedState(highscore)
       ];
 
       expectLater(
@@ -215,7 +215,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(MoveEvent(direction: direction));
+      bloc.add(const MoveEvent(direction: direction));
     });
   });
 
@@ -236,7 +236,7 @@ void main() {
       // ARRANGE
       final usecaseOutput = Board(pm.Array2D<Tile>(4, 4));
       when(mockResetBoard.call(any)).thenAnswer((_) async => Right(usecaseOutput));
-      final highscore = 9000;
+      const highscore = 9000;
       when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(highscore));
 
       // ASSERT LATER
@@ -244,7 +244,7 @@ void main() {
         InitialGameState(),
         UpdateBoardStartState(),
         UpdateBoardEndState(usecaseOutput),
-        HighscoreLoadedState(highscore),
+        const HighscoreLoadedState(highscore),
       ];
 
       expectLater(
@@ -271,13 +271,13 @@ void main() {
 
     test('should emit [InitialGame, HighscoreLoaded]', () {
       // ARRANGE
-      final usecaseOutput = 9000;
+      const usecaseOutput = 9000;
       when(mockGetHighscore.call(any)).thenAnswer((_) async => Right(usecaseOutput));
 
       // ASSERT LATER
       final expected = [
         InitialGameState(),
-        HighscoreLoadedState(usecaseOutput),
+        const HighscoreLoadedState(usecaseOutput),
       ];
 
       expectLater(

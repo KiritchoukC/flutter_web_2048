@@ -15,7 +15,7 @@ class SignInEvent extends AuthenticationEvent {
   final String _email;
   final String _password;
 
-  SignInEvent(this._email, this._password);
+  const SignInEvent(this._email, this._password);
 
   @override
   List<Object> get props => [_email, _password];

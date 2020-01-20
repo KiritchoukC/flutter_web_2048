@@ -40,7 +40,7 @@ void main() {
     when(mockRepository.signInAnonymously()).thenAnswer((_) async => Left(FirebaseFailure()));
 
     // ACT
-    var result = await usecase(NoParams());
+    final result = await usecase(NoParams());
 
     // ASSERT
     expect(result, Left(FirebaseFailure()));
@@ -51,7 +51,7 @@ void main() {
     when(mockRepository.signInAnonymously()).thenAnswer((_) async => Left(FirestoreFailure()));
 
     // ACT
-    var result = await usecase(NoParams());
+    final result = await usecase(NoParams());
 
     // ASSERT
     expect(result, Left(FirestoreFailure()));
@@ -59,11 +59,11 @@ void main() {
 
   test('should return [User] on Right case', () async {
     // ARRANGE
-    var user = User('uniqueId', 'username', 'email', 'picutre', AuthenticationProvider.Anonymous);
+    final user = User('uniqueId', 'username', 'email', 'picutre', AuthenticationProvider.anonymous);
     when(mockRepository.signInAnonymously()).thenAnswer((_) async => Right(user));
 
     // ACT
-    var result = await usecase(NoParams());
+    final result = await usecase(NoParams());
 
     // ASSERT
     expect(result, Right(user));

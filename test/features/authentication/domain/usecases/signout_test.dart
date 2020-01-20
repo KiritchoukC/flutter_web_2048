@@ -39,7 +39,7 @@ void main() {
     when(mockRepository.signOut()).thenAnswer((_) async => Left(FirebaseFailure()));
 
     // ACT
-    var result = await usecase(NoParams());
+    final result = await usecase(NoParams());
 
     // ASSERT
     expect(result, Left(FirebaseFailure()));
@@ -50,7 +50,7 @@ void main() {
     when(mockRepository.signOut()).thenAnswer((_) async => Right(null));
 
     // ACT
-    var result = await usecase(NoParams());
+    final result = await usecase(NoParams());
 
     // ASSERT
     expect(result, Right(null));

@@ -6,11 +6,11 @@ void main() {
   group('getRight', () {
     test('should return the right result', () {
       // ARRANGE
-      var right = 'This is the right result';
-      var either = Right(right);
+      const right = 'This is the right result';
+      final either = Right(right);
 
       // ACT
-      var actual = either.getRight();
+      final actual = either.getRight();
       // ASSERT
       expect(right, actual);
     });

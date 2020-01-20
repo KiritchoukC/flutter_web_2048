@@ -28,11 +28,11 @@ void main() {
   group('getHighscore', () {
     test('should return score in local storage', () async {
       // ARRANGE
-      int highscore = 700000;
+      const int highscore = 700000;
       when(mockLocalStorage.get(highscoreKey)).thenReturn(highscore);
 
       // ACT
-      int actual = await datasource.getHighscore();
+      final int actual = await datasource.getHighscore();
 
       // ASSERT
       expect(actual, highscore);
@@ -43,7 +43,7 @@ void main() {
       when(mockLocalStorage.get(highscoreKey)).thenReturn(null);
 
       // ACT
-      int actual = await datasource.getHighscore();
+      final int actual = await datasource.getHighscore();
 
       // ASSERT
       verify(mockLocalStorage.put(highscoreKey, 0)).called(1);
@@ -54,7 +54,7 @@ void main() {
   group('saveHighscore', () {
     test('should call [localStorage] to save the score', () async {
       // ARRANGE
-      int highscore = 700000;
+      const int highscore = 700000;
       when(mockLocalStorage.put(highscoreKey, highscore));
 
       // ACT

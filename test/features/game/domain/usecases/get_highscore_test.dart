@@ -25,11 +25,11 @@ void main() {
   });
   test('should return the repository output', () async {
     // ARRANGE
-    var repositoryOutput = 70000;
+    const repositoryOutput = 70000;
     when(repository.getHighscore()).thenAnswer((_) async => repositoryOutput);
 
     // ACT
-    var actual = await usecase(NoParams());
+    final actual = await usecase(NoParams());
 
     // ASSERT
     expect(actual.getRight(), repositoryOutput);
