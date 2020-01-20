@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -15,11 +16,15 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   /// the firestore instance
   final Firestore _firestore;
 
+  /// the logger instance
+  final Logger _logger;
+
   FirebaseAuthenticationDatasource({
     @required FirebaseAuth firebaseAuth,
     @required Firestore firestore,
   })  : _firebaseAuth = firebaseAuth,
         _firestore = firestore,
+        _logger = Logger('FirebaseAuthenticationDatasource'),
         assert(
           firebaseAuth != null && firestore != null,
         );
@@ -40,7 +45,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
       );
     } catch (e) {
       // Log and throw specific exception
-      print(e.toString());
+      _logger.shout(e.toString());
       throw FirebaseException();
     }
   }
@@ -59,7 +64,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
           .setData(user.toJson(lastSeenDateTime: DateTime.now()), merge: true);
     } catch (e) {
       // Log and throw specific exception
-      print(e.toString());
+      _logger.shout(e.toString());
       throw FirestoreException();
     }
   }
@@ -71,7 +76,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
       await _firebaseAuth.signOut();
     } catch (e) {
       // Log and throw specific exception
-      print(e.toString());
+      _logger.shout(e.toString());
       throw FirebaseException();
     }
   }
