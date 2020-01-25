@@ -30,6 +30,7 @@ dependencies:
   cloud_firestore: ^0.13.0+1
   font_awesome_flutter: ^8.5.0
   logging: ^0.11.4
+  google_sign_in: ^4.1.1
 
 dev_dependencies:
   flutter_test:

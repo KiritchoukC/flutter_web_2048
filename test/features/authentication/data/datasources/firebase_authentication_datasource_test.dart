@@ -6,6 +6,7 @@ import 'package:flutter_web_2048/features/authentication/data/datasources/authen
 import 'package:flutter_web_2048/features/authentication/data/datasources/firebase_authentication_datasource.dart';
 import 'package:flutter_web_2048/features/authentication/data/models/user_model.dart';
 import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
@@ -16,9 +17,15 @@ class MockAuthResult extends Mock implements AuthResult {}
 
 class MockFirebaseUser extends Mock implements FirebaseUser {}
 
+class MockGoogleSignIn extends Mock implements GoogleSignIn {}
+
 class MockCollectionReference extends Mock implements CollectionReference {}
 
 class MockDocumentReference extends Mock implements DocumentReference {}
+
+class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
+
+class MockGoogleSignInAuthentication extends Mock implements GoogleSignInAuthentication {}
 
 void main() {
   FirebaseAuthenticationDatasource datasource;
@@ -26,13 +33,16 @@ void main() {
   MockFirestore mockFirestore;
   MockCollectionReference mockCollectionReference;
   MockDocumentReference mockDocumentReference;
+  MockGoogleSignIn mockGoogleSignIn;
 
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
     mockFirestore = MockFirestore();
+    mockGoogleSignIn = MockGoogleSignIn();
     datasource = FirebaseAuthenticationDatasource(
       firebaseAuth: mockFirebaseAuth,
       firestore: mockFirestore,
+      googleSignIn: mockGoogleSignIn,
     );
 
     mockCollectionReference = MockCollectionReference();
@@ -46,10 +56,30 @@ void main() {
 
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
-    expect(() => FirebaseAuthenticationDatasource(firebaseAuth: null, firestore: mockFirestore),
-        throwsA(isA<AssertionError>()));
-    expect(() => FirebaseAuthenticationDatasource(firebaseAuth: mockFirebaseAuth, firestore: null),
-        throwsA(isA<AssertionError>()));
+    expect(
+      () => FirebaseAuthenticationDatasource(
+        firebaseAuth: null,
+        firestore: null,
+        googleSignIn: mockGoogleSignIn,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
+    expect(
+      () => FirebaseAuthenticationDatasource(
+        firebaseAuth: null,
+        firestore: mockFirestore,
+        googleSignIn: null,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
+    expect(
+      () => FirebaseAuthenticationDatasource(
+        firebaseAuth: mockFirebaseAuth,
+        firestore: null,
+        googleSignIn: null,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
   });
 
   group('signinAnonymously', () {
@@ -301,6 +331,161 @@ void main() {
 
       // ACT
       Future call() async => datasource.signInWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(call, throwsA(isA<FirebaseException>()));
+    });
+  });
+
+  group('signInWithGoogle', () {
+    const accessToken = 'accessToken';
+    const idToken = 'idToken';
+
+    const email = 'email';
+    const username = 'username';
+    const picture = 'picture';
+    const uid = 'uid';
+
+    test('should call [GoogleSignIn.signIn()]', () async {
+      // ARRANGE
+      final googleSignInAuthentication = MockGoogleSignInAuthentication();
+      when(googleSignInAuthentication.accessToken).thenReturn(accessToken);
+      when(googleSignInAuthentication.idToken).thenReturn(idToken);
+
+      final googleSignInAccount = MockGoogleSignInAccount();
+      when(googleSignInAccount.authentication).thenAnswer((_) async => googleSignInAuthentication);
+      when(mockGoogleSignIn.signIn()).thenAnswer((_) async => googleSignInAccount);
+
+      final authResult = MockAuthResult();
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.uid).thenReturn(uid);
+      when(firebaseUser.photoUrl).thenReturn(picture);
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithCredential(any)).thenAnswer((_) async => authResult);
+
+      // ACT
+      await datasource.signInWithGoogle();
+
+      // ASSERT
+      verify(mockGoogleSignIn.signIn()).called(1);
+    });
+    test('should call [GoogleSignInAccount.authentication]', () async {
+      // ARRANGE
+      final googleSignInAuthentication = MockGoogleSignInAuthentication();
+      when(googleSignInAuthentication.accessToken).thenReturn(accessToken);
+      when(googleSignInAuthentication.idToken).thenReturn(idToken);
+
+      final googleSignInAccount = MockGoogleSignInAccount();
+      when(googleSignInAccount.authentication).thenAnswer((_) async => googleSignInAuthentication);
+      when(mockGoogleSignIn.signIn()).thenAnswer((_) async => googleSignInAccount);
+
+      final authResult = MockAuthResult();
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.uid).thenReturn(uid);
+      when(firebaseUser.photoUrl).thenReturn(picture);
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithCredential(any)).thenAnswer((_) async => authResult);
+
+      // ACT
+      await datasource.signInWithGoogle();
+
+      // ASSERT
+      verify(googleSignInAccount.authentication).called(1);
+    });
+
+    test('should call [FirebaseAuth.signInWithCredential()]', () async {
+      // ARRANGE
+      final googleSignInAuthentication = MockGoogleSignInAuthentication();
+      when(googleSignInAuthentication.accessToken).thenReturn(accessToken);
+      when(googleSignInAuthentication.idToken).thenReturn(idToken);
+
+      final googleSignInAccount = MockGoogleSignInAccount();
+      when(googleSignInAccount.authentication).thenAnswer((_) async => googleSignInAuthentication);
+      when(mockGoogleSignIn.signIn()).thenAnswer((_) async => googleSignInAccount);
+
+      final authResult = MockAuthResult();
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.uid).thenReturn(uid);
+      when(firebaseUser.photoUrl).thenReturn(picture);
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithCredential(any)).thenAnswer((_) async => authResult);
+
+      // ACT
+      await datasource.signInWithGoogle();
+
+      // ASSERT
+      verify(mockFirebaseAuth.signInWithCredential(any)).called(1);
+    });
+
+    test('should return authenticated user', () async {
+      // ARRANGE
+      final googleSignInAuthentication = MockGoogleSignInAuthentication();
+      when(googleSignInAuthentication.accessToken).thenReturn(accessToken);
+      when(googleSignInAuthentication.idToken).thenReturn(idToken);
+
+      final googleSignInAccount = MockGoogleSignInAccount();
+      when(googleSignInAccount.authentication).thenAnswer((_) async => googleSignInAuthentication);
+      when(mockGoogleSignIn.signIn()).thenAnswer((_) async => googleSignInAccount);
+
+      final authResult = MockAuthResult();
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.uid).thenReturn(uid);
+      when(firebaseUser.photoUrl).thenReturn(picture);
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithCredential(any)).thenAnswer((_) async => authResult);
+
+      // ACT
+      final actual = await datasource.signInWithGoogle();
+
+      // ASSERT
+      expect(actual.authenticationProvider, AuthenticationProvider.google);
+      expect(actual.email, email);
+      expect(actual.username, username);
+      expect(actual.picture, picture);
+      expect(actual.uid, uid);
+    });
+
+    test('should throw [GoogleSignInFailedException] if [GoogleSignIn.signIn()] fails', () async {
+      // ARRANGE
+      when(mockGoogleSignIn.signIn()).thenThrow(Exception());
+
+      // ACT
+      Future<UserModel> call() async => datasource.signInWithGoogle();
+
+      // ASSERT
+      expect(call, throwsA(isA<GoogleSignInFailedException>()));
+    });
+
+    test('should throw [FirebaseException] if [FirebaseAuth.signInWithCredential()] fails',
+        () async {
+      // ARRANGE
+      final googleSignInAuthentication = MockGoogleSignInAuthentication();
+      when(googleSignInAuthentication.accessToken).thenReturn(accessToken);
+      when(googleSignInAuthentication.idToken).thenReturn(idToken);
+
+      final googleSignInAccount = MockGoogleSignInAccount();
+      when(googleSignInAccount.authentication).thenAnswer((_) async => googleSignInAuthentication);
+      when(mockGoogleSignIn.signIn()).thenAnswer((_) async => googleSignInAccount);
+
+      final authResult = MockAuthResult();
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.uid).thenReturn(uid);
+      when(firebaseUser.photoUrl).thenReturn(picture);
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(Exception());
+
+      // ACT
+      Future<UserModel> call() async => datasource.signInWithGoogle();
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 
 import 'core/network/network_info.dart';
@@ -43,6 +44,8 @@ Future<void> init() async {
   // Firebase dependencies
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<Firestore>(() => Firestore.instance);
+
+  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
 }
 
 /// Register the dependencies needed for the game feature
@@ -93,6 +96,7 @@ void initAuthenticationFeature() {
     () => FirebaseAuthenticationDatasource(
       firebaseAuth: sl<FirebaseAuth>(),
       firestore: sl<Firestore>(),
+      googleSignIn: sl<GoogleSignIn>(),
     ),
   );
 }

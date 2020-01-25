@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_web_2048/core/util/helper_functions.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../domain/entities/user.dart';
@@ -16,17 +18,22 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   /// the firestore instance
   final Firestore _firestore;
 
+  /// the google sign in instance.
+  final GoogleSignIn _googleSignIn;
+
   /// the logger instance
   final Logger _logger;
 
   FirebaseAuthenticationDatasource({
     @required FirebaseAuth firebaseAuth,
     @required Firestore firestore,
+    @required GoogleSignIn googleSignIn,
   })  : _firebaseAuth = firebaseAuth,
         _firestore = firestore,
+        _googleSignIn = googleSignIn,
         _logger = Logger('FirebaseAuthenticationDatasource'),
         assert(
-          firebaseAuth != null && firestore != null,
+          firebaseAuth != null && firestore != null && googleSignIn != null,
         );
 
   /// Signs in a user anonymously
@@ -99,5 +106,30 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
     } catch (e) {
       throw FirebaseException();
     }
+  }
+
+  @override
+  Future<UserModel> signInWithGoogle() async {
+    final googleSignInAccount = await tryGet(_googleSignIn.signIn, GoogleSignInFailedException());
+
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final authResult = await tryGet(
+      () => _firebaseAuth.signInWithCredential(credential),
+      FirebaseException(),
+    );
+
+    final user = authResult.user;
+
+    return UserModel.fromFirebaseUser(
+      firebaseUser: user,
+      authenticationProvider: AuthenticationProvider.google,
+    );
   }
 }
