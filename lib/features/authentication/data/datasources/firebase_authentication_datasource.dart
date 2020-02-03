@@ -91,26 +91,25 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   /// Signs in a user with Email and password
   @override
   Future<UserModel> signInWithEmailAndPassword(String email, String password) async {
-    try {
-      final authResult =
-          await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    final authResult = await tryCatch(
+      () => _firebaseAuth.signInWithEmailAndPassword(email: email, password: password),
+      FirebaseException(),
+    );
 
-      if (authResult == null) {
-        throw FirebaseException();
-      }
-
-      return UserModel.fromFirebaseUser(
-        firebaseUser: authResult.user,
-        authenticationProvider: AuthenticationProvider.emailAndPassword,
-      );
-    } catch (e) {
+    if (authResult == null) {
       throw FirebaseException();
     }
+
+    return UserModel.fromFirebaseUser(
+      firebaseUser: authResult.user,
+      authenticationProvider: AuthenticationProvider.emailAndPassword,
+    );
   }
 
+  /// Signs in a user with the Google provider
   @override
   Future<UserModel> signInWithGoogle() async {
-    final googleSignInAccount = await tryGet(_googleSignIn.signIn, GoogleSignInFailedException());
+    final googleSignInAccount = await tryCatch(_googleSignIn.signIn, GoogleSignInFailedException());
 
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
@@ -120,7 +119,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
       idToken: googleSignInAuthentication.idToken,
     );
 
-    final authResult = await tryGet(
+    final authResult = await tryCatch(
       () => _firebaseAuth.signInWithCredential(credential),
       FirebaseException(),
     );

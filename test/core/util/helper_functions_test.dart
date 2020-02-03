@@ -9,7 +9,7 @@ void main() {
       String function() => 'result';
 
       // ACT
-      final actual = tryGet(function, FirebaseException());
+      final actual = tryCatch(function, FirebaseException());
 
       // ASSERT
       expect(actual, 'result');
@@ -19,7 +19,7 @@ void main() {
       String function() => throw Exception();
 
       // ACT
-      String call() => tryGet(function, FirebaseException());
+      String call() => tryCatch(function, FirebaseException());
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
