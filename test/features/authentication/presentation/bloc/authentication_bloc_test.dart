@@ -4,6 +4,7 @@ import 'package:flutter_web_2048/core/error/failures.dart';
 import 'package:flutter_web_2048/core/error/error_messages.dart';
 import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_anonymous.dart';
+import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signout.dart';
 import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
 import 'package:mockito/mockito.dart';
@@ -12,10 +13,13 @@ class MockSignInAnonymous extends Mock implements SignInAnonymous {}
 
 class MockSignOut extends Mock implements SignOut {}
 
+class MockSignInEmailAndPassword extends Mock implements SignInEmailAndPassword {}
+
 void main() {
   AuthenticationBloc bloc;
   MockSignInAnonymous mockSignInAnonymous;
   MockSignOut mockSignOut;
+  MockSignInEmailAndPassword mockSignInEmailAndPassword;
 
   final User testUser = User(
     'uniqueid',
@@ -28,11 +32,12 @@ void main() {
   setUp(() {
     mockSignInAnonymous = MockSignInAnonymous();
     mockSignOut = MockSignOut();
+    mockSignInEmailAndPassword = MockSignInEmailAndPassword();
 
     bloc = AuthenticationBloc(
-      signInAnonymous: mockSignInAnonymous,
-      signout: mockSignOut,
-    );
+        signInAnonymous: mockSignInAnonymous,
+        signout: mockSignOut,
+        signInEmailAndPassword: mockSignInEmailAndPassword);
   });
 
   tearDown(() {
@@ -41,10 +46,30 @@ void main() {
 
   test('should throw when initialized with null argument', () async {
     // ACT & ASSERT
-    expect(() => AuthenticationBloc(signInAnonymous: null, signout: mockSignOut),
-        throwsA(isA<AssertionError>()));
-    expect(() => AuthenticationBloc(signInAnonymous: mockSignInAnonymous, signout: null),
-        throwsA(isA<AssertionError>()));
+    expect(
+      () => AuthenticationBloc(
+        signInAnonymous: null,
+        signout: mockSignOut,
+        signInEmailAndPassword: mockSignInEmailAndPassword,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
+    expect(
+      () => AuthenticationBloc(
+        signInAnonymous: mockSignInAnonymous,
+        signout: null,
+        signInEmailAndPassword: mockSignInEmailAndPassword,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
+    expect(
+      () => AuthenticationBloc(
+        signInAnonymous: mockSignInAnonymous,
+        signout: mockSignOut,
+        signInEmailAndPassword: null,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
   });
 
   test('Initial state should be [InitialAuthenticationState]', () {
@@ -63,7 +88,7 @@ void main() {
     bloc.close();
   });
 
-  group('AnonymousSignIn', () {
+  group('AnonymousSignInEvent', () {
     test('should call [SignInAnonymous] usecase', () async {
       // ARRANGE
       when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
@@ -119,7 +144,7 @@ void main() {
     });
   });
 
-  group('SignOut', () {
+  group('SignOutEvent', () {
     test('should call [SignOut] usecase', () async {
       // ARRANGE
       when(mockSignOut.call(any)).thenAnswer((_) async => Right(null));
@@ -172,6 +197,65 @@ void main() {
       );
 
       bloc.add(SignOutEvent());
+    });
+  });
+
+  group('SignInEvent', () {
+    test('should call [SignInEmailAndPassword] usecase', () async {
+      // ARRANGE
+      const email = 'e@mail.com';
+      const password = 'abc123';
+      const params = SignInEmailAndPasswordParams(email: email, password: password);
+      when(mockSignInEmailAndPassword.call(params)).thenAnswer((_) async => Right(testUser));
+
+      // ACT
+      bloc.add(const SignInEvent(email, password));
+      await untilCalled(mockSignInEmailAndPassword.call(params));
+
+      // ASSERT
+      verify(mockSignInEmailAndPassword.call(params));
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, LoggedInState] on success',
+        () {
+      // ARRANGE
+      when(mockSignInEmailAndPassword.call(any)).thenAnswer((_) async => Right(testUser));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        SignedInState(testUser),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(const SignInEvent('email', 'password'));
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, AuthenticationErrorState] on failure',
+        () {
+      // ARRANGE
+      when(mockSignInEmailAndPassword.call(any)).thenAnswer((_) async => Left(FirebaseFailure()));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        const AuthenticationErrorState(ErrorMessages.firebase),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(const SignInEvent('email', 'password'));
     });
   });
 }

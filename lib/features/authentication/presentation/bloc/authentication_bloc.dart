@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'package:meta/meta.dart';
 
 import './bloc.dart';
@@ -17,11 +18,18 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   /// the [SignOut] usecase.
   final SignOut _signout;
 
-  AuthenticationBloc({@required SignInAnonymous signInAnonymous, @required SignOut signout})
-      : _signInAnonymous = signInAnonymous,
+  /// the [SignInEmailAndPassword] usecase.
+  final SignInEmailAndPassword _signInEmailAndPassword;
+
+  AuthenticationBloc({
+    @required SignInAnonymous signInAnonymous,
+    @required SignOut signout,
+    @required SignInEmailAndPassword signInEmailAndPassword,
+  })  : _signInAnonymous = signInAnonymous,
         _signout = signout,
+        _signInEmailAndPassword = signInEmailAndPassword,
         assert(
-          signInAnonymous != null && signout != null,
+          signInAnonymous != null && signout != null && signInEmailAndPassword != null,
         );
 
   /// the Authentication Initial state
@@ -37,6 +45,10 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
     if (event is SignOutEvent) {
       yield* _handleSignOutEvent(event);
+    }
+
+    if (event is SignInEvent) {
+      yield* _handleSignInEvent(event);
     }
   }
 
@@ -68,5 +80,22 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     }
 
     yield* (await _signout(NoParams())).fold(onFailure, onSuccess);
+  }
+
+  /// Handle [SignInEvent] event and yield the right state
+  Stream<AuthenticationState> _handleSignInEvent(SignInEvent event) async* {
+    yield AuthenticationLoadingState();
+
+    Stream<AuthenticationState> onFailure(failure) async* {
+      yield const AuthenticationErrorState(ErrorMessages.firebase);
+    }
+
+    Stream<AuthenticationState> onSuccess(User user) async* {
+      yield SignedInState(user);
+    }
+
+    yield* (await _signInEmailAndPassword(
+            SignInEmailAndPasswordParams(email: event.email, password: event.password)))
+        .fold(onFailure, onSuccess);
   }
 }

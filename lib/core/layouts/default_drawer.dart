@@ -86,7 +86,7 @@ class AnonymousDrawerHeader extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 0.0),
             child: Text(
               '2048 Game',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
           Row(

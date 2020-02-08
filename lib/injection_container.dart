@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
@@ -80,12 +81,17 @@ void initGameFeature() {
 /// Register the dependencies needed for the authentication feature
 void initAuthenticationFeature() {
   // Bloc
-  sl.registerFactory(
-      () => AuthenticationBloc(signInAnonymous: sl<SignInAnonymous>(), signout: sl<SignOut>()));
+  sl.registerFactory(() => AuthenticationBloc(
+        signInAnonymous: sl<SignInAnonymous>(),
+        signout: sl<SignOut>(),
+        signInEmailAndPassword: sl<SignInEmailAndPassword>(),
+      ));
 
   // Usecases
   sl.registerLazySingleton(() => SignInAnonymous(repository: sl<AuthenticationRepository>()));
   sl.registerLazySingleton(() => SignOut(repository: sl<AuthenticationRepository>()));
+  sl.registerLazySingleton(
+      () => SignInEmailAndPassword(repository: sl<AuthenticationRepository>()));
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(

@@ -124,10 +124,8 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
       FirebaseException(),
     );
 
-    final user = authResult.user;
-
     return UserModel.fromFirebaseUser(
-      firebaseUser: user,
+      firebaseUser: authResult.user,
       authenticationProvider: AuthenticationProvider.google,
     );
   }

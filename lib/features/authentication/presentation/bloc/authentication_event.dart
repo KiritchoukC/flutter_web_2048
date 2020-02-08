@@ -12,13 +12,13 @@ class AnonymousSignInEvent extends AuthenticationEvent {}
 class GoogleSignInEvent extends AuthenticationEvent {}
 
 class SignInEvent extends AuthenticationEvent {
-  final String _email;
-  final String _password;
+  final String email;
+  final String password;
 
-  const SignInEvent(this._email, this._password);
+  const SignInEvent(this.email, this.password);
 
   @override
-  List<Object> get props => [_email, _password];
+  List<Object> get props => [email, password];
 }
 
 class SignOutEvent extends AuthenticationEvent {}
