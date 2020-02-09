@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.42.13](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.12...v1.42.13) (2020-02-09)
+
 ### [1.42.12](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.11...v1.42.12) (2020-02-08)
 
 ### [1.42.11](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.10...v1.42.11) (2020-02-03)
