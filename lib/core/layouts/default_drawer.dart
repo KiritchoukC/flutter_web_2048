@@ -142,7 +142,7 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage(_user.picture ?? Config.anonymousPicture),
+            image: NetworkImage(_user.picture ?? anonymousPicture),
           ),
         ),
       ),
