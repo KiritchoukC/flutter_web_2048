@@ -117,7 +117,29 @@ class _WebDirectionListenerState extends State<WebDirectionListener> {
           }
         }
       },
-      child: widget.child,
+      child: SwipeDetector(
+        onSwipeDown: () {
+          widget.onDown();
+        },
+        onSwipeUp: () {
+          widget.onUp();
+        },
+        onSwipeRight: () {
+          widget.onRight();
+        },
+        onSwipeLeft: () {
+          widget.onLeft();
+        },
+        swipeConfiguration: SwipeConfiguration(
+          verticalSwipeMinVelocity: 5.0,
+          verticalSwipeMinDisplacement: 5.0,
+          verticalSwipeMaxWidthThreshold: 1000.0,
+          horizontalSwipeMaxHeightThreshold: 1000.0,
+          horizontalSwipeMinDisplacement: 5.0,
+          horizontalSwipeMinVelocity: 5.0,
+        ),
+        child: widget.child,
+      ),
     );
   }
 }
