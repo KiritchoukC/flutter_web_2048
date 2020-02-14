@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.42.15](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.14...v1.42.15) (2020-02-14)
+
+
+### Bug Fixes
+
+* **game:** fix the swipe on web version ([015010b](https://github.com/KiritchoukC/flutter_web_2048/commit/015010b))
+
 ### [1.42.14](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.13...v1.42.14) (2020-02-09)
 
 ### [1.42.13](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.12...v1.42.13) (2020-02-09)
