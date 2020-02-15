@@ -122,6 +122,24 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
     );
   }
 
+  /// Signs up a user with Email and password
+  @override
+  Future<UserModel> signUpWithEmailAndPassword(String email, String password) async {
+    final authResult = await tryThrow(
+      () => _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password),
+      FirebaseException(),
+    );
+
+    if (authResult == null) {
+      throw FirebaseException();
+    }
+
+    return UserModel.fromFirebaseUser(
+      firebaseUser: authResult.user,
+      authenticationProvider: AuthenticationProvider.emailAndPassword,
+    );
+  }
+
   /// Signs in a user with the Google provider
   @override
   Future<UserModel> signInWithGoogle() async {

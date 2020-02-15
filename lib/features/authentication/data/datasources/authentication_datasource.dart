@@ -16,4 +16,7 @@ abstract class AuthenticationDatasource {
 
   /// Signs user with Google
   Future<UserModel> signInWithGoogle();
+
+  /// Signs up user with [email] and [password]
+  Future<UserModel> signUpWithEmailAndPassword(String email, String password);
 }

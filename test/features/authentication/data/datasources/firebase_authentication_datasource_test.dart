@@ -509,4 +509,85 @@ void main() {
       expect(call, throwsA(isA<FirebaseException>()));
     });
   });
+
+  group('signUpWithEmailAndPassword', () {
+    test('should call [Firebase.createUserWithEmailAndPassword()] function', () async {
+      // ARRANGE
+      const String email = 'email@example.com';
+      const String password = 'password';
+      const String username = 'username';
+      const String photoUrl = 'photoUrl';
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.photoUrl).thenReturn(photoUrl);
+
+      final authResult = MockAuthResult();
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.createUserWithEmailAndPassword(email: email, password: password))
+          .thenAnswer((_) async => authResult);
+
+      // ACT
+      await datasource.signUpWithEmailAndPassword(email, password);
+
+      // ASSERT
+      verify(mockFirebaseAuth.createUserWithEmailAndPassword(email: email, password: password))
+          .called(1);
+    });
+    test(
+        'should throw [FirebaseException] if [Firebase.createUserWithEmailAndPassword()] function returns NULL',
+        () async {
+      // ARRANGE
+      const String email = 'email@example.com';
+      const String password = 'password';
+
+      when(mockFirebaseAuth.createUserWithEmailAndPassword(email: email, password: password))
+          .thenAnswer((_) async => null);
+
+      // ACT
+      Future call() async => datasource.signUpWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(call, throwsA(isA<FirebaseException>()));
+    });
+
+    test('should returns a [UserModel]', () async {
+      // ARRANGE
+      const String email = 'email@example.com';
+      const String password = 'password';
+      const String username = 'username';
+      const String photoUrl = 'photoUrl';
+      final firebaseUser = MockFirebaseUser();
+      when(firebaseUser.displayName).thenReturn(username);
+      when(firebaseUser.email).thenReturn(email);
+      when(firebaseUser.photoUrl).thenReturn(photoUrl);
+
+      final authResult = MockAuthResult();
+      when(authResult.user).thenReturn(firebaseUser);
+      when(mockFirebaseAuth.createUserWithEmailAndPassword(email: email, password: password))
+          .thenAnswer((_) async => authResult);
+
+      // ACT
+      final actual = await datasource.signUpWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(actual, isA<UserModel>());
+    });
+
+    test('should throw [FirebaseException] if [Firebase.createUserWithEmailAndPassword()] fails',
+        () async {
+      // ARRANGE
+      const String email = 'email@example.com';
+      const String password = 'password';
+
+      when(mockFirebaseAuth.createUserWithEmailAndPassword(email: email, password: password))
+          .thenThrow(Exception());
+
+      // ACT
+      Future call() async => datasource.signUpWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(call, throwsA(isA<FirebaseException>()));
+    });
+  });
 }
