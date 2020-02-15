@@ -60,4 +60,21 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(UserNotFoundFailure(userId: e.userId, password: password));
     }
   }
+
+  /// Signs up a [User] with [email] and [password]
+  @override
+  Future<Either<Failure, User>> signUpWithEmailAndPassword(
+      {@required String email, @required String password}) async {
+    try {
+      final user = await _datasource.signUpWithEmailAndPassword(email, password);
+
+      await _datasource.updateUserData(user);
+
+      return Right(user);
+    } on FirebaseException {
+      return Left(FirebaseFailure());
+    } on FirestoreException {
+      return Left(FirestoreFailure());
+    }
+  }
 }

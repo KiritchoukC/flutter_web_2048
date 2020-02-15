@@ -15,4 +15,8 @@ abstract class AuthenticationRepository {
   /// Signs in a [User] with [email] and [password]
   Future<Either<Failure, User>> signInWithEmailAndPassword(
       {@required String email, @required String password});
+
+  /// Signs up a [User] with [email] and [password]
+  Future<Either<Failure, User>> signUpWithEmailAndPassword(
+      {@required String email, @required String password});
 }

@@ -116,8 +116,6 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
   final User _user;
 
   String get _email => _user.email == null || _user.email == '' ? 'Anonymous' : _user.email;
-  String get _username =>
-      _user.username == null || _user.username == '' ? 'Anonymous' : _user.username;
 
   const AuthenticatedDrawerHeader({Key key, User user})
       : _user = user,
@@ -134,7 +132,7 @@ class AuthenticatedDrawerHeader extends StatelessWidget {
         style: TextStyle(color: Colors.grey.shade800),
       ),
       accountName: Text(
-        _username,
+        _user.username ?? '',
         style: TextStyle(color: Colors.black),
       ),
       currentAccountPicture: Container(

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
@@ -12,7 +11,9 @@ import 'features/authentication/data/datasources/firebase_authentication_datasou
 import 'features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'features/authentication/domain/repositories/authentication_repository.dart';
 import 'features/authentication/domain/usecases/signin_anonymous.dart';
+import 'features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'features/authentication/domain/usecases/signout.dart';
+import 'features/authentication/domain/usecases/signup_email_and_password.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'features/game/data/datasources/board_datasource.dart';
 import 'features/game/data/datasources/hive_board_datasource.dart';
@@ -85,6 +86,7 @@ void initAuthenticationFeature() {
         signInAnonymous: sl<SignInAnonymous>(),
         signout: sl<SignOut>(),
         signInEmailAndPassword: sl<SignInEmailAndPassword>(),
+        signUpEmailAndPassword: sl<SignUpEmailAndPassword>(),
       ));
 
   // Usecases
@@ -92,6 +94,8 @@ void initAuthenticationFeature() {
   sl.registerLazySingleton(() => SignOut(repository: sl<AuthenticationRepository>()));
   sl.registerLazySingleton(
       () => SignInEmailAndPassword(repository: sl<AuthenticationRepository>()));
+  sl.registerLazySingleton(
+      () => SignUpEmailAndPassword(repository: sl<AuthenticationRepository>()));
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
