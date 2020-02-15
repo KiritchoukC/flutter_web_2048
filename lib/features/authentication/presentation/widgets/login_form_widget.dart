@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_2048/core/config/config.dart';
+import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
 
 import '../../../../core/theme/custom_colors.dart';
 import '../../../../core/util/vertical_spacing.dart';
@@ -32,6 +35,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           _passwordFocusNode.requestFocus();
         },
         prefixIcon: Icons.email,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Please enter your email';
+          }
+          if (!emailValidationRegex.hasMatch(value)) {
+            return 'Oops, you\'ve entered an invalid email';
+          }
+          return null;
+        },
       );
 
   Widget get _passwordField => DefaultTextFormFieldWidget(
@@ -40,6 +52,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
         labelText: 'Password',
         prefixIcon: Icons.lock,
         focusNode: _passwordFocusNode,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Please enter a password with at least 8 characters';
+          }
+          if (value.length < 8) {
+            return 'Your password should contain at least 8 characters';
+          }
+          return null;
+        },
       );
 
   Widget get _submitButton => ButtonBar(
@@ -47,7 +68,16 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
         buttonMinWidth: 180,
         children: <Widget>[
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                BlocProvider.of<AuthenticationBloc>(context).add(
+                  SignInEvent(
+                    email: _emailController.value.text,
+                    password: _passwordController.value.text,
+                  ),
+                );
+              }
+            },
             color: CustomColors.accentColor,
             child: const Text('Sign In'),
           )

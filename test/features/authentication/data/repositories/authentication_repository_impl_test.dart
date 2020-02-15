@@ -206,5 +206,21 @@ void main() {
       // ASSERT
       expect(actual, Left(FirestoreFailure()));
     });
+    test(
+        'should return a [UserNotFoundFailure] when a [UserNotFoundException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      const String email = 'email@example.com';
+      const String password = 'password';
+
+      when(mockDatasource.signInWithEmailAndPassword(email, password))
+          .thenThrow(const UserNotFoundException(userId: email));
+
+      // ACT
+      final actual = await repository.signInWithEmailAndPassword(email: email, password: password);
+
+      // ASSERT
+      expect(actual, Left(const UserNotFoundFailure(userId: email, password: password)));
+    });
   });
 }

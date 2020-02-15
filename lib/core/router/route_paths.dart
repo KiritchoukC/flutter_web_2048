@@ -4,4 +4,5 @@
 class RoutePaths {
   static const String game = '/';
   static const String authentication = '/authentication';
+  static const String signUp = '/authentication/sign-up';
 }

@@ -25,3 +25,10 @@ class ApplicationFailure extends Failure {
 class FirebaseFailure extends Failure {}
 
 class FirestoreFailure extends Failure {}
+
+class UserNotFoundFailure extends Failure {
+  final String userId;
+  final String password;
+
+  const UserNotFoundFailure({@required this.userId, @required this.password});
+}

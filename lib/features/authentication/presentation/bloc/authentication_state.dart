@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 import '../../domain/entities/user.dart';
 
@@ -18,7 +19,7 @@ class AuthenticationLoadingState extends AuthenticationState {}
 class SignedInState extends AuthenticationState {
   final User user;
 
-  const SignedInState(this.user);
+  const SignedInState({@required this.user});
 
   @override
   List<Object> get props => [user];
@@ -27,8 +28,20 @@ class SignedInState extends AuthenticationState {
 class AuthenticationErrorState extends AuthenticationState {
   final String message;
 
-  const AuthenticationErrorState(this.message);
+  const AuthenticationErrorState({@required this.message});
 
   @override
   List<Object> get props => [message];
+}
+
+class UserNotFoundState extends AuthenticationState {
+  final String email;
+  final String password;
+
+  String get name => email.split('@')[0];
+
+  const UserNotFoundState({@required this.email, @required this.password});
+
+  @override
+  List<Object> get props => [email, password];
 }

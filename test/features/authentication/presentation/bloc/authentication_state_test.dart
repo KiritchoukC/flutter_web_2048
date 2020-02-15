@@ -31,7 +31,7 @@ void main() {
       // ARRANGE
       final user = anonymousUser;
       // ACT
-      final loggedIn = SignedInState(user);
+      final loggedIn = SignedInState(user: user);
       // ASSERT
       expect(loggedIn, isA<AuthenticationState>());
     });
@@ -40,7 +40,7 @@ void main() {
       final user = anonymousUser;
       final expected = <Object>[user];
       // ACT
-      final loggedIn = SignedInState(user);
+      final loggedIn = SignedInState(user: user);
       // ASSERT
       expect(loggedIn.props, expected);
     });
@@ -61,12 +61,12 @@ void main() {
       expect(loggedOut.props, expected);
     });
   });
-  group('Error', () {
+  group('AuthenticationErrorState', () {
     test('should extend AuthenticationState', () {
       // ARRANGE
       const String message = 'message';
       // ACT
-      const error = AuthenticationErrorState(message);
+      const error = AuthenticationErrorState(message: message);
       // ASSERT
       expect(error, isA<AuthenticationState>());
     });
@@ -75,7 +75,28 @@ void main() {
       const String message = 'message';
       const expected = <Object>[message];
       // ACT
-      const error = AuthenticationErrorState(message);
+      const error = AuthenticationErrorState(message: message);
+      // ASSERT
+      expect(error.props, expected);
+    });
+  });
+  group('UserNotFoundState', () {
+    test('should extend AuthenticationState', () {
+      // ARRANGE
+      const String email = 'email';
+      const String password = 'password';
+      // ACT
+      const error = UserNotFoundState(email: email, password: password);
+      // ASSERT
+      expect(error, isA<AuthenticationState>());
+    });
+    test('should have a props list with the email and password', () {
+      // ARRANGE
+      const String email = 'email';
+      const String password = 'password';
+      const expected = <Object>[email, password];
+      // ACT
+      const error = UserNotFoundState(email: email, password: password);
       // ASSERT
       expect(error.props, expected);
     });

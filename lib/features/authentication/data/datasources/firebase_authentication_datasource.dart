@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_web_2048/core/util/helper_functions.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -23,6 +24,8 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
 
   /// the logger instance
   final Logger _logger;
+
+  static const _userNotFoundCode = 'ERROR_USER_NOT_FOUND';
 
   FirebaseAuthenticationDatasource({
     @required FirebaseAuth firebaseAuth,
@@ -91,10 +94,23 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   /// Signs in a user with Email and password
   @override
   Future<UserModel> signInWithEmailAndPassword(String email, String password) async {
-    final authResult = await tryCatch(
-      () => _firebaseAuth.signInWithEmailAndPassword(email: email, password: password),
-      FirebaseException(),
-    );
+    Future<AuthResult> signInUser() async {
+      try {
+        return await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      } on PlatformException catch (e) {
+        if (e.code == _userNotFoundCode) {
+          throw UserNotFoundException(userId: email);
+        } else {
+          rethrow;
+        }
+      } catch (e) {
+        // Log and throw specific exception
+        _logger.shout(e.toString());
+        throw FirebaseException();
+      }
+    }
+
+    final authResult = await signInUser();
 
     if (authResult == null) {
       throw FirebaseException();
@@ -109,7 +125,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   /// Signs in a user with the Google provider
   @override
   Future<UserModel> signInWithGoogle() async {
-    final googleSignInAccount = await tryCatch(_googleSignIn.signIn, GoogleSignInFailedException());
+    final googleSignInAccount = await tryThrow(_googleSignIn.signIn, GoogleSignInFailedException());
 
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
@@ -119,7 +135,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
       idToken: googleSignInAuthentication.idToken,
     );
 
-    final authResult = await tryCatch(
+    final authResult = await tryThrow(
       () => _firebaseAuth.signInWithCredential(credential),
       FirebaseException(),
     );

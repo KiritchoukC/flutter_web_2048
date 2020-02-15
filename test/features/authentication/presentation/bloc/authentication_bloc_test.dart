@@ -111,7 +111,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        SignedInState(testUser),
+        SignedInState(user: testUser),
       ];
 
       expectLater(
@@ -132,7 +132,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        const AuthenticationErrorState(ErrorMessages.firebase),
+        const AuthenticationErrorState(message: ErrorMessages.firebase),
       ];
 
       expectLater(
@@ -188,7 +188,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        const AuthenticationErrorState(ErrorMessages.firebase),
+        const AuthenticationErrorState(message: ErrorMessages.firebase),
       ];
 
       expectLater(
@@ -209,7 +209,7 @@ void main() {
       when(mockSignInEmailAndPassword.call(params)).thenAnswer((_) async => Right(testUser));
 
       // ACT
-      bloc.add(const SignInEvent(email, password));
+      bloc.add(const SignInEvent(email: email, password: password));
       await untilCalled(mockSignInEmailAndPassword.call(params));
 
       // ASSERT
@@ -226,7 +226,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        SignedInState(testUser),
+        SignedInState(user: testUser),
       ];
 
       expectLater(
@@ -234,7 +234,7 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(const SignInEvent('email', 'password'));
+      bloc.add(const SignInEvent(email: 'email', password: 'password'));
     });
 
     test(
@@ -247,7 +247,7 @@ void main() {
       final expected = [
         InitialAuthenticationState(),
         AuthenticationLoadingState(),
-        const AuthenticationErrorState(ErrorMessages.firebase),
+        const AuthenticationErrorState(message: ErrorMessages.firebase),
       ];
 
       expectLater(
@@ -255,7 +255,49 @@ void main() {
         emitsInOrder(expected),
       );
 
-      bloc.add(const SignInEvent('email', 'password'));
+      bloc.add(const SignInEvent(email: 'email', password: 'password'));
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, UserNotFoundState] on failure [UserNotFoundFailure]',
+        () {
+      // ARRANGE
+      when(mockSignInEmailAndPassword.call(any)).thenAnswer(
+          (_) async => Left(const UserNotFoundFailure(userId: 'email', password: 'abcd1234')));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        const UserNotFoundState(email: 'email', password: 'abcd1234'),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(const SignInEvent(email: 'email', password: 'password'));
+    });
+  });
+
+  group('SignUpCancelEvent', () {
+    test('should emit [InitialAuthenticationState]', () async {
+      // ARRANGE
+      when(mockSignInEmailAndPassword.call(any)).thenAnswer(
+          (_) async => Left(const UserNotFoundFailure(userId: 'email', password: 'abcd1234')));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(const SignUpCancelEvent());
     });
   });
 }

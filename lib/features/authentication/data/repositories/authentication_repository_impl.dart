@@ -56,6 +56,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(FirebaseFailure());
     } on FirestoreException {
       return Left(FirestoreFailure());
+    } on UserNotFoundException catch (e) {
+      return Left(UserNotFoundFailure(userId: e.userId, password: password));
     }
   }
 }

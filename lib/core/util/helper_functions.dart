@@ -1,5 +1,5 @@
 /// Returns the [function] result on succes or throw the [exception] on error
-T tryCatch<T>(T Function() function, Exception exception) {
+T tryThrow<T>(T Function() function, Exception exception) {
   return () {
     try {
       return function();

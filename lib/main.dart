@@ -50,8 +50,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<GameBloc>(builder: (_) => sl<GameBloc>()),
-        BlocProvider<AuthenticationBloc>(builder: (_) => sl<AuthenticationBloc>()),
+        BlocProvider<GameBloc>(create: (_) => sl<GameBloc>()),
+        BlocProvider<AuthenticationBloc>(create: (_) => sl<AuthenticationBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

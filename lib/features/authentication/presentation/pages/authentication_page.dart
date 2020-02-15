@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_2048/core/router/route_paths.dart';
+import 'package:flutter_web_2048/core/theme/custom_colors.dart';
+import 'package:flutter_web_2048/features/authentication/presentation/pages/sign_up_page.dart';
 
 import '../../../../core/layouts/default_layout.dart';
 import '../../../../core/util/horizontal_spacing.dart';
@@ -35,6 +38,17 @@ class AuthenticationPage extends StatelessWidget {
                   ),
                   duration: const Duration(seconds: 3),
                   backgroundColor: Colors.grey.shade700,
+                ),
+              );
+            }
+
+            if (state is UserNotFoundState) {
+              Navigator.of(context).pushNamed(
+                RoutePaths.signUp,
+                arguments: SignUpPageArguments(
+                  email: state.email,
+                  name: state.name,
+                  password: state.password,
                 ),
               );
             }
@@ -78,10 +92,10 @@ class InitialAuthenticationPage extends StatelessWidget {
         const VerticalSpacing.medium(),
         LoginFormWidget(),
         const VerticalSpacing.medium(),
-        OrDivider(),
+        const OrDivider(),
         const VerticalSpacing.medium(),
-        AnonymousSignInButton(),
-        const VerticalSpacing.small(),
+        const AnonymousSignInButton(),
+        const VerticalSpacing.extraSmall(),
         const GoogleSignInButton(),
       ],
     );
@@ -90,6 +104,8 @@ class InitialAuthenticationPage extends StatelessWidget {
 
 /// Horizontal divider with OR label
 class OrDivider extends StatelessWidget {
+  const OrDivider();
+
   @override
   Widget build(BuildContext context) {
     return Row(

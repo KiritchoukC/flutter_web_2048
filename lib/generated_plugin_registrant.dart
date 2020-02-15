@@ -1,6 +1,8 @@
 //
 // Generated file. Do not edit.
 //
+
+// ignore: unused_import
 import 'dart:ui';
 
 import 'package:firebase_auth_web/firebase_auth_web.dart';

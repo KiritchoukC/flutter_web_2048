@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/error/exceptions.dart';
 import 'package:flutter_web_2048/features/authentication/data/datasources/authentication_datasource.dart';
@@ -334,6 +335,23 @@ void main() {
 
       // ASSERT
       expect(call, throwsA(isA<FirebaseException>()));
+    });
+
+    test(
+        'should throw [UserNotFoundException] if [Firebase.signInWithEmailAndPassword()] throw PlatformException with the ERROR_USER_NOT_FOUND code',
+        () async {
+      // ARRANGE
+      const String email = 'email@example.com';
+      const String password = 'password';
+
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: email, password: password))
+          .thenThrow(PlatformException(code: 'ERROR_USER_NOT_FOUND'));
+
+      // ACT
+      Future call() async => datasource.signInWithEmailAndPassword(email, password);
+
+      // ASSERT
+      expect(call, throwsA(isA<UserNotFoundException>()));
     });
   });
 

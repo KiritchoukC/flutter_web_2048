@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../bloc/bloc.dart';
 
 class AnonymousSignInButton extends StatelessWidget {
+  const AnonymousSignInButton();
+
   @override
   Widget build(BuildContext context) {
     return SignInButtonBuilder(
