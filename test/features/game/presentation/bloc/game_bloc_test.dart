@@ -133,7 +133,7 @@ void main() {
       final expected = [
         InitialGameState(),
         UpdateBoardStartState(),
-        UpdateBoardEndState(usecaseOutput),
+        UpdateBoardEndState(board: usecaseOutput),
       ];
 
       expectLater(
@@ -169,7 +169,7 @@ void main() {
       final expected = [
         InitialGameState(),
         UpdateBoardStartState(),
-        UpdateBoardEndState(usecaseOutput),
+        UpdateBoardEndState(board: usecaseOutput),
       ];
 
       expectLater(
@@ -206,8 +206,8 @@ void main() {
       final expected = [
         InitialGameState(),
         UpdateBoardStartState(),
-        GameOverState(usecaseOutput),
-        const HighscoreLoadedState(highscore)
+        GameOverState(board: usecaseOutput),
+        const HighscoreLoadedState(highscore: highscore)
       ];
 
       expectLater(
@@ -243,8 +243,8 @@ void main() {
       final expected = [
         InitialGameState(),
         UpdateBoardStartState(),
-        UpdateBoardEndState(usecaseOutput),
-        const HighscoreLoadedState(highscore),
+        UpdateBoardEndState(board: usecaseOutput),
+        const HighscoreLoadedState(highscore: highscore),
       ];
 
       expectLater(
@@ -277,7 +277,7 @@ void main() {
       // ASSERT LATER
       final expected = [
         InitialGameState(),
-        const HighscoreLoadedState(usecaseOutput),
+        const HighscoreLoadedState(highscore: usecaseOutput),
       ];
 
       expectLater(
@@ -312,7 +312,7 @@ void main() {
       final expected = [
         InitialGameState(),
         UpdateBoardStartState(),
-        UpdateBoardEndState(usecaseOutput),
+        UpdateBoardEndState(board: usecaseOutput),
       ];
 
       expectLater(

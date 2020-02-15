@@ -84,16 +84,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
     if (output.over) {
       // send the game over state with the boad and highscore
-      yield GameOverState(output);
+      yield GameOverState(board: output);
 
       // get the new highscore
       final highscore = await getHighscore(NoParams());
 
       // send highscore loaded event
-      yield HighscoreLoadedState(highscore?.getRight());
+      yield HighscoreLoadedState(highscore: highscore?.getRight());
     } else {
       // send the end state with the updated board
-      yield UpdateBoardEndState(output);
+      yield UpdateBoardEndState(board: output);
     }
   }
 
@@ -106,7 +106,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final output = await getCurrentBoard(NoParams());
 
     // send the end state with the initial board
-    yield UpdateBoardEndState(output?.getRight());
+    yield UpdateBoardEndState(board: output?.getRight());
   }
 
   /// Handle [NewGameEvent] event and yield the right output
@@ -118,12 +118,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final output = await resetBoard(NoParams());
 
     // send the end state with the new board
-    yield UpdateBoardEndState(output?.getRight());
+    yield UpdateBoardEndState(board: output?.getRight());
 
     // send the updated highscore
     final highscore = await getHighscore(NoParams());
 
-    yield HighscoreLoadedState(highscore?.getRight());
+    yield HighscoreLoadedState(highscore: highscore?.getRight());
   }
 
   /// Handle [LoadHighscoreEvent] event and yield the right output
@@ -132,7 +132,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final output = await getHighscore(NoParams());
 
     // send the event with the previous highscore
-    yield HighscoreLoadedState(output?.getRight());
+    yield HighscoreLoadedState(highscore: output?.getRight());
   }
 
   /// Handle [UndoEvent] event and yield the right output
@@ -144,6 +144,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final output = await getPreviousBoard(NoParams());
 
     // send the end state with the new board
-    yield UpdateBoardEndState(output?.getRight());
+    yield UpdateBoardEndState(board: output?.getRight());
   }
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 import '../../domain/entities/board.dart';
 
@@ -16,7 +17,7 @@ class UpdateBoardStartState extends GameState {}
 class UpdateBoardEndState extends GameState {
   final Board board;
 
-  const UpdateBoardEndState(this.board);
+  const UpdateBoardEndState({@required this.board});
 
   @override
   List<Object> get props => [board];
@@ -25,7 +26,7 @@ class UpdateBoardEndState extends GameState {
 class GameOverState extends GameState {
   final Board board;
 
-  const GameOverState(this.board);
+  const GameOverState({@required this.board});
 
   @override
   List<Object> get props => [board];
@@ -34,7 +35,7 @@ class GameOverState extends GameState {
 class GameErrorState extends GameState {
   final String message;
 
-  const GameErrorState(this.message);
+  const GameErrorState({@required this.message});
 
   @override
   List<Object> get props => [message];
@@ -43,7 +44,7 @@ class GameErrorState extends GameState {
 class HighscoreLoadedState extends GameState {
   final int highscore;
 
-  const HighscoreLoadedState(this.highscore);
+  const HighscoreLoadedState({@required this.highscore});
 
   @override
   List<Object> get props => [highscore];
