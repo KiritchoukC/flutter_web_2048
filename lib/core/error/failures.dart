@@ -25,4 +25,7 @@ class UserNotFoundFailure extends Failure {
   final String password;
 
   const UserNotFoundFailure({@required this.userId, @required this.password});
+
+  @override
+  List<Object> get props => [userId, password];
 }
