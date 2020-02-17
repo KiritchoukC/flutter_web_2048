@@ -16,12 +16,6 @@ class ServerFailure extends Failure {}
 
 class NetworkFailure extends Failure {}
 
-class ApplicationFailure extends Failure {
-  final String message;
-
-  const ApplicationFailure({@required this.message});
-}
-
 class FirebaseFailure extends Failure {}
 
 class FirestoreFailure extends Failure {}
