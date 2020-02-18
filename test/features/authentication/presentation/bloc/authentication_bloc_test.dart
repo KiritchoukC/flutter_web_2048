@@ -3,14 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/error/failures.dart';
 import 'package:flutter_web_2048/core/error/error_messages.dart';
 import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
-import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_anonymous.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signout.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signup_email_and_password.dart';
 import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
 import 'package:mockito/mockito.dart';
-
-class MockSignInAnonymous extends Mock implements SignInAnonymous {}
 
 class MockSignOut extends Mock implements SignOut {}
 
@@ -20,7 +17,6 @@ class MockSignUpEmailAndPassword extends Mock implements SignUpEmailAndPassword 
 
 void main() {
   AuthenticationBloc bloc;
-  MockSignInAnonymous mockSignInAnonymous;
   MockSignOut mockSignOut;
   MockSignInEmailAndPassword mockSignInEmailAndPassword;
   MockSignUpEmailAndPassword mockSignUpEmailAndPassword;
@@ -34,13 +30,11 @@ void main() {
   );
 
   setUp(() {
-    mockSignInAnonymous = MockSignInAnonymous();
     mockSignOut = MockSignOut();
     mockSignInEmailAndPassword = MockSignInEmailAndPassword();
     mockSignUpEmailAndPassword = MockSignUpEmailAndPassword();
 
     bloc = AuthenticationBloc(
-      signInAnonymous: mockSignInAnonymous,
       signout: mockSignOut,
       signInEmailAndPassword: mockSignInEmailAndPassword,
       signUpEmailAndPassword: mockSignUpEmailAndPassword,
@@ -55,16 +49,6 @@ void main() {
     // ACT & ASSERT
     expect(
       () => AuthenticationBloc(
-        signInAnonymous: null,
-        signout: mockSignOut,
-        signInEmailAndPassword: mockSignInEmailAndPassword,
-        signUpEmailAndPassword: mockSignUpEmailAndPassword,
-      ),
-      throwsA(isA<AssertionError>()),
-    );
-    expect(
-      () => AuthenticationBloc(
-        signInAnonymous: mockSignInAnonymous,
         signout: null,
         signInEmailAndPassword: mockSignInEmailAndPassword,
         signUpEmailAndPassword: mockSignUpEmailAndPassword,
@@ -73,7 +57,6 @@ void main() {
     );
     expect(
       () => AuthenticationBloc(
-        signInAnonymous: mockSignInAnonymous,
         signout: mockSignOut,
         signInEmailAndPassword: null,
         signUpEmailAndPassword: mockSignUpEmailAndPassword,
@@ -82,7 +65,6 @@ void main() {
     );
     expect(
       () => AuthenticationBloc(
-        signInAnonymous: mockSignInAnonymous,
         signout: mockSignOut,
         signInEmailAndPassword: mockSignInEmailAndPassword,
         signUpEmailAndPassword: null,
@@ -105,62 +87,6 @@ void main() {
 
     // ACT
     bloc.close();
-  });
-
-  group('AnonymousSignInEvent', () {
-    test('should call [SignInAnonymous] usecase', () async {
-      // ARRANGE
-      when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
-
-      // ACT
-      bloc.add(AnonymousSignInEvent());
-      await untilCalled(mockSignInAnonymous.call(any));
-
-      // ASSERT
-      verify(mockSignInAnonymous.call(any));
-    });
-
-    test(
-        'should emit [InitialAuthenticationState, AuthenticationLoadingState, SignedInState] on success',
-        () {
-      // ARRANGE
-      when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Right(testUser));
-
-      // ASSERT LATER
-      final expected = [
-        InitialAuthenticationState(),
-        AuthenticationLoadingState(),
-        SignedInState(user: testUser),
-      ];
-
-      expectLater(
-        bloc,
-        emitsInOrder(expected),
-      );
-
-      bloc.add(AnonymousSignInEvent());
-    });
-
-    test(
-        'should emit [InitialAuthenticationState, AuthenticationLoadingState, AuthenticationErrorState] on failure',
-        () {
-      // ARRANGE
-      when(mockSignInAnonymous.call(any)).thenAnswer((_) async => Left(FirebaseFailure()));
-
-      // ASSERT LATER
-      final expected = [
-        InitialAuthenticationState(),
-        AuthenticationLoadingState(),
-        const AuthenticationErrorState(message: ErrorMessages.firebase),
-      ];
-
-      expectLater(
-        bloc,
-        emitsInOrder(expected),
-      );
-
-      bloc.add(AnonymousSignInEvent());
-    });
   });
 
   group('SignOutEvent', () {

@@ -83,58 +83,6 @@ void main() {
     );
   });
 
-  group('signinAnonymously', () {
-    test('should call firebase auth', () async {
-      // ARRANGE
-      const String username = 'username';
-      const String email = 'email';
-      const String photoUrl = 'photoUrl';
-      final firebaseUser = MockFirebaseUser();
-      when(firebaseUser.displayName).thenReturn(username);
-      when(firebaseUser.email).thenReturn(email);
-      when(firebaseUser.photoUrl).thenReturn(photoUrl);
-
-      final authResult = MockAuthResult();
-      when(authResult.user).thenReturn(firebaseUser);
-      when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) async => authResult);
-
-      // ACT
-      await datasource.signInAnonymously();
-
-      // ASSERT
-      verify(mockFirebaseAuth.signInAnonymously()).called(1);
-    });
-    test('should throw a [FirebaseException] when datasource throw an error', () async {
-      // ARRANGE
-      when(mockFirebaseAuth.signInAnonymously()).thenThrow(Error);
-      // ACT
-      Future<UserModel> call() async => datasource.signInAnonymously();
-
-      // ASSERT
-      expect(call, throwsA(isA<FirebaseException>()));
-    });
-    test('should throw a [FirebaseException] when datasource return null [AuthResult]', () async {
-      // ARRANGE
-      when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) => null);
-      // ACT
-      Future<UserModel> call() async => datasource.signInAnonymously();
-
-      // ASSERT
-      expect(call, throwsA(isA<FirebaseException>()));
-    });
-    test('should return a [UserModel]', () async {
-      // ARRANGE
-      final authResult = MockAuthResult();
-      when(authResult.user).thenReturn(MockFirebaseUser());
-      when(mockFirebaseAuth.signInAnonymously()).thenAnswer((_) async => authResult);
-
-      // ACT
-      final user = await datasource.signInAnonymously();
-
-      // ASSERT
-      expect(user, isA<UserModel>());
-    });
-  });
   group('updateUserData', () {
     final testUser = UserModel(
       uid: 'uid',

@@ -39,27 +39,6 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
           firebaseAuth != null && firestore != null && googleSignIn != null,
         );
 
-  /// Signs in a user anonymously
-  @override
-  Future<UserModel> signInAnonymously() async {
-    try {
-      final result = await _firebaseAuth.signInAnonymously();
-
-      if (result == null) {
-        throw FirebaseException();
-      }
-
-      return UserModel.fromFirebaseUser(
-        firebaseUser: result.user,
-        authenticationProvider: AuthenticationProvider.anonymous,
-      );
-    } catch (e) {
-      // Log and throw specific exception
-      _logger.shout(e.toString());
-      throw FirebaseException();
-    }
-  }
-
   /// Updates or persists [user]'s data
   @override
   Future<void> updateUserData(UserModel user) async {

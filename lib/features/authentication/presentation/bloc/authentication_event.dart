@@ -8,8 +8,6 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AnonymousSignInEvent extends AuthenticationEvent {}
-
 class GoogleSignInEvent extends AuthenticationEvent {}
 
 class SignInEvent extends AuthenticationEvent {

@@ -16,22 +16,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       : _datasource = datasource,
         assert(datasource != null);
 
-  /// Allow a user to sign in anonymously
-  @override
-  Future<Either<Failure, User>> signInAnonymously() async {
-    try {
-      final user = await _datasource.signInAnonymously();
-
-      await _datasource.updateUserData(user);
-
-      return Right(user);
-    } on FirebaseException {
-      return Left(FirebaseFailure());
-    } on FirestoreException {
-      return Left(FirestoreFailure());
-    }
-  }
-
   /// Signs out the current [User]
   @override
   Future<Either<Failure, void>> signOut() async {

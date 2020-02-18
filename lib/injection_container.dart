@@ -10,7 +10,6 @@ import 'features/authentication/data/datasources/authentication_datasource.dart'
 import 'features/authentication/data/datasources/firebase_authentication_datasource.dart';
 import 'features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'features/authentication/domain/repositories/authentication_repository.dart';
-import 'features/authentication/domain/usecases/signin_anonymous.dart';
 import 'features/authentication/domain/usecases/signin_email_and_password.dart';
 import 'features/authentication/domain/usecases/signout.dart';
 import 'features/authentication/domain/usecases/signup_email_and_password.dart';
@@ -83,14 +82,12 @@ void initGameFeature() {
 void initAuthenticationFeature() {
   // Bloc
   sl.registerFactory(() => AuthenticationBloc(
-        signInAnonymous: sl<SignInAnonymous>(),
         signout: sl<SignOut>(),
         signInEmailAndPassword: sl<SignInEmailAndPassword>(),
         signUpEmailAndPassword: sl<SignUpEmailAndPassword>(),
       ));
 
   // Usecases
-  sl.registerLazySingleton(() => SignInAnonymous(repository: sl<AuthenticationRepository>()));
   sl.registerLazySingleton(() => SignOut(repository: sl<AuthenticationRepository>()));
   sl.registerLazySingleton(
       () => SignInEmailAndPassword(repository: sl<AuthenticationRepository>()));

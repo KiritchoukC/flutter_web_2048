@@ -76,22 +76,6 @@ void main() {
       expect(anonymousSignIn.props, expected);
     });
   });
-  group('AnonymousSignIn', () {
-    test('should extend AuthenticationEvent', () {
-      // ACT
-      final anonymousSignIn = AnonymousSignInEvent();
-      // ASSERT
-      expect(anonymousSignIn, isA<AuthenticationEvent>());
-    });
-    test('should have an empty props list', () {
-      // ARRANGE
-      final expected = <Object>[];
-      // ACT
-      final anonymousSignIn = AnonymousSignInEvent();
-      // ASSERT
-      expect(anonymousSignIn.props, expected);
-    });
-  });
   group('GoogleSignIn', () {
     test('should extend AuthenticationEvent', () {
       // ACT

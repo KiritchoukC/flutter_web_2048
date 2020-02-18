@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_2048/core/router/route_paths.dart';
-import 'package:flutter_web_2048/core/theme/custom_colors.dart';
-import 'package:flutter_web_2048/features/authentication/presentation/pages/sign_up_page.dart';
 
 import '../../../../core/layouts/default_layout.dart';
+import '../../../../core/router/route_paths.dart';
 import '../../../../core/util/horizontal_spacing.dart';
 import '../../../../core/util/vertical_spacing.dart';
 import '../bloc/bloc.dart';
-import '../widgets/buttons/anonymous_signin_button.dart';
 import '../widgets/buttons/google_signin_button.dart';
 import '../widgets/login_form_widget.dart';
+import 'sign_up_page.dart';
 
 /// The main page of authentication feature
 class AuthenticationPage extends StatelessWidget {
@@ -94,8 +92,6 @@ class InitialAuthenticationPage extends StatelessWidget {
         const VerticalSpacing.medium(),
         const OrDivider(),
         const VerticalSpacing.medium(),
-        const AnonymousSignInButton(),
-        const VerticalSpacing.extraSmall(),
         const GoogleSignInButton(),
       ],
     );
