@@ -38,8 +38,7 @@ Future<void> init() async {
       () => DataConnectionCheckerNetworkInfo(sl<DataConnectionChecker>()));
 
   //! EXTERNAL
-  final box = await Hive.openBox<int>('highscoreBox');
-  sl.registerLazySingleton<Box<int>>(() => box);
+  sl.registerSingletonAsync<Box<int>>(() async => Hive.openBox<int>('highscoreBox'));
   sl.registerLazySingleton(() => DataConnectionChecker());
 
   // Firebase dependencies
