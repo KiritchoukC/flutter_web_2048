@@ -95,3 +95,6 @@ codecov_token
 android/key.properties
 android/key.jks
 android/app/key.jks
+
+# Private config
+web/firebase.config.js
