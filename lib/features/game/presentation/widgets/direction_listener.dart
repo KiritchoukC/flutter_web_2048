@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swipedetector/swipedetector.dart';
 
-import '../../../../core/util/web_helper.dart';
+import '../../../../core/config/config.dart';
 
 /// Listen to swipe direction on mobile or keyboard arrow on web
 class DirectionListener extends StatelessWidget {
@@ -98,25 +98,8 @@ class _WebDirectionListenerState extends State<WebDirectionListener> {
 
   @override
   Widget build(BuildContext context) {
-    _focusNode.requestFocus();
-    return RawKeyboardListener(
-      focusNode: _focusNode,
-      onKey: (RawKeyEvent event) {
-        if (event is RawKeyDownEvent) {
-          if (event.data.keyLabel == arrowDownKeyLabel) {
-            widget.onDown();
-          }
-          if (event.data.keyLabel == arrowUpKeyLabel) {
-            widget.onUp();
-          }
-          if (event.data.keyLabel == arrowRightKeyLabel) {
-            widget.onRight();
-          }
-          if (event.data.keyLabel == arrowLeftKeyLabel) {
-            widget.onLeft();
-          }
-        }
-      },
+    return GestureDetector(
+      onTap: () => _focusNode.requestFocus(),
       child: SwipeDetector(
         onSwipeDown: () {
           widget.onDown();
@@ -130,15 +113,27 @@ class _WebDirectionListenerState extends State<WebDirectionListener> {
         onSwipeLeft: () {
           widget.onLeft();
         },
-        swipeConfiguration: SwipeConfiguration(
-          verticalSwipeMinVelocity: 5.0,
-          verticalSwipeMinDisplacement: 5.0,
-          verticalSwipeMaxWidthThreshold: 1000.0,
-          horizontalSwipeMaxHeightThreshold: 1000.0,
-          horizontalSwipeMinDisplacement: 5.0,
-          horizontalSwipeMinVelocity: 5.0,
+        swipeConfiguration: swipeConfiguration,
+        child: RawKeyboardListener(
+          focusNode: _focusNode,
+          onKey: (RawKeyEvent event) {
+            if (event is RawKeyDownEvent) {
+              if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+                widget.onDown();
+              }
+              if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+                widget.onUp();
+              }
+              if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+                widget.onRight();
+              }
+              if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+                widget.onLeft();
+              }
+            }
+          },
+          child: widget.child,
         ),
-        child: widget.child,
       ),
     );
   }
@@ -200,14 +195,7 @@ class _MobileDirectionListenerState extends State<MobileDirectionListener> {
       onSwipeLeft: () {
         widget.onLeft();
       },
-      swipeConfiguration: SwipeConfiguration(
-        verticalSwipeMinVelocity: 5.0,
-        verticalSwipeMinDisplacement: 5.0,
-        verticalSwipeMaxWidthThreshold: 1000.0,
-        horizontalSwipeMaxHeightThreshold: 1000.0,
-        horizontalSwipeMinDisplacement: 5.0,
-        horizontalSwipeMinVelocity: 5.0,
-      ),
+      swipeConfiguration: swipeConfiguration,
       child: widget.child,
     );
   }
