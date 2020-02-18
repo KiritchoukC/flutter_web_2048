@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.43.5](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.4...v1.43.5) (2020-02-18)
+
+
+### Bug Fixes
+
+* **firestore:** fix firestore on web ([e3c0a5d](https://github.com/KiritchoukC/flutter_web_2048/commit/e3c0a5d))
+
 ### [1.43.4](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.3...v1.43.4) (2020-02-18)
 
 
