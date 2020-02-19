@@ -124,10 +124,9 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
   Future<UserModel> signInWithGoogle() async {
     final googleSignInAccount = await tryThrow(_googleSignIn.signIn, GoogleSignInFailedException());
 
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+    final googleSignInAuthentication = await googleSignInAccount.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final credential = GoogleAuthProvider.getCredential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );

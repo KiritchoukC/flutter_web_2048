@@ -61,4 +61,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(FirestoreFailure());
     }
   }
+
+  /// Signs in a [User] with Google
+  @override
+  Future<Either<Failure, User>> signInWithGoogle() async {
+    try {
+      final user = await _datasource.signInWithGoogle();
+      await _datasource.updateUserData(user);
+      return Right(user);
+    } on FirebaseException {
+      return Left(FirebaseFailure());
+    } on FirestoreException {
+      return Left(FirestoreFailure());
+    } on GoogleSignInFailedException {
+      return Left(GoogleSignInFailedFailure());
+    }
+  }
 }

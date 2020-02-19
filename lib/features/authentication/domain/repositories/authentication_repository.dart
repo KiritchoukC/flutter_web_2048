@@ -16,4 +16,7 @@ abstract class AuthenticationRepository {
   /// Signs up a [User] with [email] and [password]
   Future<Either<Failure, User>> signUpWithEmailAndPassword(
       {@required String email, @required String password});
+
+  /// Signs in a [User] with Google
+  Future<Either<Failure, User>> signInWithGoogle();
 }

@@ -14,6 +14,11 @@ class MockAuthenticationDatasource extends Mock implements AuthenticationDatasou
 void main() {
   AuthenticationRepositoryImpl repository;
   MockAuthenticationDatasource mockDatasource;
+  const String uniqueId = 'uniqueId';
+  const String username = 'username';
+  const String email = 'email@example.com';
+  const String password = 'password';
+  const String picture = 'https://google/picture.jpg';
 
   setUp(() {
     mockDatasource = MockAuthenticationDatasource();
@@ -67,10 +72,6 @@ void main() {
 
   group('signInWithEmailAndPassword', () {
     test('should call datasource [signInWithEmailAndPassword] function', () async {
-      // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       // ACT
       await repository.signInWithEmailAndPassword(email: email, password: password);
 
@@ -78,10 +79,6 @@ void main() {
       verify(mockDatasource.signInWithEmailAndPassword(email, password)).called(1);
     });
     test('should call datasource [updateUserData] function', () async {
-      // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       // ACT
       await repository.signInWithEmailAndPassword(email: email, password: password);
 
@@ -90,12 +87,6 @@ void main() {
     });
     test('should return [Right] on success with the datasource user', () async {
       // ARRANGE
-      const String uniqueId = 'uniqueId';
-      const String username = 'username';
-      const String email = 'email@example.com';
-      const String password = 'password';
-      const String picture = 'https://google/picture.jpg';
-
       final UserModel userModel = UserModel(
         uid: uniqueId,
         username: username,
@@ -118,9 +109,6 @@ void main() {
     test('should return a [FirebaseFailure] when a [FirebaseException] is thrown by datasource',
         () async {
       // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       when(mockDatasource.signInWithEmailAndPassword(email, password))
           .thenThrow(FirebaseException());
 
@@ -133,9 +121,6 @@ void main() {
     test('should return a [FirestoreFailure] when a [FirestoreException] is thrown by datasource',
         () async {
       // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       when(mockDatasource.signInWithEmailAndPassword(email, password))
           .thenThrow(FirestoreException());
 
@@ -149,9 +134,6 @@ void main() {
         'should return a [UserNotFoundFailure] when a [UserNotFoundException] is thrown by datasource',
         () async {
       // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       when(mockDatasource.signInWithEmailAndPassword(email, password))
           .thenThrow(const UserNotFoundException(userId: email));
 
@@ -165,10 +147,6 @@ void main() {
 
   group('signUpWithEmailAndPassword', () {
     test('should call datasource [signUpWithEmailAndPassword] function', () async {
-      // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       // ACT
       await repository.signUpWithEmailAndPassword(email: email, password: password);
 
@@ -177,27 +155,29 @@ void main() {
     });
     test('should call datasource [updateUserData] function', () async {
       // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
+      final userModel = UserModel(
+        email: email,
+        uid: uniqueId,
+        picture: picture,
+        username: username,
+        authenticationProvider: AuthenticationProvider.emailAndPassword,
+      );
+
+      when(mockDatasource.signUpWithEmailAndPassword(email, password))
+          .thenAnswer((_) async => userModel);
 
       // ACT
       await repository.signUpWithEmailAndPassword(email: email, password: password);
 
       // ASSERT
-      verify(mockDatasource.updateUserData(any)).called(1);
+      verify(mockDatasource.updateUserData(userModel)).called(1);
     });
     test('should return [Right] on success with the datasource user', () async {
       // ARRANGE
-      const String uniqueId = 'uniqueId';
-      const String username = 'username';
-      const String email = 'email@example.com';
-      const String password = 'password';
-      const String picture = 'https://google/picture.jpg';
-
-      final UserModel userModel = UserModel(
+      final userModel = UserModel(
         uid: uniqueId,
-        username: username,
         email: email,
+        username: username,
         picture: picture,
         authenticationProvider: AuthenticationProvider.emailAndPassword,
       );
@@ -216,9 +196,6 @@ void main() {
     test('should return a [FirebaseFailure] when a [FirebaseException] is thrown by datasource',
         () async {
       // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       when(mockDatasource.signUpWithEmailAndPassword(email, password))
           .thenThrow(FirebaseException());
 
@@ -228,12 +205,10 @@ void main() {
       // ASSERT
       expect(actual, Left(FirebaseFailure()));
     });
+
     test('should return a [FirestoreFailure] when a [FirestoreException] is thrown by datasource',
         () async {
       // ARRANGE
-      const String email = 'email@example.com';
-      const String password = 'password';
-
       when(mockDatasource.signUpWithEmailAndPassword(email, password))
           .thenThrow(FirestoreException());
 
@@ -242,6 +217,104 @@ void main() {
 
       // ASSERT
       expect(actual, Left(FirestoreFailure()));
+    });
+  });
+
+  group('signInWithGoogle', () {
+    test('should call datasource [signInWithGoogle()]', () async {
+      // ARRANGE
+      final userModel = UserModel(
+        email: email,
+        uid: uniqueId,
+        picture: picture,
+        username: username,
+        authenticationProvider: AuthenticationProvider.google,
+      );
+
+      when(mockDatasource.signInWithGoogle()).thenAnswer((_) async => userModel);
+
+      // ACT
+      await repository.signInWithGoogle();
+
+      // ASSERT
+      verify(mockDatasource.signInWithGoogle()).called(1);
+    });
+
+    test('should call datasource [updateUserData] function', () async {
+      // ARRANGE
+      final userModel = UserModel(
+        email: email,
+        uid: uniqueId,
+        picture: picture,
+        username: username,
+        authenticationProvider: AuthenticationProvider.google,
+      );
+
+      when(mockDatasource.signInWithGoogle()).thenAnswer((_) async => userModel);
+
+      // ACT
+      await repository.signInWithGoogle();
+
+      // ASSERT
+      verify(mockDatasource.updateUserData(userModel)).called(1);
+    });
+
+    test('should return [Right] on success with the datasource user', () async {
+      // ARRANGE
+      final userModel = UserModel(
+        uid: uniqueId,
+        email: email,
+        username: username,
+        picture: picture,
+        authenticationProvider: AuthenticationProvider.google,
+      );
+
+      final User datasourceUser = userModel;
+
+      when(mockDatasource.signInWithGoogle()).thenAnswer((_) async => userModel);
+
+      // ACT
+      final actual = await repository.signInWithGoogle();
+
+      // ASSERT
+      expect(actual, equals(Right(datasourceUser)));
+    });
+
+    test('should return a [FirebaseFailure] when a [FirebaseException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      when(mockDatasource.signInWithGoogle()).thenThrow(FirebaseException());
+
+      // ACT
+      final actual = await repository.signInWithGoogle();
+
+      // ASSERT
+      expect(actual, Left(FirebaseFailure()));
+    });
+
+    test('should return a [FirestoreFailure] when a [FirestoreException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      when(mockDatasource.signInWithGoogle()).thenThrow(FirestoreException());
+
+      // ACT
+      final actual = await repository.signInWithGoogle();
+
+      // ASSERT
+      expect(actual, Left(FirestoreFailure()));
+    });
+
+    test(
+        'should return a [GoogleSignInFailedFailure] when a [GoogleSignInFailedException] is thrown by datasource',
+        () async {
+      // ARRANGE
+      when(mockDatasource.signInWithGoogle()).thenThrow(GoogleSignInFailedException());
+
+      // ACT
+      final actual = await repository.signInWithGoogle();
+
+      // ASSERT
+      expect(actual, Left(GoogleSignInFailedFailure()));
     });
   });
 }

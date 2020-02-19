@@ -29,3 +29,5 @@ class UserNotFoundFailure extends Failure {
   @override
   List<Object> get props => [userId, password];
 }
+
+class GoogleSignInFailedFailure extends Failure {}
