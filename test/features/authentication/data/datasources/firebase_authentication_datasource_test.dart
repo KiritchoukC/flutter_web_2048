@@ -168,12 +168,7 @@ void main() {
 
     test('should throw a FirestoreException if something goes wrong', () async {
       // ARRANGE
-      final lastSeendDateTime = DateTime.now();
-
-      when(mockDocumentReference.setData(
-        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
-        merge: true,
-      )).thenThrow(Exception());
+      when(mockDocumentReference.setData(any, merge: true)).thenThrow(Exception());
       when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
@@ -182,7 +177,7 @@ void main() {
 
       // ASSERT
       expect(call, throwsA(isA<FirestoreException>()));
-    }, retry: 10);
+    });
   });
 
   group('signOut', () {

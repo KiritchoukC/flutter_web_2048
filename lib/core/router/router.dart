@@ -15,7 +15,6 @@ class Router {
           builder: (_) => GamePage(),
           settings: const RouteSettings(
             name: RoutePaths.game,
-            isInitialRoute: true,
           ),
         );
 
