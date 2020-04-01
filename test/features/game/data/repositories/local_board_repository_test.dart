@@ -716,7 +716,7 @@ void main() {
       // the previous board should be equal to the board that moved and not the board that did not move
       expect(movedBoardTilesCount, equals(actualTilesCount));
       expect(notMovedBoardTilesCount, isNot(equals(actualTilesCount)));
-    });
+    }, retry: 10);
 
     test('should return currentBoard if previousBoard does not exist yet', () async {
       // ACT
