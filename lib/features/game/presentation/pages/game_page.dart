@@ -14,12 +14,6 @@ class GamePage extends StatelessWidget {
       body: GameWidget(),
       actions: <Widget>[
         UndoButton(),
-        FlatButton(
-          onPressed: () {
-            BlocProvider.of<GameBloc>(context).add(NewGame());
-          },
-          child: Text('New Game', semanticsLabel: 'Start a new game'),
-        )
       ],
     );
   }
@@ -36,21 +30,20 @@ class _UndoButtonState extends State<UndoButton> {
   // check if board moved more than once
   int _moved = 0;
 
-  _undo() {
+  void _undo() {
     // disanle the button when undoing
     setState(() {
       _disabled = true;
     });
     // send undo event
-    BlocProvider.of<GameBloc>(context).add(Undo());
+    BlocProvider.of<GameBloc>(context).add(UndoEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<GameBloc, GameState>(
       condition: (previousState, newState) {
-        print(_moved);
-        if (_disabled && newState is UpdateBoardEnd) {
+        if (_disabled && newState is UpdateBoardEndState) {
           if (_moved > 0) {
             _moved = 0;
             return true;
@@ -64,7 +57,7 @@ class _UndoButtonState extends State<UndoButton> {
         return false;
       },
       listener: (context, state) {
-        if (state is UpdateBoardEnd) {
+        if (state is UpdateBoardEndState) {
           setState(() {
             _disabled = false;
           });

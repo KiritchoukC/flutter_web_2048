@@ -18,7 +18,7 @@ class ValueTileWidget extends StatelessWidget {
           alignment: AlignmentDirectional.topEnd,
           children: <Widget>[
             Container(
-              color: TileColorConverter.mapTileValueToColor(value),
+              color: mapTileValueToColor(value),
             ),
             TileScoreWidget(point: value),
           ],

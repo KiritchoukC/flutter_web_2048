@@ -14,22 +14,22 @@ class Board {
   int score = 0;
   final Random _random;
   // game is over if there is no empty cells left and no more moves available
-  bool get over => getEmptyCellsCoordinate().length == 0 && isBlocked();
+  bool get over => getEmptyCellsCoordinate().isEmpty && isBlocked();
   List<Tile> get mergedTiles => tiles.where((tile) => tile != null && tile.merged).toList();
 
-  Board(this.tiles, {int score}) : _random = Random();
+  Board(this.tiles) : _random = Random();
 
   Board.clone(Board board) : _random = board?._random {
     ArgumentError.checkNotNull(board);
 
     if (board != null) {
-      this.score = board.score;
-      this.tiles = pm.Array2D<Tile>(4, 4);
+      score = board.score;
+      tiles = pm.Array2D<Tile>(4, 4);
       for (var x = 0; x < board.tiles.width; x++) {
         for (var y = 0; y < board.tiles.height; y++) {
-          var tile = board.tiles.get(x, y);
+          final tile = board.tiles.get(x, y);
           if (tile != null) {
-            this.tiles.set(x, y, Tile.clone(tile));
+            tiles.set(x, y, Tile.clone(tile));
           }
         }
       }
@@ -38,10 +38,10 @@ class Board {
 
   factory Board.initialize() {
     // get the random position for each tile
-    var randomFirstTiles = _getRandomFirstTiles().toList();
+    final randomFirstTiles = _getRandomFirstTiles().toList();
 
     // generate all the tiles with the first tile at the random position
-    var tiles = _generateTiles(
+    final tiles = _generateTiles(
       randomFirstTiles.toList()[0],
       randomFirstTiles.toList()[1],
     );
@@ -52,9 +52,9 @@ class Board {
 
   /// Returns all the empty tile positions in the [board]
   Iterable<Coordinate> getEmptyCellsCoordinate() sync* {
-    for (var x = 0; x < this.tiles.width; x++) {
-      for (var y = 0; y < this.tiles.height; y++) {
-        if (this.tiles.get(x, y) == null) {
+    for (var x = 0; x < tiles.width; x++) {
+      for (var y = 0; y < tiles.height; y++) {
+        if (tiles.get(x, y) == null) {
           yield Coordinate(x, y);
         }
       }
@@ -73,19 +73,19 @@ class Board {
     );
 
     while (true) {
-      int x = destination.x + vector.x;
+      final int x = destination.x + vector.x;
       // break if [x] is out of the board
       if (x > 3 || x < 0) {
         break;
       }
 
-      int y = destination.y + vector.y;
+      final int y = destination.y + vector.y;
       // break if [y] is out of the board
       if (y > 3 || y < 0) {
         break;
       }
 
-      var nextTile = this.tiles.get(x, y);
+      final nextTile = tiles.get(x, y);
 
       // if next tile is empty set the new destination
       // and continue with the next one
@@ -124,35 +124,35 @@ class Board {
 
   int updateScore() {
     // get the merged tiles
-    final mergedTiles = this.tiles.where((tile) => tile != null && tile.merged);
+    final mergedTiles = tiles.where((tile) => tile != null && tile.merged);
     // update score if there is merging
-    if (mergedTiles.length > 0) {
+    if (mergedTiles.isNotEmpty) {
       final points = mergedTiles.length == 1
           ? mergedTiles.first.value
           : mergedTiles.map((tile) => tile.value).reduce((total, value) => total + value);
 
-      this.score += points;
+      score += points;
     }
 
-    return this.score;
+    return score;
   }
 
   // Returns either bool on failre or Tile on success
   Either<bool, Tile> addRandomTile() {
     // get the coordinate of an empty random cell
-    var newTileCoordinate = this.getRandomEmptyTileCoordinate();
+    final newTileCoordinate = getRandomEmptyTileCoordinate();
 
     // return false on failure
     if (newTileCoordinate.isLeft()) {
       return Left(false);
     }
 
-    var coordinate = newTileCoordinate.getOrElse(() => null);
+    final coordinate = newTileCoordinate.getOrElse(() => null);
 
     // get the new tile value with 10% chance of being 4 instead of 2
-    var newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
+    final newTileValue = _random.nextInt(10) == 0 ? 4 : 2;
     // generate the new tile
-    var newTile = Tile(
+    final newTile = Tile(
       newTileValue,
       x: coordinate.x,
       y: coordinate.y,
@@ -160,7 +160,7 @@ class Board {
     );
 
     // set the new tile in the current board
-    this.tiles.set(coordinate.x, coordinate.y, newTile);
+    tiles.set(coordinate.x, coordinate.y, newTile);
 
     // return success
     return Right(newTile);
@@ -169,15 +169,15 @@ class Board {
   /// Returns either bool on fail or Coordinate on success
   Either<bool, Coordinate> getRandomEmptyTileCoordinate() {
     // get the empty cells coordinate
-    var emptyCells = this.getEmptyCellsCoordinate();
+    final emptyCells = getEmptyCellsCoordinate();
 
     // return fail if no empty cell left
-    if (emptyCells.length == 0) {
+    if (emptyCells.isEmpty) {
       return Left(false);
     }
 
     // return a random empty tile index
-    var randomEmptyCell = emptyCells.toList()[_random.nextInt(emptyCells.length)];
+    final randomEmptyCell = emptyCells.toList()[_random.nextInt(emptyCells.length)];
 
     // return the random empty cell
     return Right(randomEmptyCell);
@@ -186,14 +186,14 @@ class Board {
   /// Get random positioned tiles
   static Iterable<Tile> _getRandomFirstTiles() sync* {
     // get the length of row and column with the square of max
-    int square = 4;
-    var _random = Random();
+    const int square = 4;
+    final _random = Random();
 
-    int firstTileX = _random.nextInt(square);
-    int firstTileY = _random.nextInt(square);
+    final int firstTileX = _random.nextInt(square);
+    final int firstTileY = _random.nextInt(square);
 
     // generate the first tile
-    var firstTile = Tile(
+    final firstTile = Tile(
       2,
       x: firstTileX,
       y: firstTileY,
@@ -203,7 +203,7 @@ class Board {
     yield firstTile;
 
     // generate the second index
-    int half = square ~/ 2;
+    const int half = square ~/ 2;
 
     // get the second tile x position
     int secondTileX = 0;
@@ -248,19 +248,19 @@ class Board {
 
   // set false on all the tiles [merged] property
   void resetMergedTiles() {
-    this.tiles.where((tile) => tile != null && tile.merged).forEach((tile) => tile.merged = false);
+    tiles.where((tile) => tile != null && tile.merged).forEach((tile) => tile.merged = false);
   }
 
   // set false on all the tiles [isNew] property
   void resetNewTiles() {
-    this.tiles.where((tile) => tile != null && tile.isNew).forEach((tile) => tile.isNew = false);
+    tiles.where((tile) => tile != null && tile.isNew).forEach((tile) => tile.isNew = false);
   }
 
   // check if the board is blocked and no more moves are possible
   bool isBlocked() {
-    for (var x = 0; x < this.tiles.width; x++) {
-      for (var y = 0; y < this.tiles.height; y++) {
-        final currentCell = this.tiles.get(x, y);
+    for (var x = 0; x < tiles.width; x++) {
+      for (var y = 0; y < tiles.height; y++) {
+        final currentCell = tiles.get(x, y);
 
         // if there is an empty cell return false
         if (currentCell == null) {
@@ -273,7 +273,7 @@ class Board {
           final vector = Vector.fromDirection(currentDirection);
 
           // get the [x] position of the next cell
-          int nextX = currentCell.x + vector.x;
+          final int nextX = currentCell.x + vector.x;
 
           // skip if out of board
           if (nextX < 0 || nextX > 3) {
@@ -281,7 +281,7 @@ class Board {
           }
 
           // get the [y] position of the next cell
-          int nextY = currentCell.y + vector.y;
+          final int nextY = currentCell.y + vector.y;
 
           // skip if out of board
           if (nextY < 0 || nextY > 3) {
@@ -289,7 +289,7 @@ class Board {
           }
 
           // get next cell
-          final nextCell = this.tiles.get(nextX, nextY);
+          final nextCell = tiles.get(nextX, nextY);
 
           // if the next cell is empty then a move is available
           if (nextCell == null) {

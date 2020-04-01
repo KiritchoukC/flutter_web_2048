@@ -2,6 +2,248 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.44.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.9...v1.44.0) (2020-04-01)
+
+
+### Features
+
+* **authentication:** add bloc implementation of google sign in ([522db9b](https://github.com/KiritchoukC/flutter_web_2048/commit/522db9b)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.43.9](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.8...v1.43.9) (2020-03-25)
+
+### [1.43.8](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.7...v1.43.8) (2020-02-19)
+
+### [1.43.7](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.6...v1.43.7) (2020-02-18)
+
+### [1.43.6](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.5...v1.43.6) (2020-02-18)
+
+### [1.43.5](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.4...v1.43.5) (2020-02-18)
+
+
+### Bug Fixes
+
+* **firestore:** fix firestore on web ([e3c0a5d](https://github.com/KiritchoukC/flutter_web_2048/commit/e3c0a5d))
+
+### [1.43.4](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.3...v1.43.4) (2020-02-18)
+
+
+### Bug Fixes
+
+* **swipe:** fix swipe on web ([cf3f385](https://github.com/KiritchoukC/flutter_web_2048/commit/cf3f385))
+
+### [1.43.3](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.2...v1.43.3) (2020-02-17)
+
+### [1.43.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.1...v1.43.2) (2020-02-17)
+
+### [1.43.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.0...v1.43.1) (2020-02-15)
+
+## [1.43.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.17...v1.43.0) (2020-02-15)
+
+
+### Features
+
+* **authentication:** end email and password sign up ([df431b7](https://github.com/KiritchoukC/flutter_web_2048/commit/df431b7)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.42.17](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.16...v1.42.17) (2020-02-15)
+
+### [1.42.16](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.15...v1.42.16) (2020-02-15)
+
+### [1.42.15](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.14...v1.42.15) (2020-02-14)
+
+
+### Bug Fixes
+
+* **game:** fix the swipe on web version ([015010b](https://github.com/KiritchoukC/flutter_web_2048/commit/015010b))
+
+### [1.42.14](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.13...v1.42.14) (2020-02-09)
+
+### [1.42.13](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.12...v1.42.13) (2020-02-09)
+
+### [1.42.12](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.11...v1.42.12) (2020-02-08)
+
+### [1.42.11](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.10...v1.42.11) (2020-02-03)
+
+### [1.42.10](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.9...v1.42.10) (2020-01-25)
+
+### [1.42.9](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.8...v1.42.9) (2020-01-20)
+
+### [1.42.8](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.7...v1.42.8) (2020-01-20)
+
+### [1.42.7](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.6...v1.42.7) (2020-01-12)
+
+### [1.42.6](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.5...v1.42.6) (2020-01-12)
+
+### [1.42.5](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.4...v1.42.5) (2020-01-12)
+
+### [1.42.4](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.3...v1.42.4) (2020-01-12)
+
+### [1.42.3](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.2...v1.42.3) (2020-01-12)
+
+### [1.42.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.1...v1.42.2) (2020-01-12)
+
+
+### Bug Fixes
+
+* **authentication:** fix cropped cirular loader ([d109df1](https://github.com/KiritchoukC/flutter_web_2048/commit/d109df1)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.42.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.42.0...v1.42.1) (2020-01-12)
+
+## [1.42.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.41.0...v1.42.0) (2020-01-11)
+
+
+### Features
+
+* **authentication:** fix authenticated drawer header and add sign out button ([73049c0](https://github.com/KiritchoukC/flutter_web_2048/commit/73049c0)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+* **authentication:** implement sign out ([640d278](https://github.com/KiritchoukC/flutter_web_2048/commit/640d278)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.41.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.40.1...v1.41.0) (2020-01-08)
+
+
+### Features
+
+* **authentication:** store anonymous user in Firestore ([54c5a93](https://github.com/KiritchoukC/flutter_web_2048/commit/54c5a93)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.40.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.40.0...v1.40.1) (2020-01-07)
+
+## [1.40.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.39.0...v1.40.0) (2020-01-06)
+
+
+### Features
+
+* **authentication:** style web login form ([ccef4a8](https://github.com/KiritchoukC/flutter_web_2048/commit/ccef4a8)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.39.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.38.2...v1.39.0) (2020-01-06)
+
+
+### Features
+
+* **authentication:** persist user's data after anonymous sign in ([3c32080](https://github.com/KiritchoukC/flutter_web_2048/commit/3c32080)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.38.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.38.1...v1.38.2) (2020-01-06)
+
+
+### Bug Fixes
+
+* **authentication:** fix constructor assertions ([9bb2ce0](https://github.com/KiritchoukC/flutter_web_2048/commit/9bb2ce0)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.38.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.38.0...v1.38.1) (2020-01-06)
+
+## [1.38.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.37.0...v1.38.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** add events handling in UI ([a47e4f1](https://github.com/KiritchoukC/flutter_web_2048/commit/a47e4f1)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.37.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.36.0...v1.37.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** style sign in anonymously button ([a9b3bf1](https://github.com/KiritchoukC/flutter_web_2048/commit/a9b3bf1)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.36.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.35.0...v1.36.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** add unique id property to user entity ([9335c51](https://github.com/KiritchoukC/flutter_web_2048/commit/9335c51)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.35.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.34.0...v1.35.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** add anonymous signin button to login page ([47d8958](https://github.com/KiritchoukC/flutter_web_2048/commit/47d8958)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.34.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.33.0...v1.34.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** add AnonymousSignin event bloc handler ([1483a13](https://github.com/KiritchoukC/flutter_web_2048/commit/1483a13)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.33.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.32.2...v1.33.0) (2020-01-05)
+
+
+### Features
+
+* **authentication:** change email text input action to next ([3ca1b5c](https://github.com/KiritchoukC/flutter_web_2048/commit/3ca1b5c)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.32.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.32.1...v1.32.2) (2020-01-04)
+
+### [1.32.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.32.0...v1.32.1) (2020-01-04)
+
+## [1.32.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.31.0...v1.32.0) (2020-01-04)
+
+
+### Features
+
+* **authentication:** add autentication events ([6e37fff](https://github.com/KiritchoukC/flutter_web_2048/commit/6e37fff)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+## [1.31.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.30.1...v1.31.0) (2020-01-04)
+
+
+### Features
+
+* **authentication:** add states ([6f5e4c5](https://github.com/KiritchoukC/flutter_web_2048/commit/6f5e4c5))
+
+### [1.30.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.30.0...v1.30.1) (2020-01-04)
+
+## [1.30.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.3...v1.30.0) (2020-01-03)
+
+
+### Features
+
+* **authentication:** add anonymous signin from firebase datasource to usecase ([7a7ca36](https://github.com/KiritchoukC/flutter_web_2048/commit/7a7ca36)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
+### [1.29.3](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.2...v1.29.3) (2020-01-03)
+
+### [1.29.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.1...v1.29.2) (2020-01-03)
+
+### [1.29.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.29.0...v1.29.1) (2020-01-02)
+
+## [1.29.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.28.2...v1.29.0) (2020-01-01)
+
+
+### Features
+
+* **authentication:** add styled authentication page ([f8eddfb](https://github.com/KiritchoukC/flutter_web_2048/commit/f8eddfb))
+
+### [1.28.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.28.1...v1.28.2) (2019-12-30)
+
+### [1.28.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.28.0...v1.28.1) (2019-12-30)
+
+## [1.28.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.27.0...v1.28.0) (2019-12-29)
+
+
+### Features
+
+* **authentication:** add authentication page, injection and routing ([60dd416](https://github.com/KiritchoukC/flutter_web_2048/commit/60dd416))
+
+## [1.27.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.26.0...v1.27.0) (2019-12-29)
+
+
+### Features
+
+* **drawer:** styling anonymous drawer header ([85be7ae](https://github.com/KiritchoukC/flutter_web_2048/commit/85be7ae))
+
+## [1.26.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.25.0...v1.26.0) (2019-12-28)
+
+
+### Features
+
+* **authentication:** init authentication feature ([b08de14](https://github.com/KiritchoukC/flutter_web_2048/commit/b08de14))
+
+## [1.25.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.2...v1.25.0) (2019-12-28)
+
+
+### Features
+
+* **drawer:** add a drawer and move the reset game button to it ([ec364be](https://github.com/KiritchoukC/flutter_web_2048/commit/ec364be))
+
+### [1.24.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.1...v1.24.2) (2019-12-27)
+
 ### [1.24.1](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.24.0...v1.24.1) (2019-12-26)
 
 

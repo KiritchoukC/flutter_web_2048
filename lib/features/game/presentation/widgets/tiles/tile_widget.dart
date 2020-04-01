@@ -36,7 +36,7 @@ class EmptyTile extends StatelessWidget {
       alignment: AlignmentDirectional.topEnd,
       children: <Widget>[
         Container(
-          color: TileColorConverter.mapTileValueToColor(null),
+          color: mapTileValueToColor(null),
         )
       ],
     );

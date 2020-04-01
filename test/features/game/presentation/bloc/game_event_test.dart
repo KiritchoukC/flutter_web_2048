@@ -6,15 +6,15 @@ void main() {
   group('LoadInitialBoard', () {
     test('should extend GameEvent', () {
       // ACT
-      var loadInitialBoard = LoadInitialBoard();
+      final loadInitialBoard = LoadInitialBoardEvent();
       // ASSERT
       expect(loadInitialBoard, isA<GameEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
       // ACT
-      var loadInitialBoard = LoadInitialBoard();
+      final loadInitialBoard = LoadInitialBoardEvent();
       // ASSERT
       expect(loadInitialBoard.props, expected);
     });
@@ -22,18 +22,18 @@ void main() {
   group('Move', () {
     test('should extend GameEvent', () {
       // ARRANGE
-      var direction = Direction.down;
+      const direction = Direction.down;
       // ACT
-      var move = Move(direction: direction);
+      const move = MoveEvent(direction: direction);
       // ASSERT
       expect(move, isA<GameEvent>());
     });
     test('should have a props list with the direction', () {
       // ARRANGE
-      var direction = Direction.down;
-      var expected = <Object>[direction];
+      const direction = Direction.down;
+      const expected = <Object>[direction];
       // ACT
-      var move = Move(direction: direction);
+      const move = MoveEvent(direction: direction);
       // ASSERT
       expect(move.props, expected);
     });
@@ -41,15 +41,15 @@ void main() {
   group('NewGame', () {
     test('should extend GameEvent', () {
       // ACT
-      var newGame = NewGame();
+      final newGame = NewGameEvent();
       // ASSERT
       expect(newGame, isA<GameEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
       // ACT
-      var newGame = NewGame();
+      final newGame = NewGameEvent();
       // ASSERT
       expect(newGame.props, expected);
     });
@@ -57,15 +57,15 @@ void main() {
   group('LoadHighscore', () {
     test('should extend GameEvent', () {
       // ACT
-      var event = LoadHighscore();
+      final event = LoadHighscoreEvent();
       // ASSERT
       expect(event, isA<GameEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
       // ACT
-      var event = LoadHighscore();
+      final event = LoadHighscoreEvent();
       // ASSERT
       expect(event.props, expected);
     });
@@ -73,15 +73,15 @@ void main() {
   group('Undo', () {
     test('should extend GameEvent', () {
       // ACT
-      var event = Undo();
+      final event = UndoEvent();
       // ASSERT
       expect(event, isA<GameEvent>());
     });
     test('should have an empty props list', () {
       // ARRANGE
-      var expected = <Object>[];
+      final expected = <Object>[];
       // ACT
-      var event = Undo();
+      final event = UndoEvent();
       // ASSERT
       expect(event.props, expected);
     });

@@ -1,28 +1,29 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/enums/direction.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../entities/board.dart';
 import '../repositories/board_repository.dart';
 
-class UpdateBoard implements UseCase<Board, Params> {
+class UpdateBoard implements UseCase<Board, UpdateBoardParams> {
   final BoardRepository boardRepository;
 
-  UpdateBoard({@required this.boardRepository})
-      : assert(boardRepository != null);
+  UpdateBoard({@required this.boardRepository}) : assert(boardRepository != null);
 
   @override
-  Future<Board> call(Params params) async {
-    return await boardRepository.updateBoard(params.board, params.direction);
+  Future<Either<Failure, Board>> call(UpdateBoardParams params) async {
+    return Right(await boardRepository.updateBoard(params.board, params.direction));
   }
 }
 
-class Params extends Equatable {
+class UpdateBoardParams extends Equatable {
   final Direction direction;
   final Board board;
 
-  Params({
+  const UpdateBoardParams({
     @required this.direction,
     @required this.board,
   });

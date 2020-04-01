@@ -30,7 +30,7 @@ class Traversal {
 
   /// Get the default traversals, start from the top left (x:0, y:O) to bottom right (x:[size-1], y:[size-1])
   factory Traversal.init(int size) {
-    var traversal = Traversal(x: <int>[], y: <int>[]);
+    final traversal = Traversal(x: <int>[], y: <int>[]);
 
     for (var pos = 0; pos < size; pos++) {
       traversal.x.add(pos);

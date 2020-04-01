@@ -10,21 +10,21 @@ class BoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
       condition: (previousState, state) {
-        if (state is HighscoreLoaded) {
+        if (state is HighscoreLoadedState) {
           return false;
         }
         return true;
       },
       builder: (context, state) {
-        if (state is InitialGame) {
-          BlocProvider.of<GameBloc>(context).add(LoadInitialBoard());
+        if (state is InitialGameState) {
+          BlocProvider.of<GameBloc>(context).add(LoadInitialBoardEvent());
         }
 
-        if (state is UpdateBoardEnd) {
+        if (state is UpdateBoardEndState) {
           return GameBoardWidget(board: state.board);
         }
 
-        if (state is GameOver) {
+        if (state is GameOverState) {
           return GameBoardWidget(board: state.board, isOver: true);
         }
 
@@ -73,13 +73,13 @@ class GridWidget extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           int x, y = 0;
-          x = (index % board.tiles.width);
+          x = index % board.tiles.width;
           y = (index / board.tiles.height).floor();
-          var tile = board.tiles.get(x, y);
+          final tile = board.tiles.get(x, y);
           return TileWidget(tile: tile);
         },
         itemCount: board.tiles.width * board.tiles.height,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
       ),
     );
   }
@@ -92,14 +92,14 @@ class GameOverOverlay extends StatefulWidget {
 
 class _GameOverOverlayState extends State<GameOverOverlay> with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  Animation _animation;
+  Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
 
     _animation = Tween(
@@ -115,9 +115,9 @@ class _GameOverOverlayState extends State<GameOverOverlay> with SingleTickerProv
     return FadeTransition(
       opacity: _animation,
       child: Container(
-        color: Color.fromARGB(50, 0, 0, 0),
+        color: const Color.fromARGB(50, 0, 0, 0),
         alignment: Alignment.center,
-        child: Text(
+        child: const Text(
           'GAME OVER',
           semanticsLabel: 'The game is over',
           style: TextStyle(color: Colors.white, fontSize: 40.0),

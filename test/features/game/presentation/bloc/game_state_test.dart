@@ -6,59 +6,59 @@ import 'package:flutter_web_2048/features/game/presentation/bloc/game_state.dart
 import 'package:piecemeal/piecemeal.dart';
 
 void main() {
-  group('GameOver', () {
+  group('GameOverState', () {
     test('should extend GameState', () {
       // ARRANGE
-      var board = Board(Array2D<Tile>(4, 4));
+      final board = Board(Array2D<Tile>(4, 4));
       // ACT
-      var gameOver = GameOver(board);
+      final gameOver = GameOverState(board: board);
       // ASSERT
       expect(gameOver, isA<GameState>());
     });
     test('should have props list with the board', () {
       // ARRANGE
-      var board = Board(Array2D<Tile>(4, 4));
-      var expected = <Object>[board];
+      final board = Board(Array2D<Tile>(4, 4));
+      final expected = <Object>[board];
       // ACT
-      var gameOver = GameOver(board);
+      final gameOver = GameOverState(board: board);
       // ASSERT
       expect(gameOver.props, expected);
     });
   });
-  group('HighscoreLoaded', () {
+  group('HighscoreLoadedState', () {
     test('should extend GameState', () {
       // ARRANGE
-      int highscore = 9000;
+      const int highscore = 9000;
       // ACT
-      var state = HighscoreLoaded(highscore);
+      const state = HighscoreLoadedState(highscore: highscore);
       // ASSERT
       expect(state, isA<GameState>());
     });
     test('should have props list with the board and highscore', () {
       // ARRANGE
-      int highscore = 9000;
-      var expected = <Object>[highscore];
+      const int highscore = 9000;
+      const expected = <Object>[highscore];
       // ACT
-      var state = HighscoreLoaded(highscore);
+      const state = HighscoreLoadedState(highscore: highscore);
       // ASSERT
       expect(state.props, expected);
     });
   });
-  group('Error', () {
+  group('GameErrorState', () {
     test('should extend GameState', () {
       // ARRANGE
-      String message = 'message';
+      const String message = 'message';
       // ACT
-      var error = Error(message);
+      const error = GameErrorState(message: message);
       // ASSERT
       expect(error, isA<GameState>());
     });
     test('should have a props list with the message', () {
       // ARRANGE
-      String message = 'message';
-      var expected = <Object>[message];
+      const String message = 'message';
+      const expected = <Object>[message];
       // ACT
-      var error = Error(message);
+      const error = GameErrorState(message: message);
       // ASSERT
       expect(error.props, expected);
     });
