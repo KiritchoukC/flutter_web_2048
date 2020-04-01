@@ -17,7 +17,7 @@ jobs:
       - name: Launch flutter tests
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.2'
+          flutter-version: '1.15.17'
           channel: 'dev'
       - run: flutter test --coverage
         
@@ -30,7 +30,7 @@ jobs:
       - name: Build for web
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.2'
+          flutter-version: '1.15.17'
           channel: 'dev'
       - run: flutter config --enable-web
       - run: flutter build web
