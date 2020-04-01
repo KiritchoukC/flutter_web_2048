@@ -1,6 +1,6 @@
 {
   "name": "flutter_web_2048",
-  "version": "1.44.0",
+  "version": "1.44.1",
   "description": "2048 game made with flutter web framework",
   "main": "index.js",
   "directories": {
