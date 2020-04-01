@@ -122,14 +122,14 @@ void main() {
       when(mockFirestore.collection('users')).thenReturn(mockCollectionReference);
 
       // ACT
-      await datasource.updateUserData(testUser);
+      await datasource.updateUserData(testUser, lastSeenDateTime: lastSeenDateTime);
 
       // ASSERT
       verify(mockDocumentReference.setData(
         testUser.toJson(lastSeenDateTime: lastSeenDateTime),
         merge: true,
       )).called(1);
-    }, retry: 5);
+    });
     test('should call [CollectionReference.document()]', () async {
       // ARRANGE
       final setDataOutput = Future.value();

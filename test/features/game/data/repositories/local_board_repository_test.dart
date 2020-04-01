@@ -683,44 +683,40 @@ void main() {
       expect(currentTilesCount, previousBoardTilesCount);
     });
 
-    test(
-      'should return the previous board even when the board did not move',
-      () async {
-        // ARRANGE
+    test('should return the previous board even when the board did not move', () async {
+      // ARRANGE
 
-        final tiles = pm.Array2D<Tile>.generated(4, 4, () {});
-        final currentBoard = Board(tiles);
+      final tiles = pm.Array2D<Tile>.generated(4, 4, () {});
+      final currentBoard = Board(tiles);
 
-        const int x = 1;
-        const int y = 0;
+      const int x = 1;
+      const int y = 0;
 
-        // free tile should be able to move down
-        final freeTile = Tile(2, x: x, y: y);
-        currentBoard.tiles.set(x, y, freeTile);
+      // free tile should be able to move down
+      final freeTile = Tile(2, x: x, y: y);
+      currentBoard.tiles.set(x, y, freeTile);
 
-        // starting board
-        // |0|2|0|0|
-        // |0|0|0|0|
-        // |0|0|0|0|
-        // |0|0|0|0|
+      // starting board
+      // |0|2|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
+      // |0|0|0|0|
 
-        // ACT
-        final movedBoard = await repository.updateBoard(currentBoard, Direction.down);
-        // moving up should not update the board
-        final notMovedBoard = await repository.updateBoard(movedBoard, Direction.up);
-        final actual = await repository.getPreviousBoard();
+      // ACT
+      final movedBoard = await repository.updateBoard(currentBoard, Direction.down);
+      // moving up should not update the board
+      final notMovedBoard = await repository.updateBoard(movedBoard, Direction.up);
+      final actual = await repository.getPreviousBoard();
 
-        // ASSERT
-        final notMovedBoardTilesCount = notMovedBoard.tiles.where((tile) => tile != null).length;
-        final movedBoardTilesCount = movedBoard.tiles.where((tile) => tile != null).length;
-        final actualTilesCount = actual.tiles.where((tile) => tile != null).length;
+      // ASSERT
+      final notMovedBoardTilesCount = notMovedBoard.tiles.where((tile) => tile != null).length;
+      final movedBoardTilesCount = movedBoard.tiles.where((tile) => tile != null).length;
+      final actualTilesCount = actual.tiles.where((tile) => tile != null).length;
 
-        // the previous board should be equal to the board that moved and not the board that did not move
-        expect(movedBoardTilesCount, equals(actualTilesCount));
-        expect(notMovedBoardTilesCount, isNot(equals(actualTilesCount)));
-      },
-      retry: 5,
-    );
+      // the previous board should be equal to the board that moved and not the board that did not move
+      expect(movedBoardTilesCount, equals(actualTilesCount));
+      expect(notMovedBoardTilesCount, isNot(equals(actualTilesCount)));
+    });
 
     test('should return currentBoard if previousBoard does not exist yet', () async {
       // ACT
