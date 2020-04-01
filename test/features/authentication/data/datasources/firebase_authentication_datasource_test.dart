@@ -111,10 +111,11 @@ void main() {
     test('should call [DocumentReference.setData()]', () async {
       // ARRANGE
       final setDataOutput = Future.value();
-      final lastSeendDateTime = DateTime.now();
+
+      final lastSeenDateTime = DateTime.now();
 
       when(mockDocumentReference.setData(
-        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        testUser.toJson(lastSeenDateTime: lastSeenDateTime),
         merge: true,
       )).thenAnswer((_) => setDataOutput);
       when(mockCollectionReference.document(testUser.uid)).thenReturn(mockDocumentReference);
@@ -125,7 +126,7 @@ void main() {
 
       // ASSERT
       verify(mockDocumentReference.setData(
-        testUser.toJson(lastSeenDateTime: lastSeendDateTime),
+        testUser.toJson(lastSeenDateTime: lastSeenDateTime),
         merge: true,
       )).called(1);
     }, retry: 5);

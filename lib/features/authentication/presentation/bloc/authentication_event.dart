@@ -8,7 +8,9 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GoogleSignInEvent extends AuthenticationEvent {}
+class GoogleSignInEvent extends AuthenticationEvent {
+  const GoogleSignInEvent();
+}
 
 class SignInEvent extends AuthenticationEvent {
   final String email;

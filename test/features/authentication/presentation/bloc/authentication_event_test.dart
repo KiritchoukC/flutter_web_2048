@@ -79,7 +79,7 @@ void main() {
   group('GoogleSignIn', () {
     test('should extend AuthenticationEvent', () {
       // ACT
-      final googleSignIn = GoogleSignInEvent();
+      const googleSignIn = GoogleSignInEvent();
       // ASSERT
       expect(googleSignIn, isA<AuthenticationEvent>());
     });
@@ -87,7 +87,7 @@ void main() {
       // ARRANGE
       final expected = <Object>[];
       // ACT
-      final googleSignIn = GoogleSignInEvent();
+      const googleSignIn = GoogleSignInEvent();
       // ASSERT
       expect(googleSignIn.props, expected);
     });

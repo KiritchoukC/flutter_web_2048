@@ -11,6 +11,7 @@ import 'features/authentication/data/datasources/firebase_authentication_datasou
 import 'features/authentication/data/repositories/authentication_repository_impl.dart';
 import 'features/authentication/domain/repositories/authentication_repository.dart';
 import 'features/authentication/domain/usecases/signin_email_and_password.dart';
+import 'features/authentication/domain/usecases/signin_google.dart';
 import 'features/authentication/domain/usecases/signout.dart';
 import 'features/authentication/domain/usecases/signup_email_and_password.dart';
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
@@ -38,7 +39,8 @@ Future<void> init() async {
       () => DataConnectionCheckerNetworkInfo(sl<DataConnectionChecker>()));
 
   //! EXTERNAL
-  sl.registerSingletonAsync<Box<int>>(() async => Hive.openBox<int>('highscoreBox'));
+  final box = await Hive.openBox<int>('highscoreBox');
+  sl.registerLazySingleton<Box<int>>(() => box);
   sl.registerLazySingleton(() => DataConnectionChecker());
 
   // Firebase dependencies
@@ -84,6 +86,7 @@ void initAuthenticationFeature() {
         signout: sl<SignOut>(),
         signInEmailAndPassword: sl<SignInEmailAndPassword>(),
         signUpEmailAndPassword: sl<SignUpEmailAndPassword>(),
+        signInGoogle: sl<SignInGoogle>(),
       ));
 
   // Usecases
@@ -92,6 +95,7 @@ void initAuthenticationFeature() {
       () => SignInEmailAndPassword(repository: sl<AuthenticationRepository>()));
   sl.registerLazySingleton(
       () => SignUpEmailAndPassword(repository: sl<AuthenticationRepository>()));
+  sl.registerLazySingleton(() => SignInGoogle(repository: sl<AuthenticationRepository>()));
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(

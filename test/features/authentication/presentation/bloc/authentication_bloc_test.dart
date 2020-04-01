@@ -2,8 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_2048/core/error/failures.dart';
 import 'package:flutter_web_2048/core/error/error_messages.dart';
+import 'package:flutter_web_2048/core/usecases/usecase.dart';
 import 'package:flutter_web_2048/features/authentication/domain/entities/user.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_email_and_password.dart';
+import 'package:flutter_web_2048/features/authentication/domain/usecases/signin_google.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signout.dart';
 import 'package:flutter_web_2048/features/authentication/domain/usecases/signup_email_and_password.dart';
 import 'package:flutter_web_2048/features/authentication/presentation/bloc/bloc.dart';
@@ -15,11 +17,14 @@ class MockSignInEmailAndPassword extends Mock implements SignInEmailAndPassword 
 
 class MockSignUpEmailAndPassword extends Mock implements SignUpEmailAndPassword {}
 
+class MockSignInGoogle extends Mock implements SignInGoogle {}
+
 void main() {
   AuthenticationBloc bloc;
   MockSignOut mockSignOut;
   MockSignInEmailAndPassword mockSignInEmailAndPassword;
   MockSignUpEmailAndPassword mockSignUpEmailAndPassword;
+  MockSignInGoogle mockSignInGoogle;
 
   final User testUser = User(
     'uniqueid',
@@ -33,11 +38,13 @@ void main() {
     mockSignOut = MockSignOut();
     mockSignInEmailAndPassword = MockSignInEmailAndPassword();
     mockSignUpEmailAndPassword = MockSignUpEmailAndPassword();
+    mockSignInGoogle = MockSignInGoogle();
 
     bloc = AuthenticationBloc(
       signout: mockSignOut,
       signInEmailAndPassword: mockSignInEmailAndPassword,
       signUpEmailAndPassword: mockSignUpEmailAndPassword,
+      signInGoogle: mockSignInGoogle,
     );
   });
 
@@ -52,6 +59,7 @@ void main() {
         signout: null,
         signInEmailAndPassword: mockSignInEmailAndPassword,
         signUpEmailAndPassword: mockSignUpEmailAndPassword,
+        signInGoogle: mockSignInGoogle,
       ),
       throwsA(isA<AssertionError>()),
     );
@@ -60,6 +68,7 @@ void main() {
         signout: mockSignOut,
         signInEmailAndPassword: null,
         signUpEmailAndPassword: mockSignUpEmailAndPassword,
+        signInGoogle: mockSignInGoogle,
       ),
       throwsA(isA<AssertionError>()),
     );
@@ -68,6 +77,16 @@ void main() {
         signout: mockSignOut,
         signInEmailAndPassword: mockSignInEmailAndPassword,
         signUpEmailAndPassword: null,
+        signInGoogle: mockSignInGoogle,
+      ),
+      throwsA(isA<AssertionError>()),
+    );
+    expect(
+      () => AuthenticationBloc(
+        signout: mockSignOut,
+        signInEmailAndPassword: mockSignInEmailAndPassword,
+        signUpEmailAndPassword: mockSignUpEmailAndPassword,
+        signInGoogle: null,
       ),
       throwsA(isA<AssertionError>()),
     );
@@ -301,6 +320,62 @@ void main() {
       );
 
       bloc.add(const SignUpCancelEvent());
+    });
+  });
+
+  group('GoogleSignInEvent', () {
+    test('should call [SignInGoogle] usecase', () async {
+      // ARRANGE
+      when(mockSignInGoogle.call(NoParams())).thenAnswer((_) async => Right(testUser));
+
+      // ACT
+      bloc.add(const GoogleSignInEvent());
+      await untilCalled(mockSignInGoogle.call(NoParams()));
+
+      // ASSERT
+      verify(mockSignInGoogle.call(NoParams()));
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, SignedInState] on success',
+        () {
+      // ARRANGE
+      when(mockSignInGoogle.call(any)).thenAnswer((_) async => Right(testUser));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        SignedInState(user: testUser),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(const GoogleSignInEvent());
+    });
+
+    test(
+        'should emit [InitialAuthenticationState, AuthenticationLoadingState, AuthenticationErrorState] on failure',
+        () {
+      // ARRANGE
+      when(mockSignInGoogle.call(any)).thenAnswer((_) async => Left(FirebaseFailure()));
+
+      // ASSERT LATER
+      final expected = [
+        InitialAuthenticationState(),
+        AuthenticationLoadingState(),
+        const AuthenticationErrorState(message: ErrorMessages.firebase),
+      ];
+
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+
+      bloc.add(const GoogleSignInEvent());
     });
   });
 }
