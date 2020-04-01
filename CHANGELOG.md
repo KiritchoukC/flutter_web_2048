@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.44.0](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.9...v1.44.0) (2020-04-01)
+
+
+### Features
+
+* **authentication:** add bloc implementation of google sign in ([522db9b](https://github.com/KiritchoukC/flutter_web_2048/commit/522db9b)), closes [#40](https://github.com/KiritchoukC/flutter_web_2048/issues/40)
+
 ### [1.43.9](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.8...v1.43.9) (2020-03-25)
 
 ### [1.43.8](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.43.7...v1.43.8) (2020-02-19)
