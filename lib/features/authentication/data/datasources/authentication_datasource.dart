@@ -3,7 +3,7 @@ import '../models/user_model.dart';
 /// Interface for third parties authentication providers
 abstract class AuthenticationDatasource {
   /// Updates or persists user's data
-  Future<void> updateUserData(UserModel user);
+  Future<void> updateUserData(UserModel user, {DateTime lastSeenDateTime});
 
   /// Signs the current user out
   Future<void> signOut();

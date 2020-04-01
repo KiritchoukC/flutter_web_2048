@@ -41,8 +41,10 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
 
   /// Updates or persists [user]'s data
   @override
-  Future<void> updateUserData(UserModel user) async {
+  Future<void> updateUserData(UserModel user, {DateTime lastSeenDateTime}) async {
     try {
+      lastSeenDateTime ??= DateTime.now();
+
       return _firestore
           // Get the reference of the users collection
           .collection('users')
@@ -50,7 +52,7 @@ class FirebaseAuthenticationDatasource implements AuthenticationDatasource {
           .document(user.uid)
           // Update the user data with the user converted to json in the retrieved document reference
           // set [merge] to true so the the document will be updated instead of overwrited
-          .setData(user.toJson(lastSeenDateTime: DateTime.now()), merge: true);
+          .setData(user.toJson(lastSeenDateTime: lastSeenDateTime), merge: true);
     } catch (e) {
       // Log and throw specific exception
       _logger.shout(e.toString());
