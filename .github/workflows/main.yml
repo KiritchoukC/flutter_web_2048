@@ -59,7 +59,7 @@ jobs:
       - name: Build apk
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.2'
+          flutter-version: '1.15.17'
           channel: 'dev'
       - run: flutter build apk
 
