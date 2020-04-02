@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.44.5](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.44.4...v1.44.5) (2020-04-02)
+
+
+### Bug Fixes
+
+* **firebase:** remove html script element for firebase config ([007f34c](https://github.com/KiritchoukC/flutter_web_2048/commit/007f34c))
+
 ### [1.44.4](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.44.3...v1.44.4) (2020-04-02)
 
 
