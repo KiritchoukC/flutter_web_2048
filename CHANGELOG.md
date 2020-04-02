@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.44.4](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.44.3...v1.44.4) (2020-04-02)
+
+
+### Bug Fixes
+
+* **firebase:** convert firebase config file from js to json ([f336955](https://github.com/KiritchoukC/flutter_web_2048/commit/f336955))
+
 ### [1.44.3](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.44.2...v1.44.3) (2020-04-01)
 
 ### [1.44.2](https://github.com/KiritchoukC/flutter_web_2048/compare/v1.44.1...v1.44.2) (2020-04-01)
