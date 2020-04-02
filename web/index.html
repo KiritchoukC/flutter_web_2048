@@ -17,8 +17,12 @@
   <script src="firebase.config.release.js"></script>
 
   <script>
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    fetch('./firebase.config.release.json').then(function (response) {
+      return response.json();
+    }).then(function (firebaseJsonConfig) {
+      // Initialize Firebase
+      firebase.initializeApp(JSON.parse('"' + firebaseJsonConfig + '"'));
+    });
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>

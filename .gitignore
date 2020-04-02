@@ -97,4 +97,4 @@ android/key.jks
 android/app/key.jks
 
 # Private config
-web/firebase.config.js
+web/firebase.config.debug.json
